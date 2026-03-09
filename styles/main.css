@@ -434,3 +434,104 @@ p + p { margin-top: var(--space-sm); }
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Photo grid ─────────────────────────────────────────────────────── */
+.photo-section {
+  background: var(--color-dark);
+  padding: 3px 0;
+}
+
+.photo-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.photo-grid__row {
+  display: grid;
+  gap: 3px;
+  height: 420px;
+}
+
+.photo-grid__row--two {
+  grid-template-columns: 3fr 2fr;
+}
+
+.photo-grid__row--three {
+  grid-template-columns: 5fr 3fr 3fr;
+  height: 340px;
+}
+
+.photo-grid__row--reverse {
+  grid-template-columns: 2fr 3fr;
+}
+
+.photo-item {
+  overflow: hidden;
+  position: relative;
+  background: #1a1a1a;
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.03);
+}
+
+/* The sketch gets a light background and contain fitting so text is readable */
+.photo-item--sketch img {
+  object-fit: contain;
+  object-position: center;
+  background: #f5f0e8;
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .photo-grid__row {
+    height: auto;
+  }
+
+  .photo-grid__row--two,
+  .photo-grid__row--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-item {
+    height: 300px;
+  }
+
+  .photo-item--sketch {
+    height: 260px;
+  }
+
+  .photo-grid__row--three {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+
+  .photo-grid__row--three .photo-item:last-child {
+    grid-column: 1 / -1;
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .photo-grid__row--three {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-grid__row--three .photo-item:last-child {
+    grid-column: auto;
+  }
+
+  .photo-item {
+    height: 250px;
+  }
+}

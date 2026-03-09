@@ -32,7 +32,9 @@
   --gutter:     48px;
 }
 
-html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
   font-family: var(--font-sans);
@@ -70,6 +72,7 @@ body {
 }
 
 .section-label {
+  display: block;
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
@@ -361,6 +364,15 @@ p + p { margin-top: var(--space-sm); }
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────────── */

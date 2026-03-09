@@ -15,15 +15,5 @@ const observer = new IntersectionObserver(
 
 fadeElements.forEach((el) => observer.observe(el));
 
-// Typeform popup trigger
-const applyBtn = document.getElementById('apply-btn');
-if (applyBtn) {
-  applyBtn.addEventListener('click', () => {
-    if (window.tf) {
-      window.tf.createPopup('aBO8faXO', {
-        mode: 'popup',
-        autoClose: 3000,
-      }).open();
-    }
-  });
-}
+// Typeform popup is triggered via data-tf-popup attribute on the button.
+// The embed script (embed.typeform.com/next/embed.js) handles it automatically.

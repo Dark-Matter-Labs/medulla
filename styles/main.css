@@ -207,9 +207,8 @@ p + p { margin-top: var(--space-sm); }
   display: flex;
   align-items: baseline;
   gap: var(--space-md);
-  margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--color-rule);
+  margin-bottom: var(--space-md);
+  padding-bottom: 0;
 }
 
 .grid-section__title {
@@ -379,12 +378,12 @@ p + p { margin-top: var(--space-sm); }
 @media (max-width: 900px) {
   :root {
     --gutter: 24px;
-    --space-2xl: 96px;
+    --space-2xl: 80px;
   }
 
   .hero__top {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    gap: 32px;
   }
 
   .hero__bottom {
@@ -421,8 +420,17 @@ p + p { margin-top: var(--space-sm); }
 }
 
 @media (max-width: 600px) {
+  :root {
+    --space-2xl: 64px;
+    --space-lg:  40px;
+  }
+
   .card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: var(--space-md) 0;
   }
 
   .card:nth-child(2n) {
@@ -430,8 +438,25 @@ p + p { margin-top: var(--space-sm); }
     border-left: none;
   }
 
+  .hero__top {
+    gap: 24px;
+  }
+
   .hero__bottom {
     grid-template-columns: 1fr;
+    margin-top: var(--space-md);
+  }
+
+  .grid-section__header {
+    margin-bottom: var(--space-sm);
+  }
+
+  .section-label {
+    margin-bottom: 20px;
+  }
+
+  .apply__wordmark {
+    margin-bottom: var(--space-md);
   }
 }
 

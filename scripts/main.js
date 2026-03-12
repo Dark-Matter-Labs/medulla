@@ -36,7 +36,7 @@ setActive('medulla');
 
 // ─── Typeform: "Join the network" buttons ────────────────────────────
 // TODO: Replace 'JOIN_TYPEFORM_ID' with your actual Typeform form ID
-const JOIN_ID = 'JOIN_TYPEFORM_ID';
+const JOIN_ID = 'HjPU2Imj';
 
 ['btn-network-top', 'btn-network-bottom'].forEach((id) => {
   const btn = document.getElementById(id);
@@ -49,7 +49,7 @@ const JOIN_ID = 'JOIN_TYPEFORM_ID';
 
 // ─── Typeform: "Support the project" buttons ─────────────────────────
 // TODO: Replace 'SUPPORT_TYPEFORM_ID' with your actual Typeform form ID
-const SUPPORT_ID = 'SUPPORT_TYPEFORM_ID';
+const SUPPORT_ID = 'mVve4V2y';
 
 ['btn-support-top', 'btn-support-bottom'].forEach((id) => {
   const btn = document.getElementById(id);

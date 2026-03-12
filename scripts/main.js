@@ -1,19 +1,61 @@
-// Scroll-based fade-in using IntersectionObserver
-const fadeElements = document.querySelectorAll('.fade-in');
+// ─── Active nav highlighting ──────────────────────────────────────────
+const navLinks = document.querySelectorAll('.nav-link');
+const tracked  = document.querySelectorAll('[data-section]');
 
-const observer = new IntersectionObserver(
+// Map data-section value → nav href
+const sectionNavMap = {
+  medulla:    '#medulla',
+  membership: '#membership',
+  space:      '#space',
+  apply:      '#apply-bottom',
+};
+
+function setActive(sectionKey) {
+  const target = sectionNavMap[sectionKey];
+  navLinks.forEach((link) => {
+    link.classList.toggle('active', link.getAttribute('href') === target);
+  });
+}
+
+const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+        const key = entry.target.dataset.section;
+        if (key) setActive(key);
       }
     });
   },
-  { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  { threshold: 0.25, rootMargin: '-10% 0px -60% 0px' }
 );
 
-fadeElements.forEach((el) => observer.observe(el));
+tracked.forEach((el) => sectionObserver.observe(el));
 
-// Typeform popup is triggered via data-tf-popup attribute on the button.
-// The embed script (embed.typeform.com/next/embed.js) handles it automatically.
+// Set initial active state
+setActive('medulla');
+
+// ─── Typeform: "Join the network" buttons ────────────────────────────
+// TODO: Replace 'JOIN_TYPEFORM_ID' with your actual Typeform form ID
+const JOIN_ID = 'JOIN_TYPEFORM_ID';
+
+['btn-network-top', 'btn-network-bottom'].forEach((id) => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (window.tf) window.tf.createPopup(JOIN_ID, { mode: 'popup', autoClose: 3000 }).open();
+    });
+  }
+});
+
+// ─── Typeform: "Support the project" buttons ─────────────────────────
+// TODO: Replace 'SUPPORT_TYPEFORM_ID' with your actual Typeform form ID
+const SUPPORT_ID = 'SUPPORT_TYPEFORM_ID';
+
+['btn-support-top', 'btn-support-bottom'].forEach((id) => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (window.tf) window.tf.createPopup(SUPPORT_ID, { mode: 'popup', autoClose: 3000 }).open();
+    });
+  }
+});

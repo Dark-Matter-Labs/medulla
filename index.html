@@ -4,233 +4,195 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>medulla — Berlin</title>
-  <meta name="description" content="medulla is a shared resilience node designed to sense change early, connect different actors, and strengthen the practical capacities that keep essential urban functions alive." />
+  <meta name="description" content="medulla is a shared workspace for building resilience in practice. Located at Dresdener Str. 113b, Berlin." />
   <meta property="og:title" content="medulla — Berlin" />
-  <meta property="og:description" content="A shared resilience node for urban readiness and collaboration. Dresdener Str. 113b, Berlin." />
+  <meta property="og:description" content="A workspace for building resilience in practice. Dresdener Str. 113b, Berlin." />
   <meta property="og:type" content="website" />
-  <!-- TODO: add og:image once social card is created, e.g.: -->
-  <!-- <meta property="og:image" content="https://[your-domain]/assets/og-image.jpg" /> -->
-  <!-- <meta property="og:url" content="https://[your-domain]/" /> -->
-  <meta name="theme-color" content="#111111" />
+  <!-- TODO: <meta property="og:image" content="https://[domain]/assets/og-image.jpg" /> -->
+  <!-- TODO: <meta property="og:url" content="https://[domain]/" /> -->
+  <meta name="theme-color" content="#ffffff" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
+  <div class="layout">
 
-  <!-- HERO -->
-  <section id="hero" class="section section--dark">
-    <div class="container">
-      <div class="hero__top">
-        <div class="hero__left fade-in">
-          <h1 class="wordmark">medulla</h1>
-          <p class="hero__byline">
-            initiated by Politics for Tomorrow /<br />
-            nextLearning e.V. and Dark Matter Labs
-          </p>
+    <!-- LEFT: Sticky navigation -->
+    <nav class="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">medulla</div>
+      <ul class="sidebar__nav">
+        <li><a href="#medulla"       class="nav-link" data-nav="medulla">Medulla</a></li>
+        <li><a href="#membership"    class="nav-link" data-nav="membership">Membership</a></li>
+        <li><a href="#space"         class="nav-link" data-nav="space">Space</a></li>
+        <li><a href="#apply-bottom"  class="nav-link" data-nav="apply">Apply</a></li>
+      </ul>
+    </nav>
+
+    <!-- CENTER: Scrolling content -->
+    <main class="content">
+
+      <!-- Medulla intro -->
+      <section class="content-section" id="medulla" data-section="medulla">
+        <h1>Medulla</h1>
+        <p class="subtitle">A workspace for building resilience in practice</p>
+
+        <p class="lead">We are entering an era of tighter margins. Rising heat, political volatility, social fragmentation, rapid technological development, financial stress, and material dependence do not line up politely. They interfere. They are felt locally, but they do not begin or end there. They are expressions of a wider planetary condition that asks institutions, communities, and systems to adapt faster than they were designed to.</p>
+
+        <p><u>medulla</u> connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
+
+        <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit rather than shying away from it.</p>
+
+        <p>medulla is initiated by <span class="tooltip-trigger"><u>Politics for Tomorrow / nextlearning e.V.</u><span class="tooltip" role="tooltip">Politics for Tomorrow / nextlearning e.V. works at the intersection of public sector innovation, civic engagement, decision leadership, systems practice, and future capacities.</span></span> and <a href="https://darkmatterlabs.org/" target="_blank" rel="noopener"><u>Dark Matter Labs</u></a>. Together, we are building both a working environment and an active inquiry into how planetary pressures can be met through situated intelligence, coordination, and daily practice.</p>
+
+        <p>We welcome co-conspirators who will join us in this mission and strengthen the wider ecosystem we have built over the years.</p>
+      </section>
+
+      <!-- CTA — top -->
+      <div class="cta-group" id="apply-top" data-section="apply">
+        <div class="cta-row">
+          <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
+          <span class="cta-desc">Permanent desks at Medulla</span>
         </div>
-        <div class="hero__right fade-in" style="transition-delay:0.15s">
-          <p class="hero__intro">
-            Today, cities no longer experience isolated crises, but overlapping pressures: climate risks, energy and price volatility, supply chain disruptions, pandemics, geopolitical tensions, social fragmentation, and institutional overload.
-          </p>
-          <p class="hero__intro" style="margin-top:1.2rem">
-            Many urban settings are already operating under more difficult conditions: higher volatility, fewer buffers, and growing interdependence. What matters now is whether neighborhoods and the systems around them can register changing conditions, coordinate across differences, and continue functioning under stress.
-          </p>
-          <p class="hero__intro--bold">
-            medulla is a shared resilience node designed to sense change early, connect different actors, and strengthen the practical capacities that keep essential urban functions alive.
-          </p>
-          <p class="hero__invite">
-            If this resonates with your work, we invite you to take part in shaping medulla as an active field station for urban readiness and collaboration.
-          </p>
+        <div class="cta-row">
+          <!-- TODO: replace JOIN_TYPEFORM_ID with your Typeform ID -->
+          <button class="cta-btn" id="btn-network-top">Join the network</button>
+          <span class="cta-desc">Join community and participate</span>
+        </div>
+        <div class="cta-row">
+          <!-- TODO: replace SUPPORT_TYPEFORM_ID with your Typeform ID -->
+          <button class="cta-btn" id="btn-support-top">Support the project</button>
+          <span class="cta-desc">Express your interest in supporting the mission</span>
         </div>
       </div>
 
-      <div class="hero__bottom fade-in" style="transition-delay:0.3s">
-        <div class="hero__meta">
-          <strong>Location</strong>
-          Dresdener Str. 113b<br />Berlin
+      <!-- Membership -->
+      <section class="content-section" id="membership" data-section="membership">
+        <h2>Membership</h2>
+        <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment.</p>
+        <p>You might work in:</p>
+        <ul class="bullets">
+          <li>public administration or municipal enterprises</li>
+          <li>technology, data and AI</li>
+          <li>governance, system change and cybernetics</li>
+          <li>urban planning, architecture, or infrastructure</li>
+          <li>impact finance, philanthropy, or mission-driven investment</li>
+          <li>culture, media and arts</li>
+          <li>alternative economic and financial models</li>
+          <li>civic organizing, community and activism</li>
+          <li>regenerative ecological practices and bioregional stewardship</li>
+        </ul>
+        <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
+      </section>
+
+      <!-- Contribution -->
+      <section class="content-section" id="contribution" data-section="membership">
+        <h2>Contribution</h2>
+        <p>Desk contributions start at 500 EUR per month, which places medulla above many standard coworking offers in Berlin. That is a deliberate choice as the contribution supports more than occupancy:</p>
+        <ul class="bullets">
+          <li>a shared environment with a clear curatorial direction</li>
+          <li>the time and care required to hold the space well</li>
+          <li>the possibility of working in close proximity to people from other fields</li>
+          <li>a setting designed for collaboration, not just parallel use</li>
+          <li>the early formation of a place intended to matter beyond itself</li>
+        </ul>
+        <p>What is being offered here is not cheap access to square metres. It is participation in a working ecology.</p>
+        <p>If what you need is the lowest possible desk price, other coworking spaces offer many good options. If what you need is a place with intellectual seriousness, practical relevance, and a strong shared atmosphere, medulla may be a fit.</p>
+      </section>
+
+      <!-- Shape the space -->
+      <section class="content-section" id="shape" data-section="membership">
+        <h2>Shape the space</h2>
+        <p>We think of members less as tenants and more as contributors to a shared environment.</p>
+        <p>That does not imply a heavy collective burden. It means recognising that a good space does not emerge by itself. It is made and remade by the people in it: through attention, exchange, rhythm, and occasional acts of initiative.</p>
+        <p>That might include:</p>
+        <ul class="bullets">
+          <li>sharing what you are working on from time to time</li>
+          <li>joining occasional conversations or internal sessions</li>
+          <li>contributing a perspective, network, or method</li>
+          <li>shaping how the space develops over time</li>
+          <li>taking part in small public or semi-public formats where relevant</li>
+        </ul>
+        <p>Not everyone contributes in the same way. Nor should they. But we want the space to be shaped by the people inhabiting it, rather than flattened into a service to be consumed.</p>
+      </section>
+
+      <!-- Space -->
+      <section class="content-section" id="space" data-section="space">
+        <h2>Space</h2>
+        <p>medulla is spread across two levels.</p>
+        <p>The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
+        <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
+        <p>There is also access to a courtyard and garden – a place to step outside the task at hand, reset attention, or care for the living world around us. We want the space to feel grounded, alive, and metabolically sane: a place where infrastructure, ideas, and relationships can actually meet.</p>
+      </section>
+
+      <!-- Value -->
+      <section class="content-section" id="value" data-section="space">
+        <h2>Value</h2>
+        <p>A desk at medulla gives you more than a place to sit.</p>
+        <p>You gain access to:</p>
+        <ul class="bullets">
+          <li>a carefully composed cross-sector environment</li>
+          <li>proximity to people working on adjacent systemic questions</li>
+          <li>opportunities for collaboration across governance, technology, finance, culture, and infrastructure</li>
+          <li>small shared formats that help ideas become more concrete</li>
+          <li>a setting where serious work and meaningful exchange can coexist</li>
+          <li>the chance to participate in something that may become a wider model over time</li>
+        </ul>
+        <p>Some people come for focus. Some join for connection. Most need both.</p>
+      </section>
+
+      <!-- Sneak Peak -->
+      <section class="content-section" id="sneak-peak" data-section="space">
+        <h2>Sneak Peak</h2>
+        <p>On an ordinary day, medulla might hold several worlds at once:</p>
+        <ul class="bullets">
+          <li>someone working on heat preparedness for a district administration</li>
+          <li>a civic technologist mapping public interfaces and data flows</li>
+          <li>a foundation team shaping a new approach to funding urban resilience</li>
+          <li>a shared lunch in the intercultural kitchen, followed by time in the courtyard tending plants, sharing notes, or simply stepping out of the stream for a moment</li>
+          <li>a designer, strategist, or researcher refining a project with others around the table</li>
+          <li>a small evening session where members bring a live challenge and test a response together</li>
+        </ul>
+        <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
+        <p>What matters is that the space supports simultaneously:</p>
+        <ul class="bullets">
+          <li>deep individual work</li>
+          <li>coordinated exchange</li>
+          <li>collaboration across fields</li>
+        </ul>
+      </section>
+
+      <!-- CTA — bottom -->
+      <div class="cta-group" id="apply-bottom" data-section="apply">
+        <div class="cta-row">
+          <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
+          <span class="cta-desc">Permanent desks at Medulla</span>
         </div>
-        <div class="hero__meta">
-          <strong>Contribution</strong>
-          from 500 EUR / desk<br />depending on involvement
+        <div class="cta-row">
+          <button class="cta-btn" id="btn-network-bottom">Join the network</button>
+          <span class="cta-desc">Join community and participate</span>
         </div>
-        <div class="hero__meta">
-          <strong>Dates</strong>
-          Move-in: 1 May 2026<br />
-          Deadline: 20 March 2026<br />
-          Response by: 2 April 2026
+        <div class="cta-row">
+          <button class="cta-btn" id="btn-support-bottom">Support the project</button>
+          <span class="cta-desc">Express your interest in supporting the mission</span>
         </div>
-        <a href="#apply" class="hero__cta">apply →</a>
       </div>
+
+    </main>
+
+    <!-- RIGHT: Independent scroll photo panel -->
+    <div class="photo-panel" aria-hidden="true">
+      <img src="assets/images/exterior-construction.webp" alt="Dresdener Str. 113b exterior" loading="eager" />
+      <img src="assets/images/interior-skylight.webp" alt="Interior — circular wooden skylight" loading="lazy" />
+      <img src="assets/images/sketch.webp" alt="Architectural sketch" loading="lazy" />
+      <img src="assets/images/exterior-courtyard.webp" alt="Courtyard with trees" loading="lazy" />
+      <img src="assets/images/interior-windows.webp" alt="Interior with floor-to-ceiling windows" loading="lazy" />
+      <img src="assets/images/exterior-balcony.webp" alt="Exterior balcony" loading="lazy" />
+      <img src="assets/images/interior-wood-floor.webp" alt="Interior — wooden walls and concrete floor" loading="lazy" />
     </div>
-  </section>
 
-  <!-- SPACE PHOTOS -->
-  <section id="space" class="photo-section">
-    <div class="photo-grid">
-      <!-- Row 1: wide exterior + sketch -->
-      <div class="photo-grid__row photo-grid__row--two">
-        <div class="photo-item photo-item--wide">
-          <img src="assets/images/exterior-construction.webp" alt="Dresdener Str. 113b exterior — wooden Neubau under construction" loading="lazy" />
-        </div>
-        <div class="photo-item photo-item--sketch">
-          <img src="assets/images/sketch.webp" alt="Architectural sketch of Dresdener Str. 113b by Schulte-Frohlinde Architekten" loading="lazy" />
-        </div>
-      </div>
-      <!-- Row 2: three interior/exterior -->
-      <div class="photo-grid__row photo-grid__row--three">
-        <div class="photo-item">
-          <img src="assets/images/interior-skylight.webp" alt="Interior — circular wooden skylight opening and floor heating" loading="lazy" />
-        </div>
-        <div class="photo-item">
-          <img src="assets/images/exterior-courtyard.webp" alt="Exterior — courtyard with large tree and garden" loading="lazy" />
-        </div>
-        <div class="photo-item">
-          <img src="assets/images/interior-windows.webp" alt="Interior — wooden walls and floor-to-ceiling windows overlooking garden" loading="lazy" />
-        </div>
-      </div>
-      <!-- Row 3: balcony detail + interior wood -->
-      <div class="photo-grid__row photo-grid__row--two photo-grid__row--reverse">
-        <div class="photo-item photo-item--narrow">
-          <img src="assets/images/exterior-balcony.webp" alt="Exterior — balcony levels with trees" loading="lazy" />
-        </div>
-        <div class="photo-item photo-item--wide">
-          <img src="assets/images/interior-wood-floor.webp" alt="Interior — wooden ceiling and walls with concrete floor" loading="lazy" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MEDULLA -->
-  <section id="medulla" class="section section--light">
-    <div class="container">
-      <div class="grid-section__header">
-        <span class="section-label">medulla</span>
-      </div>
-      <div class="card-grid">
-
-        <div class="card fade-in">
-          <h3>purpose</h3>
-          <p>medulla contributes to the living core of urban readiness: a place where signals are sensed, knowledge is translated, and actors coordinate to strengthen the robustness of everyday urban systems.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.1s">
-          <h3>function</h3>
-          <p>medulla is not a coworking space. It is a place where capacities, relationships, and working infrastructures are built that strengthen what cities need in order to remain responsive under pressure: <strong>shared inquiry, working sessions, public formats, collective learning, and room for experimentation.</strong></p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.2s">
-          <h3>architecture</h3>
-          <p>medulla is a two-floor space in a wooden Neubau at Dresdener Str. 113b: with an upper floor for focused work and a lower floor for exchange, gathering, and programmable formats. Situated within a shared courtyard structure, medulla is connected to a garden and outdoor area that members will share, care for, and steward together.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.3s">
-          <h3>members</h3>
-          <p>medulla members are not users but contributors and stewards. Members may be individuals or organisations. Participation may begin with desks and core contributions, and evolve into additional models once rent and maintenance costs are covered.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.4s">
-          <h3>convergence</h3>
-          <p>medulla brings together a mix of systems and practices – governance, technology, culture, business, finance, and civic initiatives – without collapsing them into a single language.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.5s">
-          <h3>planetary</h3>
-          <p>medulla understands itself as part of a wider ecosystem of initiatives working on long-term societal robustness and adaptive capacity, connected to similar demonstrators across cities and regions.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- RESILIENCE -->
-  <section id="resilience" class="section section--warm">
-    <div class="container">
-      <div class="grid-section__header">
-        <span class="section-label">approach</span>
-      </div>
-      <div class="card-grid">
-
-        <div class="card fade-in">
-          <h3>urban</h3>
-          <p>Urban robustness is the ability of a city to keep essential functions going under pressure. Urban resilience builds on that capacity: it is what allows a city to adapt, reorganise, and continue as conditions change.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.1s">
-          <h3>infrastructural</h3>
-          <p>This begins with the systems people rely on every day: energy, water, mobility, communication, housing, food, and the built environment. When these systems remain dependable under stress, they create the basis on which broader resilience can emerge.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.2s">
-          <h3>technological</h3>
-          <p>Digital systems matter, but readiness does not arise from technology alone. Robustness depends on whether tools, people, and institutions can work together under real conditions; resilience depends on whether those arrangements can evolve as needs and pressures shift.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.3s">
-          <h3>creative</h3>
-          <p>Adaptation requires imagination. Robust systems create the room to think beyond immediate response; resilient systems use that room to reframe problems, prototype responses, and make new forms of action possible.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.4s">
-          <h3>economic</h3>
-          <p>Robustness has an economic dimension. Cities need ways of financing continuity, maintenance, and shared capacity under pressure. Resilience begins when those same investments also enable learning, adjustment, and long-term transformation before disruption becomes more costly than preparation.</p>
-        </div>
-
-        <div class="card fade-in" style="transition-delay:0.5s">
-          <h3>organisational</h3>
-          <p>Readiness does not sit in any one institution. Robustness grows through coordination, distributed responsibility, and the ability to stay operational across organisational and sectoral boundaries. Resilience grows when those same relationships are able to adjust, deepen, and reconfigure as conditions change.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- APPLY -->
-  <section id="apply" class="section section--dark">
-    <div class="container">
-      <div class="apply__wordmark">apply</div>
-      <div class="apply__body">
-        <p class="apply__invite">
-          We are looking for mature people and organisations who want to contribute to this deliberately: not simply by occupying space, but by helping shape a setting for practice, exchange, and shared capacity.
-        </p>
-        <div class="apply__details">
-          <div class="apply__meta">
-            Application deadline: 20 March 2026<br />
-            Response by: 2 April 2026<br />
-            Move-in: 1 May 2026
-          </div>
-          <button class="btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Begin application →</button>
-          <noscript>
-            <p style="margin-top:1rem;font-size:13px;color:rgba(245,243,238,0.5)">
-              JavaScript is required to open the application form.
-              Email us at <a href="mailto:medulla@politicsfortomorrow.eu" style="color:rgba(245,243,238,0.7)">medulla@politicsfortomorrow.eu</a>
-            </p>
-          </noscript>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__inner">
-        <div class="footer__logos">
-          <a href="https://www.politicsfortomorrow.eu/" class="footer__logo" target="_blank" rel="noopener">Politics for Tomorrow</a>
-          <span class="footer__logo-sep">/</span>
-          <a href="https://www.nextlearning.earth/" class="footer__logo" target="_blank" rel="noopener">nextLearning e.V.</a>
-          <span class="footer__logo-sep">/</span>
-          <a href="https://darkmatterlabs.org/" class="footer__logo" target="_blank" rel="noopener">Dark Matter Labs</a>
-        </div>
-        <div class="footer__address">
-          Dresdener Str. 113b<br />
-          Berlin<br />
-          © medulla 2026
-        </div>
-      </div>
-    </div>
-  </footer>
+  </div>
 
   <script src="scripts/main.js"></script>
   <script src="https://embed.typeform.com/next/embed.js"></script>

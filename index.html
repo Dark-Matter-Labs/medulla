@@ -22,7 +22,6 @@
 
     <!-- LEFT: Sticky navigation -->
     <nav class="sidebar" aria-label="Main navigation">
-      <div class="sidebar__brand">medulla</div>
       <ul class="sidebar__nav">
         <li><a href="#medulla"       class="nav-link" data-nav="medulla">Medulla</a></li>
         <li><a href="#membership"    class="nav-link" data-nav="membership">Membership</a></li>
@@ -31,167 +30,175 @@
       </ul>
     </nav>
 
-    <!-- CENTER: Scrolling content -->
+    <!-- CENTER + RIGHT: Content grid (text columns + photo panel) -->
     <main class="content">
 
-      <!-- Medulla intro -->
-      <section class="content-section" id="medulla" data-section="medulla">
-        <h1>Medulla</h1>
-        <p class="subtitle">A workspace for building resilience in practice</p>
+      <!-- Top text block: intro + CTAs -->
+      <div class="content-text content-text--top">
 
-        <p class="lead">We are entering an era of tighter margins. Rising heat, political volatility, social fragmentation, rapid technological development, financial stress, and material dependence do not line up politely. They interfere. They are felt locally, but they do not begin or end there. They are expressions of a wider planetary condition that asks institutions, communities, and systems to adapt faster than they were designed to.</p>
+        <!-- Medulla intro -->
+        <section class="content-section" id="medulla" data-section="medulla">
+          <h1>Medulla</h1>
+          <p class="subtitle">A workspace for building resilience in practice</p>
 
-        <p><u>medulla</u> connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
+          <p class="lead">We are entering an era of tighter margins. Rising heat, political volatility, social fragmentation, rapid technological development, financial stress, and material dependence do not line up politely. They interfere. They are felt locally, but they do not begin or end there. They are expressions of a wider planetary condition that asks institutions, communities, and systems to adapt faster than they were designed to.</p>
 
-        <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit rather than shying away from it.</p>
+          <p><u>medulla</u> connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
 
-        <p>medulla is initiated by <span class="tooltip-trigger"><a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener"><u>Politics for Tomorrow</u></a> / <a href="https://www.nextlearning.earth/" target="_blank" rel="noopener"><u>nextlearning e.V.</u></a><span class="tooltip" role="tooltip">Politics for Tomorrow / nextlearning e.V. works at the intersection of public sector innovation, civic engagement, decision leadership, systems practice, and future capacities.</span></span> and <span class="tooltip-trigger"><a href="https://darkmatterlabs.org/" target="_blank" rel="noopener"><u>Dark Matter Labs</u></a><span class="tooltip" role="tooltip">Multidisciplinary team with a shared passion for applying innovative approaches to complex societal challenges.</span></span>. Together, we are building both a working environment and an active inquiry into how planetary pressures can be met through situated intelligence, coordination, and daily practice.</p>
+          <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit rather than shying away from it.</p>
 
-        <p>We welcome co-conspirators who will join us in this mission and strengthen the wider ecosystem we have built over the years.</p>
-      </section>
+          <p>medulla is initiated by <span class="tooltip-trigger"><a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener"><u>Politics for Tomorrow</u></a> / <a href="https://www.nextlearning.earth/" target="_blank" rel="noopener"><u>nextlearning e.V.</u></a><span class="tooltip" role="tooltip">Politics for Tomorrow / nextlearning e.V. works at the intersection of public sector innovation, civic engagement, decision leadership, systems practice, and future capacities.</span></span> and <span class="tooltip-trigger"><a href="https://darkmatterlabs.org/" target="_blank" rel="noopener"><u>Dark Matter Labs</u></a><span class="tooltip" role="tooltip">Multidisciplinary team with a shared passion for applying innovative approaches to complex societal challenges.</span></span>. Together, we are building both a working environment and an active inquiry into how planetary pressures can be met through situated intelligence, coordination, and daily practice.</p>
 
-      <!-- CTA — top -->
-      <div class="cta-group" id="apply-top" data-section="apply">
-        <div class="cta-row">
-          <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
-          <span class="cta-desc">Permanent desks at Medulla</span>
+          <p>We welcome co-conspirators who will join us in this mission and strengthen the wider ecosystem we have built over the years.</p>
+        </section>
+
+        <!-- CTA — top -->
+        <div class="cta-group" id="apply-top" data-section="apply">
+          <div class="cta-row">
+            <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
+            <span class="cta-desc">Permanent desks at Medulla</span>
+          </div>
+          <div class="cta-row">
+            <button class="cta-btn" id="btn-network-top">Join the network</button>
+            <span class="cta-desc">Join community and participate</span>
+          </div>
+          <div class="cta-row">
+            <button class="cta-btn" id="btn-support-top">Support the project</button>
+            <span class="cta-desc">Express your interest in supporting the mission</span>
+          </div>
         </div>
-        <div class="cta-row">
-          <!-- TODO: replace JOIN_TYPEFORM_ID with your Typeform ID -->
-          <button class="cta-btn" id="btn-network-top">Join the network</button>
-          <span class="cta-desc">Join community and participate</span>
-        </div>
-        <div class="cta-row">
-          <!-- TODO: replace SUPPORT_TYPEFORM_ID with your Typeform ID -->
-          <button class="cta-btn" id="btn-support-top">Support the project</button>
-          <span class="cta-desc">Express your interest in supporting the mission</span>
-        </div>
+
+      </div><!-- /content-text--top -->
+
+      <!-- RIGHT: Independent scroll photo panel -->
+      <div class="photo-panel" aria-hidden="true">
+        <img src="assets/images/exterior-construction.webp" alt="Dresdener Str. 113b exterior" loading="eager" />
+        <img src="assets/images/interior-skylight.webp" alt="Interior — circular wooden skylight" loading="lazy" />
+        <img src="assets/images/sketch.webp" alt="Architectural sketch" loading="lazy" />
+        <img src="assets/images/exterior-courtyard.webp" alt="Courtyard with trees" loading="lazy" />
+        <img src="assets/images/interior-windows.webp" alt="Interior with floor-to-ceiling windows" loading="lazy" />
+        <img src="assets/images/exterior-balcony.webp" alt="Exterior balcony" loading="lazy" />
+        <img src="assets/images/interior-wood-floor.webp" alt="Interior — wooden walls and concrete floor" loading="lazy" />
       </div>
 
-      <!-- Membership -->
-      <section class="content-section" id="membership" data-section="membership">
-        <h2>Membership</h2>
-        <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment.</p>
-        <p>You might work in:</p>
-        <ul class="bullets">
-          <li>public administration or municipal enterprises</li>
-          <li>technology, data and AI</li>
-          <li>governance, system change and cybernetics</li>
-          <li>urban planning, architecture, or infrastructure</li>
-          <li>impact finance, philanthropy, or mission-driven investment</li>
-          <li>culture, media and arts</li>
-          <li>alternative economic and financial models</li>
-          <li>civic organizing, community and activism</li>
-          <li>regenerative ecological practices and bioregional stewardship</li>
-        </ul>
-        <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
-      </section>
+      <!-- Bottom text block: membership through final CTAs -->
+      <div class="content-text content-text--bottom">
 
-      <!-- Contribution -->
-      <section class="content-section" id="contribution" data-section="membership">
-        <h2>Contribution</h2>
-        <p>Desk contributions start at 500 EUR per month, which places medulla above many standard coworking offers in Berlin. That is a deliberate choice as the contribution supports more than occupancy:</p>
-        <ul class="bullets">
-          <li>a shared environment with a clear curatorial direction</li>
-          <li>the time and care required to hold the space well</li>
-          <li>the possibility of working in close proximity to people from other fields</li>
-          <li>a setting designed for collaboration, not just parallel use</li>
-          <li>the early formation of a place intended to matter beyond itself</li>
-        </ul>
-        <p>What is being offered here is not cheap access to square metres. It is participation in a working ecology.</p>
-        <p>If what you need is the lowest possible desk price, other coworking spaces offer many good options. If what you need is a place with intellectual seriousness, practical relevance, and a strong shared atmosphere, medulla may be a fit.</p>
-      </section>
+        <!-- Membership -->
+        <section class="content-section" id="membership" data-section="membership">
+          <h2>Membership</h2>
+          <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment.</p>
+          <p>You might work in:</p>
+          <ul class="bullets">
+            <li>public administration or municipal enterprises</li>
+            <li>technology, data and AI</li>
+            <li>governance, system change and cybernetics</li>
+            <li>urban planning, architecture, or infrastructure</li>
+            <li>impact finance, philanthropy, or mission-driven investment</li>
+            <li>culture, media and arts</li>
+            <li>alternative economic and financial models</li>
+            <li>civic organizing, community and activism</li>
+            <li>regenerative ecological practices and bioregional stewardship</li>
+          </ul>
+          <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
+        </section>
 
-      <!-- Shape the space -->
-      <section class="content-section" id="shape" data-section="membership">
-        <h2>Shape the space</h2>
-        <p>We think of members less as tenants and more as contributors to a shared environment.</p>
-        <p>That does not imply a heavy collective burden. It means recognising that a good space does not emerge by itself. It is made and remade by the people in it: through attention, exchange, rhythm, and occasional acts of initiative.</p>
-        <p>That might include:</p>
-        <ul class="bullets">
-          <li>sharing what you are working on from time to time</li>
-          <li>joining occasional conversations or internal sessions</li>
-          <li>contributing a perspective, network, or method</li>
-          <li>shaping how the space develops over time</li>
-          <li>taking part in small public or semi-public formats where relevant</li>
-        </ul>
-        <p>Not everyone contributes in the same way. Nor should they. But we want the space to be shaped by the people inhabiting it, rather than flattened into a service to be consumed.</p>
-      </section>
+        <!-- Contribution -->
+        <section class="content-section" id="contribution" data-section="membership">
+          <h2>Contribution</h2>
+          <p>Desk contributions start at 500 EUR per month, which places medulla above many standard coworking offers in Berlin. That is a deliberate choice as the contribution supports more than occupancy:</p>
+          <ul class="bullets">
+            <li>a shared environment with a clear curatorial direction</li>
+            <li>the time and care required to hold the space well</li>
+            <li>the possibility of working in close proximity to people from other fields</li>
+            <li>a setting designed for collaboration, not just parallel use</li>
+            <li>the early formation of a place intended to matter beyond itself</li>
+          </ul>
+          <p>What is being offered here is not cheap access to square metres. It is participation in a working ecology.</p>
+          <p>If what you need is the lowest possible desk price, other coworking spaces offer many good options. If what you need is a place with intellectual seriousness, practical relevance, and a strong shared atmosphere, medulla may be a fit.</p>
+        </section>
 
-      <!-- Space -->
-      <section class="content-section" id="space" data-section="space">
-        <h2>Space</h2>
-        <p>medulla is spread across two levels.</p>
-        <p>The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
-        <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
-        <p>There is also access to a courtyard and garden – a place to step outside the task at hand, reset attention, or care for the living world around us. We want the space to feel grounded, alive, and metabolically sane: a place where infrastructure, ideas, and relationships can actually meet.</p>
-      </section>
+        <!-- Shape the space -->
+        <section class="content-section" id="shape" data-section="membership">
+          <h2>Shape the space</h2>
+          <p>We think of members less as tenants and more as contributors to a shared environment.</p>
+          <p>That does not imply a heavy collective burden. It means recognising that a good space does not emerge by itself. It is made and remade by the people in it: through attention, exchange, rhythm, and occasional acts of initiative.</p>
+          <p>That might include:</p>
+          <ul class="bullets">
+            <li>sharing what you are working on from time to time</li>
+            <li>joining occasional conversations or internal sessions</li>
+            <li>contributing a perspective, network, or method</li>
+            <li>shaping how the space develops over time</li>
+            <li>taking part in small public or semi-public formats where relevant</li>
+          </ul>
+          <p>Not everyone contributes in the same way. Nor should they. But we want the space to be shaped by the people inhabiting it, rather than flattened into a service to be consumed.</p>
+        </section>
 
-      <!-- Value -->
-      <section class="content-section" id="value" data-section="space">
-        <h2>Value</h2>
-        <p>A desk at medulla gives you more than a place to sit.</p>
-        <p>You gain access to:</p>
-        <ul class="bullets">
-          <li>a carefully composed cross-sector environment</li>
-          <li>proximity to people working on adjacent systemic questions</li>
-          <li>opportunities for collaboration across governance, technology, finance, culture, and infrastructure</li>
-          <li>small shared formats that help ideas become more concrete</li>
-          <li>a setting where serious work and meaningful exchange can coexist</li>
-          <li>the chance to participate in something that may become a wider model over time</li>
-        </ul>
-        <p>Some people come for focus. Some join for connection. Most need both.</p>
-      </section>
+        <!-- Space -->
+        <section class="content-section" id="space" data-section="space">
+          <h2>Space</h2>
+          <p>medulla is spread across two levels.</p>
+          <p>The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
+          <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
+          <p>There is also access to a courtyard and garden – a place to step outside the task at hand, reset attention, or care for the living world around us. We want the space to feel grounded, alive, and metabolically sane: a place where infrastructure, ideas, and relationships can actually meet.</p>
+        </section>
 
-      <!-- Sneak Peak -->
-      <section class="content-section" id="sneak-peak" data-section="space">
-        <h2>Sneak Peak</h2>
-        <p>On an ordinary day, medulla might hold several worlds at once:</p>
-        <ul class="bullets">
-          <li>someone working on heat preparedness for a district administration</li>
-          <li>a civic technologist mapping public interfaces and data flows</li>
-          <li>a foundation team shaping a new approach to funding urban resilience</li>
-          <li>a shared lunch in the intercultural kitchen, followed by time in the courtyard tending plants, sharing notes, or simply stepping out of the stream for a moment</li>
-          <li>a designer, strategist, or researcher refining a project with others around the table</li>
-          <li>a small evening session where members bring a live challenge and test a response together</li>
-        </ul>
-        <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
-        <p>What matters is that the space supports simultaneously:</p>
-        <ul class="bullets">
-          <li>deep individual work</li>
-          <li>coordinated exchange</li>
-          <li>collaboration across fields</li>
-        </ul>
-      </section>
+        <!-- Value -->
+        <section class="content-section" id="value" data-section="space">
+          <h2>Value</h2>
+          <p>A desk at medulla gives you more than a place to sit.</p>
+          <p>You gain access to:</p>
+          <ul class="bullets">
+            <li>a carefully composed cross-sector environment</li>
+            <li>proximity to people working on adjacent systemic questions</li>
+            <li>opportunities for collaboration across governance, technology, finance, culture, and infrastructure</li>
+            <li>small shared formats that help ideas become more concrete</li>
+            <li>a setting where serious work and meaningful exchange can coexist</li>
+            <li>the chance to participate in something that may become a wider model over time</li>
+          </ul>
+          <p>Some people come for focus. Some join for connection. Most need both.</p>
+        </section>
 
-      <!-- CTA — bottom -->
-      <div class="cta-group" id="apply-bottom" data-section="apply">
-        <div class="cta-row">
-          <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
-          <span class="cta-desc">Permanent desks at Medulla</span>
+        <!-- Sneak Peak -->
+        <section class="content-section" id="sneak-peak" data-section="space">
+          <h2>Sneak Peak</h2>
+          <p>On an ordinary day, medulla might hold several worlds at once:</p>
+          <ul class="bullets">
+            <li>someone working on heat preparedness for a district administration</li>
+            <li>a civic technologist mapping public interfaces and data flows</li>
+            <li>a foundation team shaping a new approach to funding urban resilience</li>
+            <li>a shared lunch in the intercultural kitchen, followed by time in the courtyard tending plants, sharing notes, or simply stepping out of the stream for a moment</li>
+            <li>a designer, strategist, or researcher refining a project with others around the table</li>
+            <li>a small evening session where members bring a live challenge and test a response together</li>
+          </ul>
+          <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
+          <p>What matters is that the space supports simultaneously:</p>
+          <ul class="bullets">
+            <li>deep individual work</li>
+            <li>coordinated exchange</li>
+            <li>collaboration across fields</li>
+          </ul>
+        </section>
+
+        <!-- CTA — bottom -->
+        <div class="cta-group" id="apply-bottom" data-section="apply">
+          <div class="cta-row">
+            <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
+            <span class="cta-desc">Permanent desks at Medulla</span>
+          </div>
+          <div class="cta-row">
+            <button class="cta-btn" id="btn-network-bottom">Join the network</button>
+            <span class="cta-desc">Join community and participate</span>
+          </div>
+          <div class="cta-row">
+            <button class="cta-btn" id="btn-support-bottom">Support the project</button>
+            <span class="cta-desc">Express your interest in supporting the mission</span>
+          </div>
         </div>
-        <div class="cta-row">
-          <button class="cta-btn" id="btn-network-bottom">Join the network</button>
-          <span class="cta-desc">Join community and participate</span>
-        </div>
-        <div class="cta-row">
-          <button class="cta-btn" id="btn-support-bottom">Support the project</button>
-          <span class="cta-desc">Express your interest in supporting the mission</span>
-        </div>
-      </div>
+
+      </div><!-- /content-text--bottom -->
 
     </main>
-
-    <!-- RIGHT: Independent scroll photo panel -->
-    <div class="photo-panel" aria-hidden="true">
-      <img src="assets/images/exterior-construction.webp" alt="Dresdener Str. 113b exterior" loading="eager" />
-      <img src="assets/images/interior-skylight.webp" alt="Interior — circular wooden skylight" loading="lazy" />
-      <img src="assets/images/sketch.webp" alt="Architectural sketch" loading="lazy" />
-      <img src="assets/images/exterior-courtyard.webp" alt="Courtyard with trees" loading="lazy" />
-      <img src="assets/images/interior-windows.webp" alt="Interior with floor-to-ceiling windows" loading="lazy" />
-      <img src="assets/images/exterior-balcony.webp" alt="Exterior balcony" loading="lazy" />
-      <img src="assets/images/interior-wood-floor.webp" alt="Interior — wooden walls and concrete floor" loading="lazy" />
-    </div>
 
   </div>
 

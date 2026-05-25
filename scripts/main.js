@@ -1,21 +1,48 @@
 // ── Scroll-driven stacked card experience ───────────────────────────────
 
 const cards     = Array.from(document.querySelectorAll('.card'));
-const navItems  = Array.from(document.querySelectorAll('.side-nav__item'));
 const driver    = document.querySelector('.scroll-driver');
 const NUM_CARDS = cards.length;
 
-// Each card owns 1 viewport-height of scroll space.
-// Card stays static for the first 60% of its section,
-// then peels upward across the final 40%.
-const DWELL_RATIO = 0.6;
+// CSS token values — must match :root in main.css
+const BASE_H = 80;   // --base-h
+const TAB_H  = 44;   // --tab-h
 
-let ticking  = false;
-let lastActive = -1;
+// How much of each scroll section the card dwells before peeling.
+// 0.35 → card starts moving sooner, giving 65% of the section for the
+// animation (vs old 40%) — more scroll distance = smoother feel.
+const DWELL_RATIO = 0.35;
 
-function update() {
-  const scrollY = window.scrollY;
-  const vh      = window.innerHeight;
+// Lerp factor for smooth scrolling (0–1).
+// 0.12 settles in ~250 ms at 60 fps: responsive but silky.
+const LERP_FACTOR = 0.12;
+
+let smoothY   = window.scrollY;  // lerp-tracked position
+let animating = false;           // rAF loop running?
+
+// ── Progress bar ──────────────────────────────────────────────────────────
+const progressEl = document.createElement('div');
+progressEl.className = 'scroll-progress';
+progressEl.innerHTML = '<div class="scroll-progress__bar"></div>';
+document.body.appendChild(progressEl);
+const progressBar = progressEl.querySelector('.scroll-progress__bar');
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function cardHeight(i) {
+  return window.innerHeight - BASE_H - (NUM_CARDS - 1 - i) * TAB_H;
+}
+
+// Smooth ease-in-out: slow start → fast middle → soft landing.
+// Matches how a physical card feels when lifted off a stack.
+function easeInOutCubic(t) {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+// ── Core render ───────────────────────────────────────────────────────────
+function render() {
+  const vh = window.innerHeight;
 
   cards.forEach((card, i) => {
     const sectionStart = i * vh;
@@ -23,69 +50,61 @@ function update() {
     const animEnd      = sectionStart + vh;
 
     let progress = 0;
-    if (scrollY > animStart) {
-      progress = Math.min((scrollY - animStart) / (animEnd - animStart), 1);
+    if (smoothY > animStart) {
+      progress = Math.min((smoothY - animStart) / (animEnd - animStart), 1);
     }
 
-    // Last card never slides away — anchors the final state
+    // Last card anchors the final state — never slides away
     if (i === NUM_CARDS - 1) progress = 0;
 
-    const ty = -easeInCubic(progress) * 100;
-    card.style.transform = `translateY(${ty}vh)`;
+    const ty = -easeInOutCubic(progress) * cardHeight(i);
+    card.style.transform = `translateY(${ty}px)`;
   });
 
-  // Active nav item: whichever section's scroll range we're currently in
-  const active = Math.min(Math.floor(scrollY / vh), NUM_CARDS - 1);
-  if (active !== lastActive) {
-    navItems.forEach((item, i) => {
-      item.classList.toggle('is-active', i === active);
-      item.setAttribute('aria-current', i === active ? 'true' : 'false');
-    });
-    lastActive = active;
-  }
-
-  ticking = false;
+  // Progress bar
+  const maxScroll = (driver ? driver.scrollHeight : document.body.scrollHeight)
+                    - window.innerHeight;
+  const pct = maxScroll > 0
+    ? Math.min((smoothY / maxScroll) * 100, 100)
+    : 0;
+  progressBar.style.width = pct + '%';
 }
 
-// Fast accelerating ease: feels like being pulled
-function easeInCubic(t) {
-  return t * t * t;
+// ── Animation loop ────────────────────────────────────────────────────────
+// Lerps smoothY toward the real scroll position each frame, producing
+// buttery eased motion without any CSS transition lag on the transforms.
+function tick() {
+  const target = window.scrollY;
+  const delta  = target - smoothY;
+
+  if (Math.abs(delta) < 0.1) {
+    // Close enough — snap to target and stop the loop
+    smoothY   = target;
+    animating = false;
+    render();
+    return;
+  }
+
+  smoothY += delta * LERP_FACTOR;
+  render();
+  requestAnimationFrame(tick);
 }
 
 function scheduleUpdate() {
-  if (!ticking) {
-    requestAnimationFrame(update);
-    ticking = true;
+  if (!animating) {
+    animating = true;
+    requestAnimationFrame(tick);
   }
 }
 
 window.addEventListener('scroll', scheduleUpdate, { passive: true });
-window.addEventListener('resize', scheduleUpdate, { passive: true });
+window.addEventListener('resize', () => {
+  // On resize, snap immediately — no lerp needed
+  smoothY = window.scrollY;
+  render();
+}, { passive: true });
 
-// ── Nav click: smooth scroll to start of that section ────────────────────
-navItems.forEach((item, i) => {
-  item.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
-  });
-});
-
-// ── Scroll progress bar ──────────────────────────────────────────────────
-const progressEl = document.createElement('div');
-progressEl.className = 'scroll-progress';
-progressEl.innerHTML = '<div class="scroll-progress__bar"></div>';
-document.body.appendChild(progressEl);
-const progressBar = progressEl.querySelector('.scroll-progress__bar');
-
-function updateProgress() {
-  const maxScroll = (driver ? driver.scrollHeight : document.body.scrollHeight) - window.innerHeight;
-  const pct = maxScroll > 0 ? Math.min((window.scrollY / maxScroll) * 100, 100) : 0;
-  progressBar.style.width = pct + '%';
-}
-
-window.addEventListener('scroll', updateProgress, { passive: true });
-
-// ── Typeform: Join the network ───────────────────────────────────────────
+// ── Typeform: Join the network ────────────────────────────────────────────
 const btnNetwork = document.getElementById('btn-network');
 if (btnNetwork) {
   btnNetwork.addEventListener('click', () => {
@@ -93,7 +112,7 @@ if (btnNetwork) {
   });
 }
 
-// ── Typeform: Support the project ────────────────────────────────────────
+// ── Typeform: Support the project ─────────────────────────────────────────
 const btnSupport = document.getElementById('btn-support');
 if (btnSupport) {
   btnSupport.addEventListener('click', () => {
@@ -101,10 +120,12 @@ if (btnSupport) {
   });
 }
 
-// ── Reduced motion: static layout, no scroll animation ──────────────────
+// ── Reduced motion: static layout, no animation ───────────────────────────
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  cards.forEach(card => { card.style.transform = ''; card.style.willChange = 'auto'; });
-  update(); // still run nav highlight
+  cards.forEach(card => {
+    card.style.transform  = '';
+    card.style.willChange = 'auto';
+  });
 } else {
-  update();
+  render();
 }

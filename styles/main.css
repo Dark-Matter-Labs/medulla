@@ -6,11 +6,12 @@
   --bg:          #EDECEA;
   --ink:         #000000;
   --ink-muted:   #6B6B6B;
-  --nav-w:       196px;
-  --base-h:      96px;
+
+  --base-h:      80px;   /* height of fixed identity strip at bottom */
+  --tab-h:       44px;   /* height of each card's bottom tab label strip */
 
   --font-body:   'Source Serif 4', Georgia, serif;
-  --font-display:'TASA Orbiter Display', 'TASA Orbiter', 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --font-display:'Bebas Neue', 'Arial Narrow', sans-serif;
 
   --body-size:   20px;
   --body-lh:     1.33;
@@ -60,8 +61,6 @@ a:hover { opacity: 0.6; }
 .skip-link:focus { top: 16px; }
 
 /* ── Base layer: transparent overlay at highest z-index ────────────────── */
-/* .base itself has transparent bg — body provides the background colour.  */
-/* This stacking context is above cards so identity is always visible.     */
 .base {
   position: fixed;
   inset: 0;
@@ -96,91 +95,10 @@ a:hover { opacity: 0.6; }
   letter-spacing: 0.01em;
 }
 
-/* ── Right navigation: accordion ───────────────────────────────────────── */
-.side-nav {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: var(--nav-w);
-  height: 100vh;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid rgba(0,0,0,0.12);
-  background: var(--bg);
-}
-
-.side-nav__item {
-  /* inactive: narrow strip */
-  flex: 0 0 56px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 0 20px 14px 12px;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0,0,0,0.10);
-  transition: flex-basis 0.5s var(--ease-out);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.side-nav__item:last-child { border-bottom: none; }
-
-/* active: expands to fill remaining space */
-.side-nav__item.is-active {
-  flex: 1;
-}
-
-/* left accent line */
-.side-nav__item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--ink);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.4s var(--ease-out);
-}
-
-.side-nav__item.is-active::before { transform: scaleY(1); }
-
-.side-nav__label {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--ink);
-  text-align: right;
-  display: block;
-  /* inactive: small */
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  opacity: 0.3;
-  transition: font-size 0.45s var(--ease-out),
-              letter-spacing 0.45s var(--ease-out),
-              opacity 0.3s;
-}
-
-/* active: large label */
-.side-nav__item.is-active .side-nav__label {
-  font-size: clamp(20px, 1.8vw, 32px);
-  letter-spacing: 0.04em;
-  opacity: 1;
-}
-
-.side-nav__item:hover:not(.is-active) .side-nav__label {
-  opacity: 0.7;
-}
-
 /* ── Scroll driver ─────────────────────────────────────────────────────── */
 .scroll-driver {
   position: relative;
-  /* 5 cards × 100vh each + 1 extra vh for final resting */
-  height: calc(5 * 100vh);
-  margin-right: var(--nav-w);
+  height: calc(9 * 100vh);
 }
 
 /* ── Cards stage: sticky container ────────────────────────────────────── */
@@ -188,21 +106,42 @@ a:hover { opacity: 0.6; }
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow: hidden;
+  overflow: clip; /* clips offscreen cards without clipping box-shadows */
 }
 
 /* ── Individual cards ──────────────────────────────────────────────────── */
 .card {
   position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 44% 56%;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   will-change: transform;
-  /* stacking: first card on top */
+  box-shadow: 0 0 41px 0 rgba(8, 8, 8, 0.5);
 }
 
-/* thin line at card top creates visual separation between peeling cards */
+/* Base layer: no shadow — sits on the ground, nothing beneath it */
+.card[data-card="8"] {
+  box-shadow: none;
+}
+
+/*
+ * 3D deck: top card (data-card="0") is narrowest and shortest.
+ * Each deeper card extends further left and further down,
+ * creating visible left-edge and bottom-strip glimpses of every card.
+ */
+.card[data-card="0"] { left: 57%; height: calc(100vh - var(--base-h) - 8 * var(--tab-h)); z-index: 90; }
+.card[data-card="1"] { left: 52%; height: calc(100vh - var(--base-h) - 7 * var(--tab-h)); z-index: 80; }
+.card[data-card="2"] { left: 47%; height: calc(100vh - var(--base-h) - 6 * var(--tab-h)); z-index: 70; }
+.card[data-card="3"] { left: 43%; height: calc(100vh - var(--base-h) - 5 * var(--tab-h)); z-index: 60; }
+.card[data-card="4"] { left: 38%; height: calc(100vh - var(--base-h) - 4 * var(--tab-h)); z-index: 50; }
+.card[data-card="5"] { left: 34%; height: calc(100vh - var(--base-h) - 3 * var(--tab-h)); z-index: 40; }
+.card[data-card="6"] { left: 30%; height: calc(100vh - var(--base-h) - 2 * var(--tab-h)); z-index: 30; }
+.card[data-card="7"] { left: 25%; height: calc(100vh - var(--base-h) - 1 * var(--tab-h)); z-index: 20; }
+.card[data-card="8"] { left:  0%; height: calc(100vh - var(--base-h));                     z-index: 10; }
+
+/* thin top border creates visual separation between peeking card tabs */
 .card::after {
   content: '';
   position: absolute;
@@ -214,17 +153,20 @@ a:hover { opacity: 0.6; }
   pointer-events: none;
 }
 
-.card[data-card="0"] { z-index: 50; }
-.card[data-card="1"] { z-index: 40; }
-.card[data-card="2"] { z-index: 30; }
-.card[data-card="3"] { z-index: 20; }
-.card[data-card="4"] { z-index: 10; }
+/* ── Card content: the main body (text + photo) ────────────────────────── */
+.card__content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 44% 56%;
+  overflow: hidden;
+  min-height: 0;
+}
 
 /* ── Card: text column ─────────────────────────────────────────────────── */
 .card__text {
   display: flex;
   flex-direction: column;
-  padding: 52px 52px calc(var(--base-h) + 20px) 40px;
+  padding: 52px 52px 32px 40px;
   overflow: hidden;
   border-right: 1px solid rgba(0,0,0,0.10);
 }
@@ -265,11 +207,38 @@ a:hover { opacity: 0.6; }
   display: block;
 }
 
-/* sketch/diagram: contain instead of cover */
-.card[data-card="4"] .card__photo img {
+/* Full-image cards: single full-bleed column, no text */
+.card--image .card__content {
+  grid-template-columns: 1fr;
+}
+
+/* layout diagram and sketch: contain instead of cover */
+.card[data-card="2"] .card__photo img,
+.card[data-card="8"] .card__photo img {
   object-fit: contain;
   background: #F5F2ED;
   padding: 32px;
+}
+
+/* ── Card tab: section label strip at bottom of each card ──────────────── */
+.card__tab {
+  flex-shrink: 0;
+  height: var(--tab-h);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 28px;
+  border-top: 1px solid rgba(0,0,0,0.10);
+}
+
+.card__tab-label {
+  font-family: var(--font-display);
+  font-size: var(--title-size);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--ink);
 }
 
 /* ── Card CTAs (contacts card) ─────────────────────────────────────────── */
@@ -308,7 +277,7 @@ a:hover { opacity: 0.6; }
   position: fixed;
   bottom: 0;
   left: 0;
-  right: var(--nav-w);
+  right: 0;
   height: 2px;
   background: rgba(0,0,0,0.08);
   z-index: 300;
@@ -336,22 +305,22 @@ a:hover { opacity: 0.6; }
   .card {
     will-change: auto;
   }
-  /* Show cards in a normal stacked scroll instead */
   .scroll-driver {
     height: auto;
   }
   .cards-stage {
     position: relative;
     height: auto;
-    overflow: visible;
+    overflow: clip;
   }
   .card {
     position: relative;
-    height: 100vh;
+    height: auto !important;
     transform: none !important;
   }
-  .side-nav__item::before,
-  .side-nav__label,
+  .card__content {
+    min-height: 60vh;
+  }
   .cta-btn {
     transition: none;
   }
@@ -360,21 +329,30 @@ a:hover { opacity: 0.6; }
 /* ── Mobile ────────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   :root {
-    --nav-w: 0px;
     --body-size: 17px;
-    --title-size: 28px;
+    --title-size: 26px;
     --base-h: 80px;
+    --tab-h: 44px;
   }
 
-  .side-nav {
-    display: none;
+  /* collapse staircase: all cards full-width on mobile */
+  .card[data-card="0"],
+  .card[data-card="1"],
+  .card[data-card="2"],
+  .card[data-card="3"],
+  .card[data-card="4"],
+  .card[data-card="5"],
+  .card[data-card="6"],
+  .card[data-card="7"],
+  .card[data-card="8"] {
+    left: 0;
   }
 
   .scroll-driver {
     margin-right: 0;
   }
 
-  .card {
+  .card__content {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
   }
@@ -383,11 +361,6 @@ a:hover { opacity: 0.6; }
     padding: 32px 24px 24px;
     border-right: none;
     border-bottom: 1px solid rgba(0,0,0,0.08);
-  }
-
-  .card__section-label {
-    font-size: 26px;
-    margin-bottom: 20px;
   }
 
   .card__photo {
@@ -407,6 +380,8 @@ a:hover { opacity: 0.6; }
 @media (max-width: 480px) {
   :root {
     --body-size: 16px;
+    --title-size: 22px;
+    --tab-h: 40px;
   }
 
   .card__text {

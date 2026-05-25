@@ -37,8 +37,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- TASA Orbiter Display: try Google Fonts; falls back to Bebas Neue if unavailable -->
-  <link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter+Display:wght@800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Bebas+Neue&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -57,100 +56,145 @@
     </div>
   </div>
 
-  <!-- Fixed right navigation: accordion — active item expands with large label -->
-  <nav class="side-nav" aria-label="Section navigation">
-    <a class="side-nav__item is-active" href="#resilience" data-index="0" aria-current="true">
-      <span class="side-nav__label">RESILIENCE</span>
-    </a>
-    <a class="side-nav__item" href="#space" data-index="1">
-      <span class="side-nav__label">SPACE</span>
-    </a>
-    <a class="side-nav__item" href="#members" data-index="2">
-      <span class="side-nav__label">MEMBERS</span>
-    </a>
-    <a class="side-nav__item" href="#contacts" data-index="3">
-      <span class="side-nav__label">CONTACTS</span>
-    </a>
-    <a class="side-nav__item" href="#events" data-index="4">
-      <span class="side-nav__label">EVENTS</span>
-    </a>
-  </nav>
-
   <!-- Scroll driver: creates scroll height, cards stage is sticky inside -->
   <div class="scroll-driver" role="presentation">
     <div class="cards-stage" role="presentation">
 
-      <!-- Card 1: Resilience -->
+      <!-- Card 0: Resilience (text+image — top of stack, narrowest) -->
       <article class="card" data-card="0" aria-label="Resilience">
-        <div class="card__text">
-          <div class="card__body">
-            <p>Medulla connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
-            <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit.</p>
-            <p>medulla connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis.</p>
-          </div>
-        </div>
-        <div class="card__photo" aria-hidden="true">
-          <img src="assets/images/exterior-trees.png" alt="" loading="eager" />
-        </div>
-      </article>
-
-      <!-- Card 2: Space -->
-      <article class="card" data-card="1" aria-label="Space">
-        <div class="card__text">
-          <div class="card__body">
-            <p>medulla is spread across two levels. The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
-            <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
-            <p>There is also access to a courtyard and garden — a place to step outside the task at hand, reset attention, or care for the living world around us. We want the space to feel grounded, alive, and metabolically sane.</p>
-          </div>
-        </div>
-        <div class="card__photo" aria-hidden="true">
-          <img src="assets/images/exterior-new.png" alt="" loading="lazy" />
-        </div>
-      </article>
-
-      <!-- Card 3: Members -->
-      <article class="card" data-card="2" aria-label="Members">
-        <div class="card__text">
-          <div class="card__body">
-            <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment. You might work in public administration, technology, governance, urban planning, finance, culture, or civic practice.</p>
-            <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
-            <p>Contributions currently range from 300 to 1,500 EUR per month. Each contribution supports more than occupancy — it sustains the shared environment and its curatorial direction.</p>
-          </div>
-        </div>
-        <div class="card__photo" aria-hidden="true">
-          <img src="assets/images/interior-skylight.webp" alt="" loading="lazy" />
-        </div>
-      </article>
-
-      <!-- Card 4: Contacts -->
-      <article class="card" data-card="3" aria-label="Contacts">
-        <div class="card__text">
-          <div class="card__body">
-            <p>Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a> if you have questions about membership, collaboration, or the project.</p>
-            <p>medulla is initiated by <a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener">Politics for Tomorrow</a> / <a href="https://www.nextlearning.earth/" target="_blank" rel="noopener">nextlearning e.V.</a> and <a href="https://darkmatterlabs.org/" target="_blank" rel="noopener">Dark Matter Labs</a>.</p>
-            <div class="card__ctas">
-              <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
-              <button class="cta-btn" id="btn-network">Join the network</button>
-              <button class="cta-btn" id="btn-support">Support the project</button>
+        <div class="card__content">
+          <div class="card__text">
+            <div class="card__body">
+              <p>Medulla connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
+              <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit.</p>
             </div>
           </div>
+          <div class="card__photo" aria-hidden="true">
+            <img src="assets/images/exterior-trees.png" alt="" loading="eager" />
+          </div>
         </div>
-        <div class="card__photo" aria-hidden="true">
-          <img src="assets/images/exterior-courtyard.webp" alt="" loading="lazy" />
+        <div class="card__tab">
+          <span class="card__tab-label">Resilience</span>
         </div>
       </article>
 
-      <!-- Card 5: Events -->
-      <article class="card" data-card="4" aria-label="Events">
-        <div class="card__text">
-          <div class="card__body">
-            <p>On an ordinary day, medulla might hold several worlds at once — someone working on heat preparedness for a district administration, a civic technologist mapping public interfaces, a foundation team shaping new approaches to urban resilience.</p>
-            <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
-            <p>What matters is that the space supports simultaneously: deep individual work, coordinated exchange, and collaboration across fields.</p>
+      <!-- Card 1: Full-image break -->
+      <article class="card card--image" data-card="1" aria-hidden="true">
+        <div class="card__content">
+          <div class="card__photo">
+            <img src="assets/images/exterior-new.png" alt="" loading="lazy" />
           </div>
         </div>
-        <div class="card__photo" aria-hidden="true">
-          <img src="assets/images/sketch-model.png" alt="" loading="lazy" />
+        <div class="card__tab"></div>
+      </article>
+
+      <!-- Card 2: Space (text+diagram) -->
+      <article class="card" data-card="2" aria-label="Space">
+        <div class="card__content">
+          <div class="card__text">
+            <div class="card__body">
+              <p>medulla is spread across two levels. The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
+              <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
+              <p>There is also access to a courtyard and garden — a place to step outside the task at hand, reset attention, or care for the living world around us.</p>
+            </div>
+          </div>
+          <div class="card__photo" aria-hidden="true">
+            <img src="assets/images/layout-diagram.png" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab">
+          <span class="card__tab-label">Space</span>
+        </div>
+      </article>
+
+      <!-- Card 3: Full-image break -->
+      <article class="card card--image" data-card="3" aria-hidden="true">
+        <div class="card__content">
+          <div class="card__photo">
+            <img src="assets/images/space-interior.png" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab"></div>
+      </article>
+
+      <!-- Card 4: Members (text+image) -->
+      <article class="card" data-card="4" aria-label="Members">
+        <div class="card__content">
+          <div class="card__text">
+            <div class="card__body">
+              <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment. You might work in public administration, technology, governance, urban planning, finance, culture, or civic practice.</p>
+              <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
+              <p>Contributions currently range from 300 to 1,500 EUR per month. Each contribution supports more than occupancy — it sustains the shared environment and its curatorial direction.</p>
+            </div>
+          </div>
+          <div class="card__photo" aria-hidden="true">
+            <img src="assets/images/interior-windows.webp" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab">
+          <span class="card__tab-label">Members</span>
+        </div>
+      </article>
+
+      <!-- Card 5: Full-image break -->
+      <article class="card card--image" data-card="5" aria-hidden="true">
+        <div class="card__content">
+          <div class="card__photo">
+            <img src="assets/images/interior-wood-floor.webp" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab"></div>
+      </article>
+
+      <!-- Card 6: Contacts (text+image) -->
+      <article class="card" data-card="6" aria-label="Contacts">
+        <div class="card__content">
+          <div class="card__text">
+            <div class="card__body">
+              <p>Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a> if you have questions about membership, collaboration, or the project.</p>
+              <p>medulla is initiated by <a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener">Politics for Tomorrow</a> / <a href="https://www.nextlearning.earth/" target="_blank" rel="noopener">nextlearning e.V.</a> and <a href="https://darkmatterlabs.org/" target="_blank" rel="noopener">Dark Matter Labs</a>.</p>
+              <div class="card__ctas">
+                <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
+                <button class="cta-btn" id="btn-network">Join the network</button>
+                <button class="cta-btn" id="btn-support">Support the project</button>
+              </div>
+            </div>
+          </div>
+          <div class="card__photo" aria-hidden="true">
+            <img src="assets/images/exterior-courtyard.webp" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab">
+          <span class="card__tab-label">Contacts</span>
+        </div>
+      </article>
+
+      <!-- Card 7: Full-image break -->
+      <article class="card card--image" data-card="7" aria-hidden="true">
+        <div class="card__content">
+          <div class="card__photo">
+            <img src="assets/images/exterior-balcony.webp" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab"></div>
+      </article>
+
+      <!-- Card 8: Events (text+image — bottom of stack, widest, full width) -->
+      <article class="card" data-card="8" aria-label="Events">
+        <div class="card__content">
+          <div class="card__text">
+            <div class="card__body">
+              <p>On an ordinary day, medulla might hold several worlds at once — someone working on heat preparedness for a district administration, a civic technologist mapping public interfaces, a foundation team shaping new approaches to urban resilience.</p>
+              <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
+              <p>What matters is that the space supports simultaneously: deep individual work, coordinated exchange, and collaboration across fields.</p>
+            </div>
+          </div>
+          <div class="card__photo" aria-hidden="true">
+            <img src="assets/images/sketch-model.png" alt="" loading="lazy" />
+          </div>
+        </div>
+        <div class="card__tab">
+          <span class="card__tab-label">Events</span>
         </div>
       </article>
 

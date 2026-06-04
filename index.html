@@ -4,27 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>medulla — A workspace for building resilience in Berlin</title>
-  <meta name="description" content="medulla is a shared workspace for people building resilience in practice. A carefully held environment across governance, technology, culture, and civic practice. Dresdener Str. 113b, Berlin." />
+  <title>Medulla — A physical space for turning shared urgency into collective resilience</title>
+  <meta name="description" content="Medulla is a physical space in Berlin for turning shared urgency into collective resilience by building new collaborations and infrastructures of prosperity. Dresdener Str. 113b, Berlin." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://medulla.city/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://medulla.city/" />
-  <meta property="og:title" content="medulla — A workspace for building resilience in Berlin" />
-  <meta property="og:description" content="medulla is a shared workspace for people building resilience in practice. Located at Dresdener Str. 113b, Berlin." />
-  <meta property="og:image" content="https://medulla.city/assets/images/exterior-new.png" />
+  <meta property="og:title" content="Medulla — A physical space for collective resilience in Berlin" />
+  <meta property="og:description" content="A physical space in Berlin for turning shared urgency into collective resilience. Dresdener Str. 113b, Berlin." />
+  <meta property="og:image" content="https://medulla.city/assets/images/figma/card-facade.webp" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <meta name="theme-color" content="#EDECEA" />
+  <meta name="theme-color" content="#E5E5E5" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "medulla",
-    "description": "A shared workspace for people building resilience in practice.",
+    "name": "Medulla",
+    "description": "A physical space for turning shared urgency into collective resilience.",
     "url": "https://medulla.city/",
     "address": {
       "@type": "PostalAddress",
@@ -37,7 +37,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -45,157 +45,128 @@
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Fixed base layer: always visible behind all cards -->
-  <div class="base" aria-hidden="true">
-    <div class="base__identity">
-      <img class="base__logo" src="assets/logos/logo.svg" alt="" width="110" height="20" />
-      <address class="base__address">
-        info@medulla.city<br>
-        Dresdener Str. 113, Berlin
-      </address>
+  <!-- Fixed identity sidebar -->
+  <aside class="sidebar" aria-label="Medulla">
+    <div class="sidebar__top">
+      <a class="sidebar__logo" href="/" aria-label="Medulla home">
+        <img src="assets/logos/medulla-wordmark.svg" alt="Medulla" width="153" height="68" />
+      </a>
+      <p class="sidebar__tagline">Medulla is a physical space for turning shared urgency into collective resilience</p>
     </div>
-  </div>
+    <nav class="sidebar__links" aria-label="Links">
+      <a href="https://lu.ma/" target="_blank" rel="noopener">Luma</a>
+      <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@medulla.city">hello@medulla.city</a>
+      <span class="sidebar__addr">Dresdener str. 113, berlin</span>
+    </nav>
+  </aside>
 
-  <!-- Scroll driver: creates scroll height, cards stage is sticky inside -->
+  <!-- Scroll driver: provides scroll length; the stage is sticky inside -->
   <div class="scroll-driver" role="presentation">
     <div class="cards-stage" role="presentation">
 
-      <!-- Card 0: Resilience (text+image — top of stack, narrowest) -->
-      <article class="card" data-card="0" aria-label="Resilience">
-        <div class="card__content">
-          <div class="card__text">
-            <div class="card__body">
-              <p>Medulla connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
-              <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet. Deeply local in its setting and international in its relations, the space makes that polarity explicit.</p>
-            </div>
-          </div>
-          <div class="card__photo" aria-hidden="true">
-            <img src="assets/images/exterior-trees.png" alt="" loading="eager" />
-          </div>
-        </div>
-        <div class="card__tab">
-          <span class="card__tab-label">Resilience</span>
-        </div>
-      </article>
-
-      <!-- Card 1: Full-image break -->
-      <article class="card card--image" data-card="1" aria-hidden="true">
-        <div class="card__content">
-          <div class="card__photo">
-            <img src="assets/images/exterior-new.png" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab"></div>
-      </article>
-
-      <!-- Card 2: Space (text+diagram) -->
-      <article class="card" data-card="2" aria-label="Space">
-        <div class="card__content">
-          <div class="card__text">
-            <div class="card__body">
-              <p>medulla is spread across two levels. The upper floor is oriented toward focused work: desks, quieter zones, and the ordinary discipline of getting things done.</p>
-              <p>The lower floor is more open and communal: a shared table, kitchen, workshop and gathering space, and room for small sessions, reviews, meals, and conversations.</p>
-              <p>There is also access to a courtyard and garden — a place to step outside the task at hand, reset attention, or care for the living world around us.</p>
-            </div>
-          </div>
-          <div class="card__photo" aria-hidden="true">
-            <img src="assets/images/layout-diagram.png" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab">
-          <span class="card__tab-label">Space</span>
-        </div>
-      </article>
-
-      <!-- Card 3: Full-image break -->
-      <article class="card card--image" data-card="3" aria-hidden="true">
-        <div class="card__content">
-          <div class="card__photo">
-            <img src="assets/images/space-interior.png" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab"></div>
-      </article>
-
-      <!-- Card 4: Members (text+image) -->
-      <article class="card" data-card="4" aria-label="Members">
-        <div class="card__content">
-          <div class="card__text">
-            <div class="card__body">
-              <p>We invite a small number of organisations and practitioners who want their work to be part of a larger shared environment. You might work in public administration, technology, governance, urban planning, finance, culture, or civic practice.</p>
-              <p>What matters less than sector is seriousness: a willingness to work on real questions, in a place where different kinds of work can touch.</p>
-              <p>Contributions currently range from 300 to 1,500 EUR per month. Each contribution supports more than occupancy — it sustains the shared environment and its curatorial direction.</p>
-            </div>
-          </div>
-          <div class="card__photo" aria-hidden="true">
-            <img src="assets/images/interior-windows.webp" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab">
-          <span class="card__tab-label">Members</span>
-        </div>
-      </article>
-
-      <!-- Card 5: Full-image break -->
-      <article class="card card--image" data-card="5" aria-hidden="true">
-        <div class="card__content">
-          <div class="card__photo">
-            <img src="assets/images/interior-wood-floor.webp" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab"></div>
-      </article>
-
-      <!-- Card 6: Contacts (text+image) -->
-      <article class="card" data-card="6" aria-label="Contacts">
-        <div class="card__content">
-          <div class="card__text">
-            <div class="card__body">
-              <p>Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a> if you have questions about membership, collaboration, or the project.</p>
-              <p>medulla is initiated by <a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener">Politics for Tomorrow</a> / <a href="https://www.nextlearning.earth/" target="_blank" rel="noopener">nextlearning e.V.</a> and <a href="https://darkmatterlabs.org/" target="_blank" rel="noopener">Dark Matter Labs</a>.</p>
-              <div class="card__ctas">
-                <button class="cta-btn" data-tf-popup="aBO8faXO" data-tf-opacity="100" data-tf-size="100">Apply as a member</button>
-                <button class="cta-btn" id="btn-network">Join the network</button>
-                <button class="cta-btn" id="btn-support">Support the project</button>
+      <!-- Card 8 — Events (base layer, never peels) -->
+      <article class="card card--content card--base card--events" data-card="8" aria-label="Events">
+        <div class="card__inner">
+          <div class="events">
+            <article class="event">
+              <div class="event__text">
+                <p class="event__date">Tuesday, 9 June, 19:00 – 22:00</p>
+                <h3 class="event__title">Transforming public sector from within</h3>
+                <p class="event__subtitle">Book Launch with Lindsay Cole in conversation with Sylvine Bois-Choussy (La 27e Région)</p>
+                <p class="event__body">Join us for the Berlin pre-release of Transforming the Public Sector From Within, a book by Lindsay Cole, PhD to be published by the University of Toronto Press. This will be an evening of connection, readings, reflection, and conversation on the lived realities of transformation work inside public systems.</p>
               </div>
-            </div>
+              <div class="event__media"><img src="assets/images/figma/event-transforming.webp" alt="Transforming the Public Sector From Within — book launch with Lindsay Cole and Sylvine Bois-Choussy" loading="lazy" /></div>
+            </article>
+            <article class="event">
+              <div class="event__text">
+                <p class="event__date">Tuesday, 9 June, 19:00 – 22:00</p>
+                <h3 class="event__title">Governance Beyond Alignment</h3>
+                <p class="event__subtitle">Book Launch with Lindsay Cole in conversation with Sylvine Bois-Choussy (La 27e Région)</p>
+                <p class="event__body">Join us for the Berlin pre-release of Transforming the Public Sector From Within, a book by Lindsay Cole, PhD to be published by the University of Toronto Press. This will be an evening of connection, readings, reflection, and conversation on the lived realities of transformation work inside public systems.</p>
+              </div>
+              <div class="event__media"><img src="assets/images/figma/event-transforming.webp" alt="Governance Beyond Alignment — book launch" loading="lazy" /></div>
+            </article>
           </div>
-          <div class="card__photo" aria-hidden="true">
-            <img src="assets/images/exterior-courtyard.webp" alt="" loading="lazy" />
+          <div class="card__label-row card__label-row--events">
+            <span class="card__label">events</span>
           </div>
-        </div>
-        <div class="card__tab">
-          <span class="card__tab-label">Contacts</span>
         </div>
       </article>
 
-      <!-- Card 7: Full-image break -->
+      <!-- Card 7 — Image: garden / courtyard exterior -->
       <article class="card card--image" data-card="7" aria-hidden="true">
-        <div class="card__content">
-          <div class="card__photo">
-            <img src="assets/images/exterior-balcony.webp" alt="" loading="lazy" />
-          </div>
-        </div>
-        <div class="card__tab"></div>
+        <img class="card__photo" src="assets/images/figma/card-garden.webp" alt="" loading="lazy" />
+        <span class="card__scrim"></span>
       </article>
 
-      <!-- Card 8: Events (text+image — bottom of stack, widest, full width) -->
-      <article class="card" data-card="8" aria-label="Events">
-        <div class="card__content">
-          <div class="card__text">
-            <div class="card__body">
-              <p>On an ordinary day, medulla might hold several worlds at once — someone working on heat preparedness for a district administration, a civic technologist mapping public interfaces, a foundation team shaping new approaches to urban resilience.</p>
-              <p>Some days are quiet and concentrated. Others gather momentum through project reviews, workshops, shared inquiries, public conversations, or small experimental formats.</p>
-              <p>What matters is that the space supports simultaneously: deep individual work, coordinated exchange, and collaboration across fields.</p>
-            </div>
+      <!-- Card 6 — Contacts -->
+      <article class="card card--content" data-card="6" aria-label="Contacts">
+        <div class="card__inner">
+          <div class="card__body">
+            <p>Medulla is a physical space for building collective resilience amidst growing sense of urgency and looming crisis.</p>
+            <p>Medulla takes its name from Medulla Oblongata a part of a human brain and a critical command center for involuntary, life-sustaining functions such as breathing, heart rate, and blood pressure. Taken as inspiration Medulla is a physical space in Berlin that hosts multiple organisations that work on building collective resilience across separate but interrelated fields — urban and bioregional transformation, civil sector, governance, culture and technology.</p>
+            <p>Positioned in a quiet courtyard it intends to be a safe space for collaboration etc. …</p>
           </div>
-          <div class="card__photo" aria-hidden="true">
-            <img src="assets/images/sketch-model.png" alt="" loading="lazy" />
+          <div class="card__label-row"><span class="card__label">contacts</span></div>
+        </div>
+      </article>
+
+      <!-- Card 5 — Image: conference room -->
+      <article class="card card--image" data-card="5" aria-hidden="true">
+        <img class="card__photo" src="assets/images/figma/card-conference.webp" alt="" loading="lazy" />
+        <span class="card__scrim"></span>
+      </article>
+
+      <!-- Card 4 — Members -->
+      <article class="card card--content" data-card="4" aria-label="Members">
+        <div class="card__inner">
+          <div class="card__body">
+            <p>Medulla is a physical space for building collective resilience amidst growing sense of urgency and looming crisis.</p>
+            <p>Medulla takes its name from Medulla Oblongata a part of a human brain and a critical command center for involuntary, life-sustaining functions such as breathing, heart rate, and blood pressure. Taken as inspiration Medulla is a physical space in Berlin that hosts multiple organisations that work on building collective resilience across separate but interrelated fields — urban and bioregional transformation, civil sector, governance, culture and technology.</p>
+            <p>Positioned in a quiet courtyard it intends to be a safe space for collaboration etc. …</p>
+          </div>
+          <div class="card__label-row"><span class="card__label">members</span></div>
+        </div>
+      </article>
+
+      <!-- Card 3 — Image: interior spiral stair & banquette -->
+      <article class="card card--image" data-card="3" aria-hidden="true">
+        <img class="card__photo" src="assets/images/figma/card-stair.webp" alt="" loading="lazy" />
+        <span class="card__scrim"></span>
+      </article>
+
+      <!-- Card 2 — Dresdener 113b -->
+      <article class="card card--content" data-card="2" aria-label="Dresdener 113b">
+        <div class="card__inner">
+          <div class="card__body">
+            <p>We believe change needs to happen in tangible places: in rooms, courtyards, buildings, and neighborhoods where people can gather, build trust, and work together. Situated in a quiet Kreuzberg courtyard, Dresdener 113B serves as both a living room and a working space for developing the relationships, ideas, and infrastructures needed for resilient collective futures.</p>
+            <p>The ground floor hosts Medulla's public programming, including salons, lectures, workshops, gatherings, and other formats designed to build resilience, prosperity, and new civic imagination. The floor above is dedicated to focused work, hosting member organizations and individuals whose work contributes to Medulla's shared mission in distinct but mutually reinforcing ways.</p>
+          </div>
+          <div class="card__label-row"><span class="card__label">dresdener 113b</span></div>
+        </div>
+      </article>
+
+      <!-- Card 1 — Image: building facade -->
+      <article class="card card--image" data-card="1" aria-hidden="true">
+        <img class="card__photo" src="assets/images/figma/card-facade.webp" alt="" loading="lazy" />
+        <span class="card__scrim"></span>
+      </article>
+
+      <!-- Card 0 — Intro (front of stack) -->
+      <article class="card card--content card--intro" data-card="0" aria-label="Medulla">
+        <div class="card__inner">
+          <div class="card__body card__body--intro">
+            <p><em>Medulla</em> is a physical space for turning shared urgency into collective resilience by building new collaborations and infrastructures of prosperity.</p>
+            <p>Medulla takes its name from <em>Medulla Oblongata</em>, a part of the human brain and a critical command center for involuntary, life-sustaining functions such as breathing, heart rate, and blood pressure. Taken as inspiration, Medulla is a response to the growing and compounding crisis we all viscerally experience today.</p>
+            <p>It brings together organizations, practitioners, and communities working across different fields to respond to the technical, ecological, economic, and cultural crises shaping our shared future.</p>
+          </div>
+          <div class="card__label-row">
+            <img class="card__intro-logo" src="assets/logos/medulla-wordmark-wide.svg" alt="Medulla" width="188" height="46" />
           </div>
         </div>
-        <div class="card__tab">
-          <span class="card__tab-label">Events</span>
-        </div>
+        <img class="card__anatomy" src="assets/images/figma/medulla-anatomy.png" alt="" aria-hidden="true" loading="eager" />
       </article>
 
     </div><!-- /cards-stage -->
@@ -203,38 +174,29 @@
 
   <!-- Accessible content for screen readers -->
   <main id="main-content" class="a11y-content">
-    <h1>medulla — A workspace for building resilience in Berlin</h1>
-
-    <section id="resilience">
-      <h2>Resilience</h2>
-      <p>Medulla connects work across governance, technology, culture, economy, and civic practice — building resilience under conditions of compounding crisis. It is a carefully held environment for people who want their workplace to be part of a wider field of attention, experimentation, and consequence.</p>
-      <p>Located in a Berlin courtyard on ground once marked by the division of East and West Berlin, medulla explores how resilience moves between bodies and scales: neighbourhood, city, planet.</p>
+    <h1>Medulla — A physical space for turning shared urgency into collective resilience</h1>
+    <section id="about">
+      <h2>About</h2>
+      <p>Medulla is a physical space for turning shared urgency into collective resilience by building new collaborations and infrastructures of prosperity. Medulla takes its name from Medulla Oblongata, a part of the human brain and a critical command center for involuntary, life-sustaining functions. It brings together organizations, practitioners, and communities working across different fields to respond to the technical, ecological, economic, and cultural crises shaping our shared future.</p>
     </section>
-
-    <section id="space">
-      <h2>Space</h2>
-      <p>medulla is spread across two levels. The upper floor is oriented toward focused work. The lower floor is more open and communal. There is also access to a courtyard and garden.</p>
+    <section id="dresdener-113b">
+      <h2>Dresdener 113b</h2>
+      <p>We believe change needs to happen in tangible places: in rooms, courtyards, buildings, and neighborhoods. Situated in a quiet Kreuzberg courtyard, Dresdener 113B serves as both a living room and a working space. The ground floor hosts Medulla's public programming; the floor above is dedicated to focused work.</p>
     </section>
-
     <section id="members">
       <h2>Members</h2>
-      <p>We invite a small number of organisations and practitioners. Contributions range from 300 to 1,500 EUR per month.</p>
+      <p>Medulla hosts multiple organisations that work on building collective resilience across separate but interrelated fields — urban and bioregional transformation, civil sector, governance, culture and technology.</p>
     </section>
-
     <section id="contacts">
       <h2>Contacts</h2>
-      <p>Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a>.</p>
-      <p>medulla is initiated by <a href="https://www.politicsfortomorrow.eu/" target="_blank" rel="noopener">Politics for Tomorrow</a> and <a href="https://darkmatterlabs.org/" target="_blank" rel="noopener">Dark Matter Labs</a>.</p>
-      <button data-tf-popup="aBO8faXO">Apply as a member</button>
+      <p>Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113b, Berlin.</p>
     </section>
-
     <section id="events">
       <h2>Events</h2>
-      <p>medulla holds project reviews, workshops, shared inquiries, public conversations, and small experimental formats alongside daily work.</p>
+      <p>Transforming public sector from within — Book launch with Lindsay Cole. Governance Beyond Alignment — Book launch.</p>
     </section>
   </main>
 
   <script src="scripts/main.js"></script>
-  <script src="https://embed.typeform.com/next/embed.js"></script>
 </body>
 </html>

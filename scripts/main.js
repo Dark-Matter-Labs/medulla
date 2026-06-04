@@ -1,24 +1,25 @@
-// ── Scroll-driven stacked card experience ───────────────────────────────
+// ── Scroll-driven 3D card-deck (Medulla) ────────────────────────────────
+// Cards are anchored top-right in a 48px staircase. On scroll, each card
+// peels upward to reveal the one behind it. Card 0 (intro) peels first;
+// card 8 (events) is the base layer and never moves.
 
 const cards     = Array.from(document.querySelectorAll('.card'));
 const driver    = document.querySelector('.scroll-driver');
-const NUM_CARDS = cards.length;
+const NUM_CARDS = 9;
+const LAST      = NUM_CARDS - 1; // index 8 = base (Events)
 
-// CSS token values — must match :root in main.css
-const BASE_H = 80;   // --base-h
-const TAB_H  = 44;   // --tab-h
-
-// How much of each scroll section the card dwells before peeling.
-// 0.35 → card starts moving sooner, giving 65% of the section for the
-// animation (vs old 40%) — more scroll distance = smoother feel.
-const DWELL_RATIO = 0.35;
-
-// Lerp factor for smooth scrolling (0–1).
-// 0.12 settles in ~250 ms at 60 fps: responsive but silky.
+// Card dwells for the first part of its section, then peels across the rest.
+const DWELL_RATIO = 0.25;
+// Lerp factor — smooth, silky scroll tracking (~250ms settle at 60fps).
 const LERP_FACTOR = 0.12;
 
-let smoothY   = window.scrollY;  // lerp-tracked position
-let animating = false;           // rAF loop running?
+let smoothY   = window.scrollY;
+let animating = false;
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function deckActive() {
+  return !reduceMotion && window.matchMedia('(min-width: 1025px)').matches;
+}
 
 // ── Progress bar ──────────────────────────────────────────────────────────
 const progressEl = document.createElement('div');
@@ -27,24 +28,25 @@ progressEl.innerHTML = '<div class="scroll-progress__bar"></div>';
 document.body.appendChild(progressEl);
 const progressBar = progressEl.querySelector('.scroll-progress__bar');
 
-// ── Helpers ───────────────────────────────────────────────────────────────
-function cardHeight(i) {
-  return window.innerHeight - BASE_H - (NUM_CARDS - 1 - i) * TAB_H;
-}
-
-// Smooth ease-in-out: slow start → fast middle → soft landing.
-// Matches how a physical card feels when lifted off a stack.
+// Smooth ease-in-out: slow lift, quick middle, soft landing.
 function easeInOutCubic(t) {
-  return t < 0.5
-    ? 4 * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 // ── Core render ───────────────────────────────────────────────────────────
 function render() {
   const vh = window.innerHeight;
 
-  cards.forEach((card, i) => {
+  if (!deckActive()) {
+    // Stacked fallback / reduced motion: no peel transforms.
+    cards.forEach((card) => { if (card.style.transform) card.style.transform = ''; });
+    const maxScroll0 = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (maxScroll0 > 0 ? Math.min((window.scrollY / maxScroll0) * 100, 100) : 0) + '%';
+    return;
+  }
+
+  cards.forEach((card) => {
+    const i = parseInt(card.dataset.card, 10); // 0 = front, 8 = base
     const sectionStart = i * vh;
     const animStart    = sectionStart + vh * DWELL_RATIO;
     const animEnd      = sectionStart + vh;
@@ -53,79 +55,39 @@ function render() {
     if (smoothY > animStart) {
       progress = Math.min((smoothY - animStart) / (animEnd - animStart), 1);
     }
+    if (i === LAST) progress = 0; // base layer never peels
 
-    // Last card anchors the final state — never slides away
-    if (i === NUM_CARDS - 1) progress = 0;
-
-    const ty = -easeInOutCubic(progress) * cardHeight(i);
-    card.style.transform = `translateY(${ty}px)`;
+    const ty = -easeInOutCubic(progress) * vh; // peel up by one viewport
+    card.style.transform = ty ? `translateY(${ty}px)` : '';
   });
 
-  // Progress bar
-  const maxScroll = (driver ? driver.scrollHeight : document.body.scrollHeight)
-                    - window.innerHeight;
-  const pct = maxScroll > 0
-    ? Math.min((smoothY / maxScroll) * 100, 100)
-    : 0;
+  const maxScroll = (driver ? driver.scrollHeight : document.body.scrollHeight) - window.innerHeight;
+  const pct = maxScroll > 0 ? Math.min((smoothY / maxScroll) * 100, 100) : 0;
   progressBar.style.width = pct + '%';
 }
 
-// ── Animation loop ────────────────────────────────────────────────────────
-// Lerps smoothY toward the real scroll position each frame, producing
-// buttery eased motion without any CSS transition lag on the transforms.
+// ── Animation loop ──────────────────────────────────────────────────────────
 function tick() {
   const target = window.scrollY;
   const delta  = target - smoothY;
 
   if (Math.abs(delta) < 0.1) {
-    // Close enough — snap to target and stop the loop
-    smoothY   = target;
+    smoothY = target;
     animating = false;
     render();
     return;
   }
-
   smoothY += delta * LERP_FACTOR;
   render();
   requestAnimationFrame(tick);
 }
 
 function scheduleUpdate() {
-  if (!animating) {
-    animating = true;
-    requestAnimationFrame(tick);
-  }
+  if (!animating) { animating = true; requestAnimationFrame(tick); }
 }
 
 window.addEventListener('scroll', scheduleUpdate, { passive: true });
-window.addEventListener('resize', () => {
-  // On resize, snap immediately — no lerp needed
-  smoothY = window.scrollY;
-  render();
-}, { passive: true });
+window.addEventListener('resize', () => { smoothY = window.scrollY; render(); }, { passive: true });
 
-// ── Typeform: Join the network ────────────────────────────────────────────
-const btnNetwork = document.getElementById('btn-network');
-if (btnNetwork) {
-  btnNetwork.addEventListener('click', () => {
-    if (window.tf) window.tf.createPopup('HjPU2Imj', { mode: 'popup', autoClose: 3000 }).open();
-  });
-}
-
-// ── Typeform: Support the project ─────────────────────────────────────────
-const btnSupport = document.getElementById('btn-support');
-if (btnSupport) {
-  btnSupport.addEventListener('click', () => {
-    if (window.tf) window.tf.createPopup('mVve4V2y', { mode: 'popup', autoClose: 3000 }).open();
-  });
-}
-
-// ── Reduced motion: static layout, no animation ───────────────────────────
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  cards.forEach(card => {
-    card.style.transform  = '';
-    card.style.willChange = 'auto';
-  });
-} else {
-  render();
-}
+// ── Init ────────────────────────────────────────────────────────────────────
+render();

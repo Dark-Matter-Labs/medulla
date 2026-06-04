@@ -1,25 +1,31 @@
 /* ── Reset ─────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Tokens ────────────────────────────────────────────────────────────── */
+/* ── Tokens (from Figma variables) ─────────────────────────────────────── */
 :root {
-  --bg:          #EDECEA;
-  --ink:         #000000;
-  --ink-muted:   #6B6B6B;
+  --module:   24px;            /* Module */
+  --step:     clamp(30px, 3.33vw, 48px); /* staircase step = 2 modules @ design width */
+  --radius:   4px;             /* Corner Radius */
+  --sidebar:  clamp(252px, 18vw, 312px);
 
-  --base-h:      80px;   /* height of fixed identity strip at bottom */
-  --tab-h:       44px;   /* height of each card's bottom tab label strip */
+  --bg:       #E5E5E5;         /* Gray */
+  --ink:      #000000;
+  --yellow-a: #FFB62F;         /* gradient start (right) */
+  --yellow-b: #FFCF76;         /* gradient end (left) */
 
-  --font-body:   'Source Serif 4', Georgia, serif;
-  --font-display:'Bebas Neue', 'Arial Narrow', sans-serif;
+  /* Drop Shadow: #1F2134 @ 75%, radius 15 */
+  --shadow-img:     0 0 15px 0 rgba(31, 33, 52, 0.55);
+  --shadow-content: 0 0 12px 0 rgba(31, 33, 52, 0.32);
 
-  --body-size:   20px;
-  --body-lh:     1.33;
-  --title-size:  38px;
-  --title-lh:    1.05;
-  --addr-size:   15.277px;
+  --font: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  /* Type ramp (size / line-height) */
+  --h1: 60px;  --h1-lh: 0.72;  /* section labels */
+  --h2: 60px;  --h2-lh: 1.0;   /* event titles */
+  --b1: 24px;  --b1-lh: 1.3;   /* body */
+  --b2: 20px;  --b2-lh: 1.3;   /* small body / sidebar */
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── Base ──────────────────────────────────────────────────────────────── */
@@ -28,363 +34,224 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg);
+  text-size-adjust: 100%;
 }
-
 body {
-  font-family: var(--font-body);
+  font-family: var(--font);
+  font-weight: 400;
   color: var(--ink);
   background: var(--bg);
   overflow-x: hidden;
 }
-
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-a:hover { opacity: 0.6; }
+a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.55; }
+em { font-style: italic; }
 
 /* ── Skip link ─────────────────────────────────────────────────────────── */
 .skip-link {
-  position: fixed;
-  top: -100px;
-  left: 16px;
-  z-index: 9999;
-  padding: 8px 16px;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--font-body);
-  font-size: 14px;
-  transition: top 0.2s;
+  position: fixed; top: -100px; left: 16px; z-index: 9999;
+  padding: 8px 16px; background: var(--ink); color: var(--bg);
+  font-family: var(--font); font-size: 16px; transition: top 0.2s;
 }
 .skip-link:focus { top: 16px; }
 
-/* ── Base layer: transparent overlay at highest z-index ────────────────── */
-.base {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: transparent;
-  pointer-events: none;
+/* ── Sidebar (fixed identity) ──────────────────────────────────────────── */
+.sidebar {
+  position: fixed; left: 0; top: 0; z-index: 200;
+  width: var(--sidebar); height: 100vh;
+  padding: var(--module);
+  display: flex; flex-direction: column; justify-content: space-between;
+  background: var(--bg);
 }
-
-.base__identity {
-  position: absolute;
-  bottom: 28px;
-  left: 36px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  pointer-events: auto;
+.sidebar__top { display: flex; flex-direction: column; gap: 20px; }
+.sidebar__logo { display: block; width: 153px; max-width: 60%; }
+.sidebar__logo img { display: block; width: 100%; height: auto; }
+.sidebar__tagline {
+  font-size: var(--b2); line-height: var(--b2-lh);
+  max-width: 226px;
 }
-
-.base__logo {
-  display: block;
-  width: 110px;
-  height: auto;
+.sidebar__links {
+  display: flex; flex-direction: column;
+  font-size: var(--b2); line-height: var(--b2-lh);
 }
+.sidebar__links a { width: max-content; }
+.sidebar__addr { opacity: 0.85; }
 
-.base__address {
-  font-family: var(--font-display);
-  font-size: var(--addr-size);
-  font-weight: 800;
-  line-height: var(--title-lh);
-  color: var(--ink);
-  font-style: normal;
-  letter-spacing: 0.01em;
-}
-
-/* ── Scroll driver ─────────────────────────────────────────────────────── */
+/* ── Scroll driver + sticky stage ──────────────────────────────────────── */
 .scroll-driver {
   position: relative;
+  margin-left: var(--sidebar);
   height: calc(9 * 100vh);
 }
-
-/* ── Cards stage: sticky container ────────────────────────────────────── */
 .cards-stage {
-  position: sticky;
-  top: 0;
+  position: sticky; top: 0;
   height: 100vh;
-  overflow: clip; /* clips offscreen cards without clipping box-shadows */
+  overflow: hidden;          /* clips peeled cards; box-shadows still paint */
 }
 
-/* ── Individual cards ──────────────────────────────────────────────────── */
+/* ── Cards: top-right anchored 48px staircase ──────────────────────────── */
 .card {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  will-change: transform;
-  box-shadow: 0 0 41px 0 rgba(8, 8, 8, 0.5);
+  position: absolute; top: 0; right: 0;
+  border-bottom-left-radius: var(--radius);
+}
+/* depth: 0 = base (Events), 8 = front (Intro). left & height step by --step. */
+.card[data-card="8"] { left: calc(0 * var(--step)); height: calc(100% - 0 * var(--step)); z-index: 10; }
+.card[data-card="7"] { left: calc(1 * var(--step)); height: calc(100% - 1 * var(--step)); z-index: 20; }
+.card[data-card="6"] { left: calc(2 * var(--step)); height: calc(100% - 2 * var(--step)); z-index: 30; }
+.card[data-card="5"] { left: calc(3 * var(--step)); height: calc(100% - 3 * var(--step)); z-index: 40; }
+.card[data-card="4"] { left: calc(4 * var(--step)); height: calc(100% - 4 * var(--step)); z-index: 50; }
+.card[data-card="3"] { left: calc(5 * var(--step)); height: calc(100% - 5 * var(--step)); z-index: 60; }
+.card[data-card="2"] { left: calc(6 * var(--step)); height: calc(100% - 6 * var(--step)); z-index: 70; }
+.card[data-card="1"] { left: calc(7 * var(--step)); height: calc(100% - 7 * var(--step)); z-index: 80; }
+.card[data-card="0"] { left: calc(8 * var(--step)); height: calc(100% - 8 * var(--step)); z-index: 90; }
+
+/* ── Content cards (gray, blend with background, defined by shadow) ─────── */
+.card--content { background: var(--bg); box-shadow: var(--shadow-content); }
+.card--base    { box-shadow: none; }
+
+.card__inner {
+  position: absolute; inset: 0;
+  padding: var(--pt, 72px) var(--module) var(--module);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.card[data-card="0"] { --pt: var(--module); }   /* intro */
+.card[data-card="2"] { --pt: 72px; }            /* dresdener */
+.card[data-card="4"] { --pt: 120px; }           /* members */
+.card[data-card="6"] { --pt: 168px; }           /* contacts */
+.card[data-card="8"] { --pt: 216px; }           /* events */
+
+.card__body { max-width: 506px; }
+.card__body p { font-size: var(--b1); line-height: var(--b1-lh); }
+.card__body p + p { margin-top: 1.3em; }
+.card__body--intro { max-width: 553px; }
+
+/* Section label — bottom-left of each card */
+.card__label-row { display: flex; align-items: center; width: 100%; }
+.card__label {
+  font-size: var(--h1); line-height: var(--h1-lh);
+  text-transform: uppercase; white-space: nowrap;
 }
 
-/* Base layer: no shadow — sits on the ground, nothing beneath it */
-.card[data-card="8"] {
-  box-shadow: none;
+/* ── Image cards (full-bleed photo) ────────────────────────────────────── */
+.card--image { overflow: hidden; box-shadow: var(--shadow-img); }
+.card__photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center;
+  display: block;
+}
+.card__scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(0,0,0,0.4) 100%);
 }
 
-/*
- * 3D deck: top card (data-card="0") is narrowest and shortest.
- * Each deeper card extends further left and further down,
- * creating visible left-edge and bottom-strip glimpses of every card.
- */
-.card[data-card="0"] { left: 57%; height: calc(100vh - var(--base-h) - 8 * var(--tab-h)); z-index: 90; }
-.card[data-card="1"] { left: 52%; height: calc(100vh - var(--base-h) - 7 * var(--tab-h)); z-index: 80; }
-.card[data-card="2"] { left: 47%; height: calc(100vh - var(--base-h) - 6 * var(--tab-h)); z-index: 70; }
-.card[data-card="3"] { left: 43%; height: calc(100vh - var(--base-h) - 5 * var(--tab-h)); z-index: 60; }
-.card[data-card="4"] { left: 38%; height: calc(100vh - var(--base-h) - 4 * var(--tab-h)); z-index: 50; }
-.card[data-card="5"] { left: 34%; height: calc(100vh - var(--base-h) - 3 * var(--tab-h)); z-index: 40; }
-.card[data-card="6"] { left: 30%; height: calc(100vh - var(--base-h) - 2 * var(--tab-h)); z-index: 30; }
-.card[data-card="7"] { left: 25%; height: calc(100vh - var(--base-h) - 1 * var(--tab-h)); z-index: 20; }
-.card[data-card="8"] { left:  0%; height: calc(100vh - var(--base-h));                     z-index: 10; }
-
-/* thin top border creates visual separation between peeking card tabs */
-.card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(0,0,0,0.12);
+/* ── Intro card (yellow gradient + anatomy) ────────────────────────────── */
+.card--intro {
+  background: linear-gradient(to left, var(--yellow-a), var(--yellow-b));
+  overflow: hidden;
+  box-shadow: var(--shadow-img);
+}
+.card--intro .card__inner { z-index: 2; }
+.card__intro-logo { display: block; width: 188px; height: auto; }
+.card__anatomy {
+  position: absolute; z-index: 1;
+  top: 220px; right: -110px; width: 557px; max-width: none; height: auto;
+  transform: rotate(-1.17deg);
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
-/* ── Card content: the main body (text + photo) ────────────────────────── */
-.card__content {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 44% 56%;
-  overflow: hidden;
-  min-height: 0;
-}
-
-/* ── Card: text column ─────────────────────────────────────────────────── */
-.card__text {
-  display: flex;
-  flex-direction: column;
-  padding: 52px 52px 32px 40px;
-  overflow: hidden;
-  border-right: 1px solid rgba(0,0,0,0.10);
-}
-
-.card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* ── Events card ───────────────────────────────────────────────────────── */
+.card--events .card__inner { padding-left: 0; padding-right: 0; }
+.events {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column; gap: var(--module);
+  padding: 0 var(--module);
   overflow: hidden;
 }
+.event { display: flex; gap: 80px; align-items: stretch; }
+.event__text { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.event__date { font-size: var(--b1); line-height: var(--b1-lh); }
+.event__title { font-size: var(--h2); line-height: var(--h2-lh); font-weight: 400; }
+.event__subtitle { font-size: var(--b1); line-height: var(--b1-lh); }
+.event__body { font-size: var(--b2); line-height: var(--b2-lh); margin-top: 4px; }
+.event__media { flex: 0 0 288px; width: 288px; height: 288px; }
+.event__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.card__body p {
-  font-family: var(--font-body);
-  font-size: var(--body-size);
-  font-weight: 400;
-  line-height: var(--body-lh);
-  color: var(--ink);
-  max-width: 48ch;
-}
-
-.card__body a {
-  color: inherit;
-}
-
-/* ── Card: photo column ────────────────────────────────────────────────── */
-.card__photo {
+.card__label-row--events {
   position: relative;
-  overflow: hidden;
-}
-
-.card__photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-/* Full-image cards: single full-bleed column, no text */
-.card--image .card__content {
-  grid-template-columns: 1fr;
-}
-
-/* layout diagram and sketch: contain instead of cover */
-.card[data-card="2"] .card__photo img,
-.card[data-card="8"] .card__photo img {
-  object-fit: contain;
-  background: #F5F2ED;
-  padding: 32px;
-}
-
-/* ── Card tab: section label strip at bottom of each card ──────────────── */
-.card__tab {
-  flex-shrink: 0;
-  height: var(--tab-h);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 28px;
-  border-top: 1px solid rgba(0,0,0,0.10);
-}
-
-.card__tab-label {
-  font-family: var(--font-display);
-  font-size: var(--title-size);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  color: var(--ink);
-}
-
-/* ── Card CTAs (contacts card) ─────────────────────────────────────────── */
-.card__ctas {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.cta-btn {
-  display: inline-block;
-  padding: 12px 0;
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 1px solid var(--ink);
-  cursor: pointer;
-  text-align: left;
-  padding-left: 18px;
-  transition: background 0.2s, color 0.2s;
-  max-width: 280px;
-}
-
-.cta-btn:hover {
-  background: var(--ink);
-  color: var(--bg);
+  padding: 80px var(--module) var(--module);
+  background: url('../assets/images/figma/events-bg.png') center / cover no-repeat;
 }
 
 /* ── Scroll progress indicator ─────────────────────────────────────────── */
 .scroll-progress {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(0,0,0,0.08);
-  z-index: 300;
+  position: fixed; left: 0; right: 0; bottom: 0; height: 2px;
+  background: rgba(0, 0, 0, 0.08); z-index: 300;
 }
+.scroll-progress__bar { height: 100%; width: 0%; background: var(--ink); transition: width 0.1s linear; }
 
-.scroll-progress__bar {
-  height: 100%;
-  background: var(--ink);
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
-/* ── Accessible main content (screen-reader only) ──────────────────────── */
+/* ── Accessible content (screen-reader only) ───────────────────────────── */
 .a11y-content {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
 }
 
 /* ── Reduced motion ────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .card {
-    will-change: auto;
-  }
-  .scroll-driver {
-    height: auto;
-  }
-  .cards-stage {
-    position: relative;
-    height: auto;
-    overflow: clip;
-  }
-  .card {
-    position: relative;
-    height: auto !important;
-    transform: none !important;
-  }
-  .card__content {
-    min-height: 60vh;
-  }
-  .cta-btn {
-    transition: none;
-  }
+  .card { will-change: auto; transform: none !important; }
 }
 
-/* ── Mobile ────────────────────────────────────────────────────────────── */
-@media (max-width: 860px) {
-  :root {
-    --body-size: 17px;
-    --title-size: 26px;
-    --base-h: 80px;
-    --tab-h: 44px;
+/* ── Responsive fallback (< 1024px): stacked, no deck ──────────────────── */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: static; width: 100%; height: auto;
+    flex-direction: row; flex-wrap: wrap; align-items: flex-end;
+    justify-content: space-between; gap: 24px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
   }
+  .sidebar__top { gap: 12px; }
+  .sidebar__tagline { max-width: 340px; }
+  .sidebar__links { flex-flow: row wrap; gap: 4px 20px; }
 
-  /* collapse staircase: all cards full-width on mobile */
-  .card[data-card="0"],
-  .card[data-card="1"],
-  .card[data-card="2"],
-  .card[data-card="3"],
-  .card[data-card="4"],
-  .card[data-card="5"],
-  .card[data-card="6"],
-  .card[data-card="7"],
-  .card[data-card="8"] {
-    left: 0;
-  }
+  .scroll-driver { margin-left: 0; height: auto; }
+  /* DOM is base-first (8…0) for the desktop z-stack; reorder so the
+     reading sequence runs Intro → … → Events when stacked vertically. */
+  .cards-stage { position: static; height: auto; overflow: visible; display: flex; flex-direction: column; }
+  .card[data-card="0"] { order: 0; }
+  .card[data-card="1"] { order: 1; }
+  .card[data-card="2"] { order: 2; }
+  .card[data-card="3"] { order: 3; }
+  .card[data-card="4"] { order: 4; }
+  .card[data-card="5"] { order: 5; }
+  .card[data-card="6"] { order: 6; }
+  .card[data-card="7"] { order: 7; }
+  .card[data-card="8"] { order: 8; }
 
-  .scroll-driver {
-    margin-right: 0;
+  .card {
+    position: relative; left: 0 !important; height: auto !important;
+    width: 100%; transform: none !important;
+    border-bottom-left-radius: 0;
+    border-top: 1px solid rgba(0,0,0,0.12);
   }
+  .card--content { box-shadow: none; }
+  .card__inner { position: relative; inset: auto; padding: 48px var(--module); }
+  .card[data-card] { --pt: 48px; }
+  .card__body, .card__body--intro { max-width: 640px; }
 
-  .card__content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
+  .card--image { height: 56vw; min-height: 280px; }
 
-  .card__text {
-    padding: 32px 24px 24px;
-    border-right: none;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-  }
+  .card--intro { padding-bottom: 0; }
+  .card__anatomy { position: relative; top: auto; right: auto; width: min(90%, 460px);
+    margin: 16px 0 0 auto; transform: none; }
+  .card--intro .card__inner { padding-bottom: var(--module); }
 
-  .card__photo {
-    min-height: 45vw;
-  }
-
-  .base__identity {
-    left: 20px;
-    bottom: 20px;
-  }
-
-  .card__body p {
-    max-width: none;
-  }
+  .event { gap: 28px; }
+  .event__media { flex-basis: 180px; width: 180px; height: 180px; }
 }
 
-@media (max-width: 480px) {
-  :root {
-    --body-size: 16px;
-    --title-size: 22px;
-    --tab-h: 40px;
-  }
-
-  .card__text {
-    padding: 24px 20px 20px;
-  }
+@media (max-width: 640px) {
+  :root { --h1: 40px; --h2: 40px; --b1: 20px; --b2: 17px; }
+  .event { flex-direction: column; gap: 16px; }
+  .event__media { width: 160px; height: 160px; }
+  .card__anatomy { width: 100%; }
 }

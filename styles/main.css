@@ -4,7 +4,12 @@
 /* ── Tokens (from Figma variables) ─────────────────────────────────────── */
 :root {
   --module:   24px;            /* Module */
-  --step:     clamp(30px, 3.33vw, 48px); /* staircase step = 2 modules @ design width */
+  /* Staircase steps. Figma designs at 1728×1081 where each step = 48px:
+     48/1416 ≈ 3.39% of content width, 48/1081 ≈ 4.44% of viewport height.
+     Scaling the vertical step (and type) with viewport height keeps the
+     Figma proportions on shorter windows so text never gets squeezed. */
+  --hstep:    clamp(26px, 3.1vw, 48px);  /* horizontal — card left offset  */
+  --vstep:    clamp(30px, 4.44vh, 48px); /* vertical — card height + top pad */
   --radius:   4px;             /* Corner Radius */
   --sidebar:  clamp(252px, 18vw, 312px);
 
@@ -19,11 +24,12 @@
 
   --font: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  /* Type ramp (size / line-height) */
-  --h1: 60px;  --h1-lh: 0.72;  /* section labels */
-  --h2: 60px;  --h2-lh: 1.0;   /* event titles */
-  --b1: 24px;  --b1-lh: 1.3;   /* body */
-  --b2: 20px;  --b2-lh: 1.3;   /* small body / sidebar */
+  /* Type ramp (size / line-height). Sizes scale with viewport height to
+     match Figma's 1081px-tall proportions (e.g. 24px ≈ 2.22vh @ 1081). */
+  --h1: clamp(38px, 5.55vh, 60px);  --h1-lh: 0.72;  /* section labels */
+  --h2: clamp(38px, 5.55vh, 60px);  --h2-lh: 1.0;   /* event titles */
+  --b1: clamp(18px, 2.22vh, 24px);  --b1-lh: 1.3;   /* body */
+  --b2: clamp(15px, 1.85vh, 20px);  --b2-lh: 1.3;   /* small body / sidebar */
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -95,15 +101,15 @@ em { font-style: italic; }
   border-bottom-left-radius: var(--radius);
 }
 /* depth: 0 = base (Events), 8 = front (Intro). left & height step by --step. */
-.card[data-card="8"] { left: calc(0 * var(--step)); height: calc(100% - 0 * var(--step)); z-index: 10; }
-.card[data-card="7"] { left: calc(1 * var(--step)); height: calc(100% - 1 * var(--step)); z-index: 20; }
-.card[data-card="6"] { left: calc(2 * var(--step)); height: calc(100% - 2 * var(--step)); z-index: 30; }
-.card[data-card="5"] { left: calc(3 * var(--step)); height: calc(100% - 3 * var(--step)); z-index: 40; }
-.card[data-card="4"] { left: calc(4 * var(--step)); height: calc(100% - 4 * var(--step)); z-index: 50; }
-.card[data-card="3"] { left: calc(5 * var(--step)); height: calc(100% - 5 * var(--step)); z-index: 60; }
-.card[data-card="2"] { left: calc(6 * var(--step)); height: calc(100% - 6 * var(--step)); z-index: 70; }
-.card[data-card="1"] { left: calc(7 * var(--step)); height: calc(100% - 7 * var(--step)); z-index: 80; }
-.card[data-card="0"] { left: calc(8 * var(--step)); height: calc(100% - 8 * var(--step)); z-index: 90; }
+.card[data-card="8"] { left: calc(0 * var(--hstep)); height: calc(100% - 0 * var(--vstep)); z-index: 10; }
+.card[data-card="7"] { left: calc(1 * var(--hstep)); height: calc(100% - 1 * var(--vstep)); z-index: 20; }
+.card[data-card="6"] { left: calc(2 * var(--hstep)); height: calc(100% - 2 * var(--vstep)); z-index: 30; }
+.card[data-card="5"] { left: calc(3 * var(--hstep)); height: calc(100% - 3 * var(--vstep)); z-index: 40; }
+.card[data-card="4"] { left: calc(4 * var(--hstep)); height: calc(100% - 4 * var(--vstep)); z-index: 50; }
+.card[data-card="3"] { left: calc(5 * var(--hstep)); height: calc(100% - 5 * var(--vstep)); z-index: 60; }
+.card[data-card="2"] { left: calc(6 * var(--hstep)); height: calc(100% - 6 * var(--vstep)); z-index: 70; }
+.card[data-card="1"] { left: calc(7 * var(--hstep)); height: calc(100% - 7 * var(--vstep)); z-index: 80; }
+.card[data-card="0"] { left: calc(8 * var(--hstep)); height: calc(100% - 8 * var(--vstep)); z-index: 90; }
 
 /* ── Content cards (gray, blend with background, defined by shadow) ─────── */
 .card--content { background: var(--bg); box-shadow: var(--shadow-content); }
@@ -114,16 +120,17 @@ em { font-style: italic; }
   padding: var(--pt, 72px) var(--module) var(--module);
   display: flex; flex-direction: column; justify-content: space-between;
 }
-.card[data-card="0"] { --pt: var(--module); }   /* intro */
-.card[data-card="2"] { --pt: 72px; }            /* dresdener */
-.card[data-card="4"] { --pt: 120px; }           /* members */
-.card[data-card="6"] { --pt: 168px; }           /* contacts */
-.card[data-card="8"] { --pt: 216px; }           /* events */
+/* top padding scales with --vstep (matches Figma 24/72/120/168/216 @ 48px) */
+.card[data-card="0"] { --pt: calc(0.5 * var(--vstep)); }  /* intro */
+.card[data-card="2"] { --pt: calc(1.5 * var(--vstep)); }  /* dresdener */
+.card[data-card="4"] { --pt: calc(2.5 * var(--vstep)); }  /* members */
+.card[data-card="6"] { --pt: calc(3.5 * var(--vstep)); }  /* contacts */
+.card[data-card="8"] { --pt: clamp(48px, 4.5 * var(--vstep), 216px); }  /* events */
 
-.card__body { max-width: 506px; }
+.card__body { max-width: min(506px, 100%); }
 .card__body p { font-size: var(--b1); line-height: var(--b1-lh); }
 .card__body p + p { margin-top: 1.3em; }
-.card__body--intro { max-width: 553px; }
+.card__body--intro { max-width: min(553px, 100%); }
 
 /* Section label — bottom-left of each card */
 .card__label-row { display: flex; align-items: center; width: 100%; }
@@ -168,18 +175,20 @@ em { font-style: italic; }
   padding: 0 var(--module);
   overflow: hidden;
 }
-.event { display: flex; gap: 80px; align-items: stretch; }
-.event__text { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.event { display: flex; gap: clamp(28px, 5.5vw, 80px); align-items: stretch; }
+.event__text { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 20px); }
 .event__date { font-size: var(--b1); line-height: var(--b1-lh); }
 .event__title { font-size: var(--h2); line-height: var(--h2-lh); font-weight: 400; }
 .event__subtitle { font-size: var(--b1); line-height: var(--b1-lh); }
-.event__body { font-size: var(--b2); line-height: var(--b2-lh); margin-top: 4px; }
-.event__media { flex: 0 0 288px; width: 288px; height: 288px; }
+.event__body { font-size: var(--b2); line-height: var(--b2-lh); }
+/* media scales with viewport height (288px @ 1081 ≈ 26.6vh) so both
+   listings fit on shorter windows without clipping */
+.event__media { flex: 0 0 auto; width: clamp(150px, 24vh, 288px); height: clamp(150px, 24vh, 288px); }
 .event__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .card__label-row--events {
   position: relative;
-  padding: 80px var(--module) var(--module);
+  padding: clamp(24px, 6vh, 80px) var(--module) var(--module);
   background: url('../assets/images/figma/events-bg.png') center / cover no-repeat;
 }
 
@@ -203,6 +212,10 @@ em { font-style: italic; }
 
 /* ── Responsive fallback (< 1024px): stacked, no deck ──────────────────── */
 @media (max-width: 1024px) {
+  /* Layout is no longer height-constrained, so use fixed (non-vh) type. */
+  :root {
+    --h1: 44px; --h2: 44px; --b1: 21px; --b2: 18px;
+  }
   .sidebar {
     position: static; width: 100%; height: auto;
     flex-direction: row; flex-wrap: wrap; align-items: flex-end;
@@ -250,7 +263,7 @@ em { font-style: italic; }
 }
 
 @media (max-width: 640px) {
-  :root { --h1: 40px; --h2: 40px; --b1: 20px; --b2: 17px; }
+  :root { --h1: 34px; --h2: 34px; --b1: 19px; --b2: 16px; }
   .event { flex-direction: column; gap: 16px; }
   .event__media { width: 160px; height: 160px; }
   .card__anatomy { width: 100%; }

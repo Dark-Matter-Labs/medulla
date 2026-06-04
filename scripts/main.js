@@ -13,8 +13,9 @@ const DWELL_RATIO = 0.25;
 // Lerp factor — smooth, silky scroll tracking (~250ms settle at 60fps).
 const LERP_FACTOR = 0.12;
 
-let smoothY   = window.scrollY;
-let animating = false;
+let smoothY     = window.scrollY;
+let animating   = false;
+let programmatic = false; // true while a click-to-card tween drives the scroll
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function deckActive() {
@@ -83,11 +84,74 @@ function tick() {
 }
 
 function scheduleUpdate() {
+  if (programmatic) return;           // click-tween owns the scroll position
   if (!animating) { animating = true; requestAnimationFrame(tick); }
 }
 
 window.addEventListener('scroll', scheduleUpdate, { passive: true });
 window.addEventListener('resize', () => { smoothY = window.scrollY; render(); }, { passive: true });
+
+// ── Click a peeking card to glide to it ─────────────────────────────────────
+// Each card owns one viewport-section; card i is the active (front) card when
+// scrollY ≈ i × vh. Clicking a card behind the active one tweens there.
+let tweenRAF = null;
+
+function cancelTween() {
+  if (!programmatic) return;
+  if (tweenRAF) cancelAnimationFrame(tweenRAF);
+  tweenRAF = null;
+  programmatic = false;
+  smoothY = window.scrollY;   // resync so manual scroll continues seamlessly
+}
+
+function scrollToCard(index) {
+  if (!deckActive()) return;
+  const vh      = window.innerHeight;
+  const targetY = Math.round(index * vh);
+  const startY  = window.scrollY;
+  const dist    = targetY - startY;
+  if (Math.abs(dist) < 2) return;
+
+  // Duration scales with distance, clamped to a pleasant range.
+  const duration = Math.min(1100, Math.max(420, Math.abs(dist) * 0.45));
+  const startTime = performance.now();
+  programmatic = true;
+
+  function step(now) {
+    if (!programmatic) return;             // cancelled by manual input
+    const t = Math.min((now - startTime) / duration, 1);
+    const y = startY + dist * easeInOutCubic(t);
+    smoothY = y;
+    window.scrollTo(0, y);   // keep native scroll position in sync
+    render();
+    if (t < 1) {
+      tweenRAF = requestAnimationFrame(step);
+    } else {
+      smoothY = targetY;
+      window.scrollTo(0, targetY);
+      programmatic = false;
+      tweenRAF = null;
+      render();
+    }
+  }
+  tweenRAF = requestAnimationFrame(step);
+}
+
+// Manual scroll input cancels an in-progress click-glide so it never fights.
+window.addEventListener('wheel',     cancelTween, { passive: true });
+window.addEventListener('touchstart', cancelTween, { passive: true });
+window.addEventListener('keydown', (e) => {
+  if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(e.key)) cancelTween();
+});
+
+driver.addEventListener('click', (e) => {
+  if (!deckActive()) return;
+  if (e.target.closest('a')) return;                      // let real links work
+  if (window.getSelection && String(window.getSelection())) return; // ignore text selection
+  const card = e.target.closest('.card');
+  if (!card) return;
+  scrollToCard(parseInt(card.dataset.card, 10));
+});
 
 // ── Init ────────────────────────────────────────────────────────────────────
 render();

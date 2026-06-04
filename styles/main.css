@@ -132,12 +132,14 @@ em { font-style: italic; }
 .card__body p + p { margin-top: 1.3em; }
 .card__body--intro { max-width: min(553px, 100%); }
 
-/* Section label — bottom-left of each card */
+/* Section label — bottom-left of each card (also the click target to jump) */
 .card__label-row { display: flex; align-items: center; width: 100%; }
 .card__label {
   font-size: var(--h1); line-height: var(--h1-lh);
   text-transform: uppercase; white-space: nowrap;
+  cursor: pointer; transition: opacity 0.2s var(--ease);
 }
+.card__label:hover { opacity: 0.55; }
 
 /* ── Image cards (full-bleed photo) ────────────────────────────────────── */
 .card--image { overflow: hidden; box-shadow: var(--shadow-img); }
@@ -247,6 +249,8 @@ em { font-style: italic; }
     border-top: 1px solid rgba(0,0,0,0.12);
   }
   .card--content { box-shadow: none; }
+  .card__label { cursor: auto; }
+  .card__label:hover { opacity: 1; }
   .card__inner { position: relative; inset: auto; padding: 48px var(--module); }
   .card[data-card] { --pt: 48px; }
   .card__body, .card__body--intro { max-width: 640px; }

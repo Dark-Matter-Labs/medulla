@@ -1,7 +1,9 @@
 // ── Scroll-driven 3D card-deck (Medulla), smoothed with Lenis ───────────────
-// Cards rest in a bottom-right staircase. On scroll each card lifts and PARKS
-// at the top as a thin cascading stack (it stays visible — it doesn't fly off
-// screen). Card 0 (intro) parks first; card 8 (events) is the base and stays.
+// Cards rest in a staircase. On scroll each card lifts and PARKS at the top as
+// a thin cascading stack (it stays visible). Card 0 (intro) parks first; card 8
+// (events) is the base and stays. Works at every width — CSS owns the geometry
+// (card heights / steps), JS just measures it, so desktop and mobile share one
+// engine. A static stacked layout is used only under prefers-reduced-motion.
 
 const cards  = Array.from(document.querySelectorAll('.card'));
 const driver = document.querySelector('.scroll-driver');
@@ -11,9 +13,7 @@ const LAST   = 8; // data-card index of the base (Events) card
 const DWELL_RATIO = 0.12;
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function deckActive() {
-  return !reduceMotion && window.matchMedia('(min-width: 1025px)').matches;
-}
+function deckActive() { return !reduceMotion; }
 
 // ── Progress bar ────────────────────────────────────────────────────────────
 const progressEl = document.createElement('div');
@@ -22,20 +22,24 @@ progressEl.innerHTML = '<div class="scroll-progress__bar"></div>';
 document.body.appendChild(progressEl);
 const progressBar = progressEl.querySelector('.scroll-progress__bar');
 
-// ── Easing + geometry helpers ───────────────────────────────────────────────
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
-// Matches CSS: --vstep: clamp(30px, 4.44vh, 48px)
-function vstep() { return Math.min(48, Math.max(30, 0.0444 * window.innerHeight)); }
-// Card's resting height (matches CSS height: 100% − (8−i)·vstep)
-function restHeight(i) { return window.innerHeight - (8 - i) * vstep(); }
-// Parked cards cascade by vstep/2 at the top. This matches each card's top
-// padding (pt_k = (k+1)·vstep/2), so an active card's content always starts
-// just below the parked stack — they never overlap.
-function parkStep() { return vstep() / 2; }
-// translateY that moves card i from its rest spot to its parked spot at the top
-function parkY(i) { return (i + 1) * parkStep() - restHeight(i); }
+
+// ── Measured geometry (read from CSS so it adapts to any breakpoint) ─────────
+// H[i]   = card i's resting height (px), from its computed CSS height.
+// PARK[i]= translateY that lifts card i from its rest spot to its parked strip.
+// Parked cards cascade by vstep/2 — this matches each card's CSS top padding,
+// so an active card's content always clears the parked stack.
+let H = [];
+let PARK = [];
+function measure() {
+  H = [];
+  cards.forEach((c) => { H[parseInt(c.dataset.card, 10)] = parseFloat(getComputedStyle(c).height) || 0; });
+  const vstep = (H[LAST] - H[LAST - 1]) || 0; // height delta between adjacent cards
+  PARK = [];
+  for (let i = 0; i <= LAST; i++) PARK[i] = (i + 1) * (vstep / 2) - H[i];
+}
 
 // ── Core render ───────────────────────────────────────────────────────────────
 function render() {
@@ -46,23 +50,25 @@ function render() {
     return;
   }
 
-  const vh = window.innerHeight;
-  const y  = lenis ? lenis.scroll : window.scrollY;
+  const y = lenis ? lenis.scroll : window.scrollY;
+  // One scroll "section" per card, derived from the driver so it matches the
+  // CSS (9 × viewport) on both desktop and mobile, regardless of vh/URL-bar drift.
+  const sectionH = driver.scrollHeight / (LAST + 1);
 
   cards.forEach((card) => {
     const i = parseInt(card.dataset.card, 10);
     if (i === LAST) { if (card.style.transform) card.style.transform = ''; return; }
 
-    const animStart = i * vh + vh * DWELL_RATIO;
-    const animEnd   = i * vh + vh;
+    const animStart = i * sectionH + sectionH * DWELL_RATIO;
+    const animEnd   = i * sectionH + sectionH;
     let p = 0;
     if (y > animStart) p = Math.min((y - animStart) / (animEnd - animStart), 1);
 
-    const ty = easeInOutCubic(p) * parkY(i); // parkY < 0 → lifts toward the top
+    const ty = easeInOutCubic(p) * (PARK[i] || 0); // PARK < 0 → lifts toward the top
     card.style.transform = ty ? `translateY(${ty}px)` : '';
   });
 
-  const max = (driver ? driver.scrollHeight : document.body.scrollHeight) - vh;
+  const max = driver.scrollHeight - window.innerHeight;
   progressBar.style.width = (max > 0 ? Math.min((y / max) * 100, 100) : 0) + '%';
 }
 
@@ -76,14 +82,18 @@ if (!reduceMotion && typeof Lenis !== 'undefined') {
 } else {
   window.addEventListener('scroll', render, { passive: true });
 }
-window.addEventListener('resize', () => { if (lenis) lenis.resize(); render(); }, { passive: true });
+window.addEventListener('resize', () => {
+  if (lenis) lenis.resize();
+  measure();
+  render();
+}, { passive: true });
+// Mobile orientation / URL-bar changes alter card heights — re-measure.
+window.addEventListener('orientationchange', () => { setTimeout(() => { measure(); render(); }, 200); });
 
 // ── Click a peeking card to glide to it ─────────────────────────────────────
-// Card i is the active card when scroll ≈ i × vh. Clicking another card glides
-// the deck there. Real links (the Luma event links) are left to behave normally.
 function scrollToCard(index) {
   if (!deckActive()) return;
-  const targetY = index * window.innerHeight;
+  const targetY = index * (driver.scrollHeight / (LAST + 1));
   if (lenis) lenis.scrollTo(targetY, { duration: 0.9, easing: easeInOutCubic });
   else window.scrollTo({ top: targetY, behavior: 'smooth' });
 }
@@ -97,4 +107,7 @@ driver.addEventListener('click', (e) => {
 });
 
 // ── Init ────────────────────────────────────────────────────────────────────
+measure();
 render();
+// fonts can shift layout slightly; re-measure once they're ready
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); render(); });

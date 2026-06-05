@@ -136,7 +136,7 @@ html.lenis, html.lenis body { height: auto; }
 
 .card__body { max-width: min(506px, 100%); }
 .card__body p { font-size: var(--b1); line-height: var(--b1-lh); }
-.card__body p + p { margin-top: 1.3em; }
+.card__body p + p { margin-top: 0.65em; }
 .card__body--intro { max-width: min(553px, 100%); }
 
 /* Section label — bottom-left of each card (also the click target to jump) */

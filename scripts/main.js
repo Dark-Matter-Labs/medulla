@@ -106,6 +106,24 @@ driver.addEventListener('click', (e) => {
   if (card) scrollToCard(parseInt(card.dataset.card, 10));
 });
 
+// ── Events list: scroll internally, hand back to the deck at the edges ──────
+// When the events list overflows it scrolls on its own; the moment it reaches
+// its top or bottom, wheel input is released to Lenis so the deck keeps moving
+// (no more getting "stuck" inside the list). Pointer/touch devices fall back to
+// native overscroll chaining (see CSS).
+const eventsList = document.querySelector('.card--events .events');
+if (eventsList && lenis) {
+  eventsList.addEventListener('wheel', (e) => {
+    if (eventsList.scrollHeight <= eventsList.clientHeight + 1) return; // not scrollable → deck scrolls
+    const atTop    = eventsList.scrollTop <= 0;
+    const atBottom = eventsList.scrollTop + eventsList.clientHeight >= eventsList.scrollHeight - 1;
+    const canScrollInner = (e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop);
+    // Inner can still move in this direction → keep it native, stop the deck.
+    // At the edge → do nothing so the wheel reaches Lenis and the deck advances.
+    if (canScrollInner) e.stopPropagation();
+  }, { passive: true });
+}
+
 // ── Init ────────────────────────────────────────────────────────────────────
 measure();
 render();

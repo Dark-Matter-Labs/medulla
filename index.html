@@ -88,9 +88,10 @@
       <!-- Card 8 — Events (base layer, never peels) -->
       <article class="card card--content card--base card--events" data-card="8" aria-label="Events">
         <div class="card__inner">
-          <!-- data-lenis-prevent: when events overflow, this list scrolls
-               natively while the smooth-scroll engine yields. Most recent first. -->
-          <div class="events" data-lenis-prevent>
+          <!-- Most recent first. When events overflow, the list scrolls
+               internally and hands control back to the deck at its edges
+               (directional handoff in main.js + native overscroll on touch). -->
+          <div class="events">
             <a class="event" href="https://luma.com/d7xkoe78?tk=w8oks3" target="_blank" rel="noopener"
                aria-label="From Lines to Loops — more on Luma">
               <div class="event__content">

@@ -195,12 +195,15 @@ html.lenis, html.lenis body { height: auto; }
   flex: 1 1 auto; min-height: 0;
   display: flex; flex-direction: column; justify-content: flex-start; gap: clamp(12px, 1.8vh, 22px);
   padding: 0 var(--module);
-  /* fits a screen normally; scrolls natively when more events are added
-     (the list is marked data-lenis-prevent so the deck engine yields) */
+  /* fits a screen normally; scrolls internally when more events are added.
+     Desktop: `contain` keeps the native scroll from fighting Lenis — the JS
+     wheel handler hands control back to the deck at the edges. Touch: allow
+     native overscroll chaining so the page resumes past the list edges. */
   overflow-y: auto; overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.28) transparent;
 }
+@media (pointer: coarse) { .events { overscroll-behavior: auto; } }
 .events::-webkit-scrollbar { width: 6px; }
 .events::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.25); border-radius: 3px; }
 .events::-webkit-scrollbar-track { background: transparent; }

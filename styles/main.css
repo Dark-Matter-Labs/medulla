@@ -139,6 +139,17 @@ html.lenis, html.lenis body { height: auto; }
 .card__body p + p { margin-top: 0.65em; }
 .card__body--intro { max-width: min(553px, 100%); }
 
+/* CTA link (e.g. Members → Join) */
+.card__cta {
+  display: inline-block;
+  margin-top: clamp(16px, 2.4vh, 28px);
+  padding: 0.42em 1.4em;
+  font-size: var(--b1); line-height: 1.1;
+  border: 1px solid var(--ink); border-radius: var(--radius);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.card__cta:hover { background: var(--ink); color: var(--bg); opacity: 1; }
+
 /* Section label — bottom-left of each card (also the click target to jump) */
 .card__label-row { display: flex; align-items: center; width: 100%; }
 .card__label {

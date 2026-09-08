@@ -133,7 +133,7 @@ html.lenis, html.lenis body { height: auto; }
 .card[data-card="2"] { --pt: calc(1.5 * var(--vstep)); }  /* dresdener */
 .card[data-card="4"] { --pt: calc(2.5 * var(--vstep)); }  /* members */
 .card[data-card="6"] { --pt: calc(3.5 * var(--vstep)); }  /* contacts */
-.card[data-card="8"] { --pt: clamp(48px, 4.5 * var(--vstep), 216px); }  /* events */
+.card[data-card="8"] { --pt: clamp(72px, 5.5 * var(--vstep), 264px); }  /* events — extra step clears the parked stack (4×vstep) with breathing room */
 
 .card__body { max-width: min(506px, 100%); }
 .card__body p { font-size: var(--b1); line-height: var(--b1-lh); }

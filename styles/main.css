@@ -112,7 +112,8 @@ html.lenis, html.lenis body { height: auto; }
 }
 .sidebar__links a { width: max-content; }
 .sidebar__addr { opacity: 0.85; }
-.sidebar__impressum { margin-top: 10px; opacity: 0.6; }
+.sidebar__legal { margin-top: 10px; opacity: 0.6; }
+.sidebar__links [aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── Scroll driver + sticky stage ──────────────────────────────────────── */
 .scroll-driver {
@@ -303,6 +304,122 @@ html.lenis, html.lenis body { height: auto; }
   .legal p, .legal address { font-size: 17px; }
 }
 
+/* ── Shared UI: pill buttons, visually-hidden ──────────────────────────── */
+.btn-pill {
+  display: inline-block; border: 1px solid var(--ink); border-radius: 999px;
+  padding: 0.45em 1.1em; font-size: 15px; line-height: 1.2; white-space: nowrap;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.btn-pill:hover { background: var(--ink); color: var(--bg); opacity: 1; }
+.btn-pill--solid { background: var(--ink); color: var(--bg); }
+.btn-pill--solid:hover { opacity: 0.8; }
+.visually-hidden, .enquiry__trap {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ── Spaces page — plain scrolling page in the deck's visual language ──── */
+.page-spaces .spaces {
+  margin-left: var(--sidebar);
+  padding: var(--module) var(--module) 96px 0;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.spaces > * { max-width: 1180px; }
+.spaces__card {
+  background: var(--bg); box-shadow: var(--shadow-content); border-radius: var(--radius);
+  padding: clamp(24px, 3.2vw, 40px); scroll-margin-top: 16px;
+}
+.spaces__label {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: var(--h1); line-height: 0.8; text-transform: uppercase;
+}
+.spaces__lede { font-size: clamp(19px, 1.6vw, 23px); line-height: 1.45; max-width: 46ch; margin-top: 22px; }
+.spaces__jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.spaces__head {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+  gap: 16px 24px; margin-bottom: 22px;
+}
+.spaces__head p { max-width: 44ch; font-size: 15px; opacity: 0.75; }
+.spaces__rates { margin-top: 18px; font-size: 15px; opacity: 0.75; }
+
+.offers { list-style: none; }
+.offer {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) auto;
+  gap: 8px 24px; align-items: center; padding: 16px 0; border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.offer__name, .room__name {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(26px, 2.2vw, 32px); line-height: 1.05;
+}
+.offer__what { font-size: 16px; }
+.offer__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; list-style: none; }
+.offer__tags li { font-size: 12px; letter-spacing: 0.03em; background: rgba(0, 0, 0, 0.06); border-radius: 3px; padding: 2px 8px; }
+
+.rooms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; list-style: none; }
+.room__photo { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }
+.room__name { margin: 14px 0 4px; }
+.room__meta { font-size: 14px; opacity: 0.75; }
+.room__text { font-size: 16px; margin: 8px 0 14px; }
+
+.host { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+.host p, .host li { font-size: 16px; }
+.host__rules { margin: 14px 0 0 18px; }
+.host__rules li + li { margin-top: 6px; }
+.host__steps { list-style: none; counter-reset: step; }
+.host__steps li {
+  counter-increment: step; position: relative;
+  padding: 10px 0 10px 44px; border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.host__steps li::before {
+  content: counter(step); position: absolute; left: 0; top: 9px;
+  width: 28px; height: 28px; display: grid; place-items: center;
+  border: 1px solid var(--ink); border-radius: 50%;
+  font-family: var(--font-display); font-size: 17px;
+}
+.host__cta { margin-top: 24px; }
+
+@media (max-width: 1100px) { .rooms { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ── Enquiry form (Spaces page + home-page dialog) ─────────────────────── */
+.enquiry { display: flex; flex-direction: column; gap: 18px; max-width: 640px; }
+.enquiry__group, .enquiry__row { border: 0; min-width: 0; }
+.enquiry__group[hidden], .enquiry__row[hidden] { display: none; }
+.enquiry__legend, .enquiry__field label { display: block; font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+.enquiry__opt { font-weight: 400; opacity: 0.65; }
+.enquiry__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { position: relative; cursor: pointer; }
+.pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pill span {
+  display: inline-block; border: 1px solid var(--ink); border-radius: 999px;
+  padding: 8px 16px; font-size: 15px; line-height: 1.2;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.enquiry__pills--small .pill span { padding: 5px 13px; font-size: 14px; border-color: rgba(0, 0, 0, 0.45); }
+.pill input:checked + span { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+.enquiry__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.enquiry__field input, .enquiry__field textarea {
+  width: 100%; font: inherit; font-size: 16px; line-height: 1.4; color: var(--ink);
+  padding: 11px 13px; background: #fff; border: 1px solid rgba(0, 0, 0, 0.3); border-radius: var(--radius);
+}
+.enquiry__field textarea { resize: vertical; min-height: 110px; }
+.enquiry__field input:focus, .enquiry__field textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+.enquiry__field [aria-invalid="true"] { border-color: var(--err); }
+.enquiry__error { color: var(--err); font-size: 14px; margin-top: 6px; }
+.enquiry__send { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.enquiry__submit {
+  font: inherit; font-size: 16px; color: var(--bg); background: var(--ink);
+  border: 0; border-radius: 999px; padding: 12px 28px; cursor: pointer;
+}
+.enquiry__submit:disabled { opacity: 0.5; cursor: progress; }
+.enquiry__fine { font-size: 13px; opacity: 0.75; }
+.enquiry__fine a, .enquiry__status a { text-decoration: underline; text-underline-offset: 2px; }
+.enquiry__status { color: var(--err); font-size: 15px; }
+.enquiry__done { max-width: 640px; padding: 20px 22px; background: #fff; border-radius: var(--radius); }
+.enquiry__done:focus { outline: none; }
+.enquiry__done-title { font-family: var(--font-display); font-size: 30px; line-height: 1.1; margin-bottom: 6px; }
+@media (max-width: 560px) { .enquiry__row { grid-template-columns: 1fr; } }
+
 /* ── Mobile deck (≤820px): full-width portrait deck, brand pinned bottom ── */
 @media (max-width: 820px) {
   :root {
@@ -350,6 +467,12 @@ html.lenis, html.lenis body { height: auto; }
   .event__media { flex: 0 0 auto; width: clamp(60px, 19vw, 86px); height: clamp(60px, 19vw, 86px); }
   .event__more { font-size: clamp(26px, 8vw, 40px); }
   .card__label-row--events { padding: clamp(14px, 3vh, 36px) 20px 16px; }
+
+  /* Spaces page: full width, clear the fixed bottom brand bar */
+  .page-spaces .spaces { margin-left: 0; padding: 16px 16px calc(var(--bar-h) + 32px); }
+  .offer { grid-template-columns: 1fr; }
+  .offer .btn-pill { justify-self: start; }
+  .rooms, .host { grid-template-columns: 1fr; }
 }
 
 /* ── Reduced motion: static stacked layout (no deck) ───────────────────── */
@@ -398,4 +521,6 @@ html.lenis, html.lenis body { height: auto; }
   .event__content { flex-direction: column; gap: 16px; }
   .event__overlay { display: none; }
   .event__media { width: 200px; height: 200px; }
+
+  .page-spaces .spaces { margin-left: 0; padding-left: var(--module); }
 }

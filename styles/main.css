@@ -438,6 +438,9 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 560px) { .enquiry__row { grid-template-columns: 1fr; } }
 
 /* ── Home: enquiry dialog ──────────────────────────────────────────────── */
+/* Under prefers-reduced-motion, Lenis isn't created, so enquiry:open can't
+   stop it — lock the page behind the dialog with plain CSS instead. */
+html:has(dialog[open]) { overflow: hidden; }
 .enquiry-dialog {
   width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
   margin: auto; padding: 0; border: 0; border-radius: var(--radius);

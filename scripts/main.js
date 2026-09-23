@@ -106,6 +106,10 @@ driver.addEventListener('click', (e) => {
   if (card) scrollToCard(parseInt(card.dataset.card, 10));
 });
 
+// ── Enquiry dialog: freeze the deck behind it (see enquiry.js) ──────────────
+document.addEventListener('enquiry:open', () => { if (lenis) lenis.stop(); });
+document.addEventListener('enquiry:close', () => { if (lenis) lenis.start(); });
+
 // ── Events list: scroll internally, hand back to the deck at the edges ──────
 // When the events list overflows it scrolls on its own; the moment it reaches
 // its top or bottom, wheel input is released to Lenis so the deck keeps moving

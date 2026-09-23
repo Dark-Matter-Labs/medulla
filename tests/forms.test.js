@@ -24,3 +24,12 @@ test('spaces.html publishes no prices', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'spaces.html'), 'utf8');
   assert.doesNotMatch(html, /€|EUR\b|\d+\s?euro/i);
 });
+
+test('index.html dialog form has exactly the same fields as spaces.html', () => {
+  assert.deepEqual(enquiryFieldNames('index.html'), enquiryFieldNames('spaces.html'));
+});
+
+test('index.html publishes no prices', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.doesNotMatch(html, /€|EUR\b|\d+\s?euro/i);
+});

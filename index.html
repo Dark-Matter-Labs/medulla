@@ -333,9 +333,9 @@
         </div>
         <button type="button" class="enquiry-dialog__close" data-enquiry-close>Close</button>
       </div>
-      <!-- ENQUIRY FORM — keep identical to the copy in index.html (tests/forms.test.js checks it) -->
+      <!-- ENQUIRY FORM — keep identical to the canonical copy in spaces.html (tests/forms.test.js checks it) -->
       <div class="enquiry-wrap" data-enquiry>
-        <form class="enquiry" name="enquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form novalidate>
+        <form class="enquiry" name="enquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form>
           <input type="hidden" name="form-name" value="enquiry" />
           <p class="enquiry__trap" aria-hidden="true">
             <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
@@ -349,7 +349,7 @@
               <label class="pill"><input type="radio" name="interest" value="host" /><span>Hosting an event</span></label>
               <label class="pill"><input type="radio" name="interest" value="visit" /><span>Visiting / saying hello</span></label>
             </div>
-            <p class="enquiry__error" id="enq-interest-error" hidden>Choose what you're interested in.</p>
+            <p class="enquiry__error" id="enq-interest-error" data-message="Choose what you're interested in." hidden></p>
           </fieldset>
 
           <fieldset class="enquiry__group" data-group="membership">
@@ -390,12 +390,12 @@
             <div class="enquiry__field">
               <label for="enq-name">Name</label>
               <input id="enq-name" name="name" type="text" autocomplete="name" required aria-describedby="enq-name-error" />
-              <p class="enquiry__error" id="enq-name-error" hidden>Please add your name.</p>
+              <p class="enquiry__error" id="enq-name-error" data-message="Please add your name." hidden></p>
             </div>
             <div class="enquiry__field">
               <label for="enq-email">Email</label>
               <input id="enq-email" name="email" type="email" autocomplete="email" required aria-describedby="enq-email-error" />
-              <p class="enquiry__error" id="enq-email-error" hidden>Please add an email address we can reply to.</p>
+              <p class="enquiry__error" id="enq-email-error" data-message="Please add an email address we can reply to." hidden></p>
             </div>
           </div>
           <div class="enquiry__field">
@@ -439,7 +439,7 @@
     </section>
     <section id="work-with-us">
       <h2>Work with us</h2>
-      <p>Work here with a flexible, dedicated or team desk or a day pass; hire the ground floor (120 m²), half the ground floor (46 m²) or the meeting room (16.5 m²); or host an event on weekday evenings 18:00–21:30. See <a href="/spaces">Spaces</a> for details, or get in touch through the enquiry form at <a href="/spaces#enquire">medulla.city/spaces</a> or at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
+      <p>Work here with a flexible, dedicated or team desk or a day pass; hire the ground floor (120 m²), half the ground floor (46 m²) or the meeting room (16.5 m²); or host an event on evenings 18:00–21:30. See <a href="/spaces">Spaces</a> for details, or get in touch through the enquiry form at <a href="/spaces#enquire">medulla.city/spaces</a> or at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
     </section>
     <section id="events">
       <h2>Events</h2>

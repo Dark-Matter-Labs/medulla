@@ -33,3 +33,16 @@ test('index.html publishes no prices', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.doesNotMatch(html, /€|EUR\b|\d+\s?euro/i);
 });
+
+function enquiryFormBlock(file) {
+  const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
+  const match = html.match(/<!-- ENQUIRY FORM[\s\S]*?<!-- \/ENQUIRY FORM -->/);
+  assert.ok(match, `${file} contains an ENQUIRY FORM block`);
+  const lines = match[0].split('\n');
+  lines.shift(); // drop the opening comment line — its wording differs between files
+  return lines.join('\n').replace(/\s+/g, ' ').trim();
+}
+
+test('index.html and spaces.html enquiry form markup is identical', () => {
+  assert.equal(enquiryFormBlock('index.html'), enquiryFormBlock('spaces.html'));
+});

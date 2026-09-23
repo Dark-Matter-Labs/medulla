@@ -27,7 +27,7 @@ Published prices, booking calendars or availability, organisation logos, analyti
 
 ## 1. Typography
 
-- Load Instrument Sans (400, 500) in the same Google Fonts request as Instrument Serif, on every page.
+- **Self-host** Instrument Serif (400 normal and italic) and Instrument Sans (400, 500) as WOFF2 files in `assets/fonts/` (both SIL OFL, licence file included). Remove the Google Fonts `<link>` and preconnects from every page. Loading fonts from Google sends visitors' IPs to Google, which LG München I (20.01.2022, 3 O 17493/20) held unlawful without consent. Self-hosting removes that and keeps the privacy notice simpler.
 - Split the single `--font` token into two:
   - `--font-display: 'Instrument Serif', Georgia, serif`
   - `--font-text: 'Instrument Sans', system-ui, sans-serif`
@@ -118,7 +118,7 @@ Sections (each a card with an anchor):
 
 ## 5. Privacy notice (`datenschutz.html`)
 
-A German Datenschutzerklärung in the same format and styles as `impressum.html`. It covers the controller (nextlearning e. V., contact details as in the Impressum), hosting and server logs (Netlify), the enquiry form (purpose, legal basis Art. 6(1)(b)/(f) GDPR, processor Netlify, retention), Google Fonts, external links (Luma, LinkedIn, Instagram), and data-subject rights, including the right to complain to the Berlin data protection authority. It's linked from the sidebar and the form. **It must be reviewed by the organisation or legal counsel before the PR is merged.** It is drafted content, not legal advice.
+A German Datenschutzerklärung in the same format and styles as `impressum.html`. It covers the controller (nextlearning e. V., contact details as in the Impressum), hosting and server logs (Netlify), the enquiry form (purpose, legal basis Art. 6(1)(b)/(f) GDPR, processor Netlify, retention), no cookies or tracking, external links (Luma, LinkedIn, Instagram), and data-subject rights, including the right to complain to the Berlin data protection authority. It's linked from the sidebar and the form. **It must be reviewed by the organisation or legal counsel before the PR is merged.** It is drafted content, not legal advice.
 
 ## 6. Testing & verification
 

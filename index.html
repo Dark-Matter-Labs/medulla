@@ -53,9 +53,8 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -72,13 +71,14 @@
       <p class="sidebar__tagline">Medulla is a physical space for turning shared urgency into collective resilience</p>
     </div>
     <nav class="sidebar__links" aria-label="Links">
-      <a href="https://form.typeform.com/to/aBO8faXO" target="_blank" rel="noopener">Join</a>
+      <a href="/spaces">Spaces</a>
       <a href="https://luma.com/medulla" target="_blank" rel="noopener">Events</a>
+      <a href="/spaces#enquire" data-enquire="">Get in touch</a>
       <a href="https://www.linkedin.com/company/medulla-space" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://www.instagram.com/medulla.space/" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:hello@medulla.city">hello@medulla.city</a>
+      <a class="sidebar__email" href="mailto:hello@medulla.city">hello@medulla.city</a>
       <span class="sidebar__addr">Dresdener Str. 113B, Berlin</span>
-      <a class="sidebar__impressum" href="/impressum.html">Impressum</a>
+      <span class="sidebar__legal"><a href="/impressum.html">Impressum</a> · <a href="/datenschutz">Datenschutz</a></span>
     </nav>
   </aside>
 
@@ -236,14 +236,19 @@
         <span class="card__scrim"></span>
       </article>
 
-      <!-- Card 6 — Contacts -->
-      <article class="card card--content" data-card="6" aria-label="Contacts">
+      <!-- Card 6 — Work with us -->
+      <article class="card card--content" data-card="6" aria-label="Work with us">
         <div class="card__inner">
           <div class="card__body">
-            <p>Medulla is open to collaboration with people, organizations, and initiatives working toward collective resilience, civic imagination, and new models for shared prosperity. We welcome conversations with those interested in contributing to the space, joining the community, or developing work in dialogue with Medulla's wider mission.</p>
-            <p>Our public programming is designed to be shaped with others, bringing together lectures, salons, workshops, and gatherings that connect different fields and communities. If your work resonates with Medulla's purpose, we are open to exploring how it could become part of the life of the space.</p>
+            <p>Medulla is open to people, organizations, and initiatives working toward collective resilience, civic imagination, and new models for shared prosperity. There are three ways to be part of the space:</p>
+            <ul class="doors">
+              <li><a class="door" href="/spaces#work"><span class="door__name">Work here</span><span class="door__text">Flexible, dedicated and team desks, day passes</span></a></li>
+              <li><a class="door" href="/spaces#hire"><span class="door__name">Hire a space</span><span class="door__text">Ground floor (120 m²), half (46 m²), meeting room (16.5 m²)</span></a></li>
+              <li><a class="door" href="/spaces#host"><span class="door__name">Host an event</span><span class="door__text">Evenings 18:00–21:30, for work that fits Medulla's purpose</span></a></li>
+            </ul>
+            <a class="card__cta" href="/spaces#enquire" data-enquire="">Get in touch</a>
           </div>
-          <div class="card__label-row"><span class="card__label">contacts</span></div>
+          <div class="card__label-row"><span class="card__label">work with us</span></div>
         </div>
       </article>
 
@@ -257,9 +262,21 @@
       <article class="card card--content" data-card="4" aria-label="Members">
         <div class="card__inner">
           <div class="card__body">
-            <p>Medulla is made up of multiple organizations and individuals working toward resilience in their own unique ways. Our work spans different fields, communities, and practices, but is connected by a shared commitment to building the capacities, relationships, and infrastructures needed to navigate crisis and create more liveable futures.</p>
-            <p>We are currently assembling the first cohort of Medulla members and are open to applications from organizations and individuals who want to join the space on a permanent basis. Medulla is intended to be more than a shared office: it is a community of practice where different forms of knowledge, action, and care can strengthen one another.</p>
-            <a class="card__cta" href="https://form.typeform.com/to/aBO8faXO" target="_blank" rel="noopener">Join</a>
+            <p>Medulla is made up of organizations and individuals working toward resilience in their own ways, across different fields, communities, and practices, connected by a shared commitment to the capacities, relationships, and infrastructures needed to navigate crisis and create more liveable futures.</p>
+            <p>We are assembling our first cohort of members and welcome applications from organizations and individuals who want to join on a permanent basis: a community of practice, more than a shared office.</p>
+            <div class="roster">
+              <p class="roster__title" id="roster-title">In the space</p>
+              <ul class="roster__list" aria-labelledby="roster-title">
+                <li><a href="https://www.nextlearning.earth" target="_blank" rel="noopener">nextlearning</a></li>
+                <li><a href="https://darkmatterlabs.org" target="_blank" rel="noopener">Dark Matter Labs</a></li>
+                <li><a href="https://oneresilientearth.org" target="_blank" rel="noopener">One Resilient Earth</a></li>
+                <li><span>VVSSL</span></li>
+                <li><a href="https://wissdem.org" target="_blank" rel="noopener">WissDem</a></li>
+                <li><span>CommunAid</span></li>
+              </ul>
+              <p class="roster__more">and independent practitioners</p>
+            </div>
+            <a class="card__cta" href="/spaces?interest=membership#enquire" data-enquire="membership">Become a member</a>
           </div>
           <div class="card__label-row"><span class="card__label">members</span></div>
         </div>
@@ -306,6 +323,105 @@
     </div><!-- /cards-stage -->
   </div><!-- /scroll-driver -->
 
+  <!-- Enquiry dialog — opened by any [data-enquire] trigger on this page -->
+  <dialog class="enquiry-dialog" data-enquiry-dialog aria-labelledby="enquiry-dialog-title" data-lenis-prevent>
+    <div class="enquiry-dialog__inner">
+      <div class="enquiry-dialog__head">
+        <div>
+          <h2 class="enquiry-dialog__title" id="enquiry-dialog-title">get in touch</h2>
+          <p class="enquiry-dialog__sub">One short form for everything. We usually reply within a few days.</p>
+        </div>
+        <button type="button" class="enquiry-dialog__close" data-enquiry-close>Close</button>
+      </div>
+      <!-- ENQUIRY FORM — keep identical to the canonical copy in spaces.html (tests/forms.test.js checks it) -->
+      <div class="enquiry-wrap" data-enquiry>
+        <form class="enquiry" name="enquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form>
+          <input type="hidden" name="form-name" value="enquiry" />
+          <p class="enquiry__trap" aria-hidden="true">
+            <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+          </p>
+
+          <fieldset class="enquiry__group" aria-describedby="enq-interest-error">
+            <legend class="enquiry__legend">What are you interested in?</legend>
+            <div class="enquiry__pills">
+              <label class="pill"><input type="radio" name="interest" value="membership" required /><span>Membership</span></label>
+              <label class="pill"><input type="radio" name="interest" value="hire" /><span>Hiring a space</span></label>
+              <label class="pill"><input type="radio" name="interest" value="host" /><span>Hosting an event</span></label>
+              <label class="pill"><input type="radio" name="interest" value="visit" /><span>Visiting / saying hello</span></label>
+            </div>
+            <p class="enquiry__error" id="enq-interest-error" data-message="Choose what you're interested in." hidden></p>
+          </fieldset>
+
+          <fieldset class="enquiry__group" data-group="membership">
+            <legend class="enquiry__legend">Which membership? <span class="enquiry__opt">(optional)</span></legend>
+            <div class="enquiry__pills enquiry__pills--small">
+              <label class="pill"><input type="radio" name="membership" value="flexible" /><span>Flexible desk</span></label>
+              <label class="pill"><input type="radio" name="membership" value="dedicated" /><span>Dedicated desk</span></label>
+              <label class="pill"><input type="radio" name="membership" value="team" /><span>Team desks</span></label>
+              <label class="pill"><input type="radio" name="membership" value="day-pass" /><span>Day pass</span></label>
+              <label class="pill"><input type="radio" name="membership" value="virtual" /><span>Virtual</span></label>
+              <label class="pill"><input type="radio" name="membership" value="not-sure" /><span>Not sure yet</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="enquiry__group" data-group="space">
+            <legend class="enquiry__legend">Which space? <span class="enquiry__opt">(optional)</span></legend>
+            <div class="enquiry__pills enquiry__pills--small">
+              <label class="pill"><input type="radio" name="space" value="ground-floor" /><span>Ground floor · 120 m²</span></label>
+              <label class="pill"><input type="radio" name="space" value="ground-floor-half" /><span>Half · 46 m²</span></label>
+              <label class="pill"><input type="radio" name="space" value="meeting-room" /><span>Meeting room · 16.5 m²</span></label>
+              <label class="pill"><input type="radio" name="space" value="not-sure" /><span>Not sure yet</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="enquiry__row" data-group="extras">
+            <legend class="visually-hidden">Timing and group size</legend>
+            <div class="enquiry__field">
+              <label for="enq-when">Date or timeframe <span class="enquiry__opt">(optional)</span></label>
+              <input id="enq-when" name="when" type="text" placeholder="e.g. a Thursday evening in November" />
+            </div>
+            <div class="enquiry__field">
+              <label for="enq-size">Roughly how many people? <span class="enquiry__opt">(optional)</span></label>
+              <input id="enq-size" name="size" type="text" inputmode="numeric" placeholder="e.g. 40" />
+            </div>
+          </fieldset>
+
+          <div class="enquiry__row">
+            <div class="enquiry__field">
+              <label for="enq-name">Name</label>
+              <input id="enq-name" name="name" type="text" autocomplete="name" required aria-describedby="enq-name-error" />
+              <p class="enquiry__error" id="enq-name-error" data-message="Please add your name." hidden></p>
+            </div>
+            <div class="enquiry__field">
+              <label for="enq-email">Email</label>
+              <input id="enq-email" name="email" type="email" autocomplete="email" required aria-describedby="enq-email-error" />
+              <p class="enquiry__error" id="enq-email-error" data-message="Please add an email address we can reply to." hidden></p>
+            </div>
+          </div>
+          <div class="enquiry__field">
+            <label for="enq-org">Organisation <span class="enquiry__opt">(optional)</span></label>
+            <input id="enq-org" name="organisation" type="text" autocomplete="organization" />
+          </div>
+          <div class="enquiry__field">
+            <label for="enq-message">Anything we should know? <span class="enquiry__opt">(optional)</span></label>
+            <textarea id="enq-message" name="message" rows="4" placeholder="Say hello, or ask us anything"></textarea>
+          </div>
+
+          <div class="enquiry__send">
+            <button class="enquiry__submit" type="submit">Send</button>
+            <p class="enquiry__fine">We only use your details to reply. See our <a href="/datenschutz">privacy notice</a>.</p>
+          </div>
+          <p class="enquiry__status" role="alert" hidden></p>
+        </form>
+        <div class="enquiry__done" tabindex="-1" hidden>
+          <p class="enquiry__done-title"></p>
+          <p class="enquiry__done-text"></p>
+        </div>
+      </div>
+      <!-- /ENQUIRY FORM -->
+    </div>
+  </dialog>
+
   <!-- Accessible content for screen readers -->
   <main id="main-content" class="a11y-content">
     <h1>Medulla — A physical space for turning shared urgency into collective resilience</h1>
@@ -319,11 +435,11 @@
     </section>
     <section id="members">
       <h2>Members</h2>
-      <p>Medulla is made up of multiple organizations and individuals working toward resilience in their own unique ways, connected by a shared commitment to building the capacities, relationships, and infrastructures needed to navigate crisis and create more liveable futures. We are currently assembling the first cohort of Medulla members and are open to applications from organizations and individuals who want to join the space on a permanent basis.</p>
+      <p>Medulla is made up of organizations and individuals working toward resilience in their own ways. In the space: nextlearning, Dark Matter Labs, One Resilient Earth, VVSSL, WissDem, CommunAid, and independent practitioners. We are assembling our first cohort of members and welcome applications.</p>
     </section>
-    <section id="contacts">
-      <h2>Contacts</h2>
-      <p>Medulla is open to collaboration with people, organizations, and initiatives working toward collective resilience, civic imagination, and new models for shared prosperity. Reach out at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
+    <section id="work-with-us">
+      <h2>Work with us</h2>
+      <p>Work here with a flexible, dedicated or team desk or a day pass; hire the ground floor (120 m²), half the ground floor (46 m²) or the meeting room (16.5 m²); or host an event on evenings 18:00–21:30. See <a href="/spaces">Spaces</a> for details, or get in touch through the enquiry form at <a href="/spaces#enquire">medulla.city/spaces</a> or at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
     </section>
     <section id="events">
       <h2>Events</h2>
@@ -332,6 +448,8 @@
   </main>
 
   <script src="scripts/lib/lenis.min.js"></script>
+  <script src="scripts/enquiry-core.js"></script>
+  <script src="scripts/enquiry.js"></script>
   <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -28,7 +28,9 @@
 
   function toggleError(form, id, show) {
     const el = form.querySelector(`#${id}`);
-    if (el) el.hidden = !show;
+    if (!el) return;
+    el.textContent = show ? el.dataset.message : '';
+    el.hidden = !show;
   }
 
   function applyPrefill(form, prefill) {
@@ -44,11 +46,11 @@
     setGroupVisibility(form, prefill.interest);
   }
 
-  function focusStart(form) {
+  function focusStart(form, preventScroll) {
     const target = currentInterest(form)
       ? form.querySelector('[name="name"]')
       : form.querySelector('[name="interest"]');
-    if (target) target.focus({ preventScroll: true });
+    if (target) target.focus({ preventScroll });
   }
 
   function validate(form) {
@@ -84,12 +86,15 @@
     const link = document.createElement('a');
     link.href = core.buildMailto(Object.fromEntries(data.entries()));
     link.textContent = 'email it to us';
-    status.replaceChildren(
-      'Something went wrong on our side. Your message is still here. Try again, or ',
-      link,
-      '.'
-    );
+    status.replaceChildren();
     status.hidden = false;
+    requestAnimationFrame(() => {
+      status.replaceChildren(
+        'Something went wrong on our side. Your message is still here. Try again, or ',
+        link,
+        '.'
+      );
+    });
   }
 
   async function submit(form, root) {
@@ -130,6 +135,7 @@
   function initForm(root) {
     const form = root.querySelector('form[data-enquiry-form]');
     if (!form) return null;
+    form.noValidate = true; // JS takes over validation with its inline errors
     form.addEventListener('change', (event) => {
       if (event.target.name === 'interest') {
         toggleError(form, 'enq-interest-error', false);
@@ -151,13 +157,13 @@
 
   const dialog = document.querySelector('dialog[data-enquiry-dialog]');
   let opener = null;
+  let backdropPointerDown = false;
 
   function openDialog(trigger) {
     opener = trigger;
-    resetIfDone(root);
     dialog.showModal();
     document.dispatchEvent(new CustomEvent('enquiry:open'));
-    focusStart(form);
+    focusStart(form, false);
   }
 
   if (dialog) {
@@ -165,8 +171,15 @@
       document.dispatchEvent(new CustomEvent('enquiry:close'));
       if (opener) opener.focus();
     });
+    dialog.addEventListener('pointerdown', (event) => {
+      backdropPointerDown = event.target === dialog;
+    });
     dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close(); // click on the backdrop
+      // only close when both the press and the release targeted the backdrop —
+      // a text selection can start inside a field and end up over the backdrop
+      const onBackdrop = backdropPointerDown && event.target === dialog;
+      backdropPointerDown = false;
+      if (onBackdrop) dialog.close();
     });
     dialog.querySelectorAll('[data-enquiry-close]').forEach((button) => {
       button.addEventListener('click', () => dialog.close());
@@ -181,13 +194,14 @@
     // let the browser handle new-tab / new-window clicks — the href carries the prefill
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    resetIfDone(root);
     applyPrefill(form, core.parsePrefill(trigger.dataset.enquire));
     if (dialog) {
       openDialog(trigger);
     } else {
       const section = document.getElementById('enquire') || root;
       section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      focusStart(form);
+      focusStart(form, true);
     }
   });
 })();

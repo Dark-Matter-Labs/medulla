@@ -178,6 +178,8 @@
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-enquire]');
     if (!trigger) return;
+    // let the browser handle new-tab / new-window clicks — the href carries the prefill
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     applyPrefill(form, core.parsePrefill(trigger.dataset.enquire));
     if (dialog) {

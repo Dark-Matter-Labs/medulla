@@ -255,9 +255,13 @@
         </div>
       </article>
 
-      <!-- Card 7 — Image: garden / courtyard exterior -->
+      <!-- Card 7 — Image: garden / courtyard exterior (the LCP image → high
+           priority; the other photos only show as edges at load → low).
+           Phones always get the 1200w file: in a tall portrait card the photo
+           is cropped to fill the height, so 800w looks soft and 1600w is
+           bandwidth the backdrop doesn't need. -->
       <article class="card card--image" data-card="7" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-garden.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-garden-1200.webp" /><img class="card__photo" src="assets/images/figma/card-garden-1200.webp" srcset="assets/images/figma/card-garden-800.webp 800w, assets/images/figma/card-garden-1200.webp 1200w, assets/images/figma/card-garden.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="high" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -274,7 +278,7 @@
 
       <!-- Card 5 — Image: conference room -->
       <article class="card card--image" data-card="5" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-conference.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-conference-1200.webp" /><img class="card__photo" src="assets/images/figma/card-conference-1200.webp" srcset="assets/images/figma/card-conference-800.webp 800w, assets/images/figma/card-conference-1200.webp 1200w, assets/images/figma/card-conference.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -292,7 +296,7 @@
 
       <!-- Card 3 — Image: interior spiral stair & banquette -->
       <article class="card card--image" data-card="3" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-stair.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-stair-1200.webp" /><img class="card__photo" src="assets/images/figma/card-stair-1200.webp" srcset="assets/images/figma/card-stair-800.webp 800w, assets/images/figma/card-stair-1200.webp 1200w, assets/images/figma/card-stair.webp 1600w" sizes="82vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -309,7 +313,7 @@
 
       <!-- Card 1 — Image: building facade -->
       <article class="card card--image" data-card="1" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-facade.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-facade-1200.webp" /><img class="card__photo" src="assets/images/figma/card-facade-1200.webp" srcset="assets/images/figma/card-facade-800.webp 800w, assets/images/figma/card-facade-1200.webp 1200w, assets/images/figma/card-facade.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -325,7 +329,7 @@
             <img class="card__intro-logo" src="assets/logos/medulla-wordmark-wide.svg" alt="Medulla" width="188" height="46" />
           </div>
         </div>
-        <img class="card__anatomy" src="assets/images/figma/medulla-anatomy.png" alt="" aria-hidden="true" loading="eager" />
+        <img class="card__anatomy" src="assets/images/figma/medulla-anatomy.webp" width="600" height="527" decoding="async" alt="" aria-hidden="true" loading="eager" />
       </article>
 
     </div><!-- /cards-stage -->

@@ -1,0 +1,32 @@
+# Browser caching. Netlify's default is `max-age=0, must-revalidate`, which makes
+# every repeat visit re-check every asset. HTML, CSS and site JS keep that
+# default so deploys show up immediately; static assets get cached.
+# File names are not content-hashed: when replacing a font or vendored library,
+# give it a new file name instead of overwriting it.
+
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/scripts/lib/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Images may be swapped in place (same name), so keep them fresh for a day and
+# revalidate in the background after that.
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/assets/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/assets/logos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"

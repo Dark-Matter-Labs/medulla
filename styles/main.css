@@ -37,8 +37,11 @@
      48/1416 ≈ 3.39% of content width, 48/1081 ≈ 4.44% of viewport height.
      Scaling the vertical step (and type) with viewport height keeps the
      Figma proportions on shorter windows so text never gets squeezed. */
-  --hstep:    clamp(26px, 3.1vw, 48px);  /* horizontal — card left offset  */
-  --vstep:    clamp(30px, 4.44vh, 48px); /* vertical — card height + top pad */
+  /* File-cabinet stack: a thin left edge (narrower than the card padding, so
+     no copy shows through) and a taller bottom tab carrying the breadcrumb. */
+  --hstep:    clamp(8px, 0.9vw, 14px);   /* horizontal — card left offset  */
+  --vstep:    clamp(32px, 4.8vh, 52px);  /* vertical — card height + top pad */
+  --tab:      12px;                      /* breadcrumb label size */
   --radius:   4px;             /* Corner Radius */
   --sidebar:  clamp(252px, 18vw, 312px);
 
@@ -161,7 +164,8 @@ html.lenis, html.lenis body { height: auto; }
    the copy (--fit) until it fits; clipping is only the last-resort guard. */
 .card__inner {
   position: absolute; inset: 0;
-  padding: var(--pt, 72px) var(--module) var(--module);
+  /* bottom padding centres the breadcrumb in the visible tab strip */
+  padding: var(--pt, 72px) var(--module) calc((var(--vstep) - var(--tab)) / 2);
   display: flex; flex-direction: column; justify-content: space-between;
   gap: clamp(12px, 2vh, 24px);
   overflow: hidden;
@@ -195,8 +199,8 @@ html.lenis, html.lenis body { height: auto; }
 /* Section label — bottom-left of each card (also the click target to jump) */
 .card__label-row { display: flex; align-items: center; width: 100%; }
 .card__label {
-  font-family: var(--font-display);
-  font-size: var(--h1); line-height: var(--h1-lh);
+  font-family: var(--font-text); font-weight: 500;
+  font-size: var(--tab); line-height: 1; letter-spacing: 0.12em;
   text-transform: uppercase; white-space: nowrap;
   cursor: pointer; transition: opacity 0.2s var(--ease);
 }
@@ -279,7 +283,7 @@ html.lenis, html.lenis body { height: auto; }
 
 .card__label-row--events {
   position: relative;
-  padding: clamp(14px, 3vh, 64px) var(--module) var(--module);
+  padding: calc((var(--vstep) - var(--tab)) / 2) var(--module);
   background: url('../assets/images/figma/events-bg.png') center / cover no-repeat;
 }
 
@@ -330,7 +334,8 @@ html.lenis, html.lenis body { height: auto; }
        horizontal step is kept tight: 8 steps of staircase come straight out
        of the reading width, and the sans body copy needs that width. */
     --hstep: clamp(6px, 2.2vw, 12px);
-    --vstep: clamp(15px, 2.5vh, 24px);
+    --vstep: clamp(19px, 2.9vh, 26px);
+    --tab: 11px;
     --h1: clamp(28px, 8vw, 42px);
     --h2: clamp(26px, 7vw, 38px);
     --b1: clamp(15px, 4vw, 17px);   --b1-lh: 1.45;
@@ -356,7 +361,7 @@ html.lenis, html.lenis body { height: auto; }
     font-size: 12px; line-height: 1.25; max-width: 52vw; }
   .sidebar__addr { display: none; }
 
-  .card__inner { padding: var(--pt, 36px) 20px 20px; gap: 14px; }
+  .card__inner { padding: var(--pt, 36px) 20px calc((var(--vstep) - var(--tab)) / 2); gap: 14px; }
   .card[data-card="0"] { --pt: 20px; }  /* nothing parks above the intro */
   .card__body, .card__body--intro { max-width: none; }
   .card__intro-logo { width: 132px; }
@@ -372,7 +377,7 @@ html.lenis, html.lenis body { height: auto; }
   .event__body { display: none; }
   .event__media { flex: 0 0 auto; width: clamp(60px, 19vw, 86px); height: clamp(60px, 19vw, 86px); }
   .event__more { font-size: clamp(26px, 8vw, 40px); }
-  .card__label-row--events { padding: clamp(14px, 3vh, 36px) 20px 16px; }
+  .card__label-row--events { padding: calc((var(--vstep) - var(--tab)) / 2) 20px; }
 }
 
 /* ── Static stacked layout (no deck): reduced motion, or screens too short

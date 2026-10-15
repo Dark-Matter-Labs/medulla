@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Medulla membership</title>
+<title>Medulla Contribution Model (Abridged)</title>
+<meta property="og:title" content="Medulla Contribution Model (Abridged)">
+<meta property="og:description" content="Membership of Medulla, a physical space in Berlin: the space, who is here, contributions and space hire.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://medulla.city/membership/">
+<meta property="og:image" content="https://medulla.city/assets/icons/medulla-share.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Medulla Contribution Model (Abridged)">
 <meta name="description" content="Membership of Medulla, a physical space in Berlin for turning shared urgency into collective resilience: the space, contributions and space hire.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#E5E5E5">
@@ -148,12 +155,13 @@ section.shut h2{margin:0}
   .side nav{position:static;flex-direction:column;gap:2px;padding:14px 0 0;margin:0;border-top:2px solid var(--ya);border-bottom:0;background:none;backdrop-filter:none;overflow:visible}
   .side nav a{border:0;padding:3px 0;font-size:15px;background:none}
   .side nav a:hover{background:none;opacity:.55}
-  .board{margin-left:300px;padding:24px 24px 48px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+  .board{margin-left:300px;padding:24px 24px 48px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
   .board section{margin:0}
-  #about,#join{grid-column:1/-1}
-  #about{order:1}#space{order:2}#roles{order:3}#prices{order:4}#pot{order:5}#members{order:6}#try{order:7}#ideas{order:8}
+  #about,#prices,#join{grid-column:1/-1}
+  .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start}
+  .cols h3:first-child{margin-top:0}
+  #about{order:1}#space{order:2}#members{order:3}#prices{order:4}#join{order:5}
 }
-@media (min-width:1600px){.board{grid-template-columns:repeat(3,minmax(0,1fr))}#try{grid-column:span 2}}
 /* Type scale: one big title (the sidebar); card headings are small labels, like medulla.city's tabs */
 section{padding:22px 24px 24px}
 section h2{font:500 12.5px/1.3 var(--text);letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px;color:var(--ink)}
@@ -191,7 +199,7 @@ section .ded h4,section .group h4{font:400 19px/1.1 var(--display);margin:0 0 8p
 </header>
 
 <nav aria-label="Sections">
-<a href="#about">About</a><a href="#space">The space</a><a href="#members">Who is here</a><a href="#prices">Contributions</a><a href="#hire">Space hire</a><a href="#join">Join</a>
+<a href="#about">About</a><a href="#space">The space</a><a href="#members">Who is here</a><a href="#prices">Contributions</a><a href="#join">Join</a>
 </nav>
 </aside>
 <div class="board">
@@ -226,6 +234,7 @@ section .ded h4,section .group h4{font:400 19px/1.1 var(--display);margin:0 0 8p
 
 <section id="prices">
 <h2>Contributions</h2>
+<div class="cols"><div>
 <h3>Monthly contribution, per person</h3>
 <div class="prices">
   <div></div><div class="h">Up to 2 days a week</div><div class="h">3 or more days a week</div>
@@ -235,10 +244,8 @@ section .ded h4,section .group h4{font:400 19px/1.1 var(--display);margin:0 0 8p
 </div>
 <p class="note">Legal form sets the level: non-profits contribute at the lower level and for-profits at the higher one, whatever their size. Contributions can be discussed case by case.</p>
 <div class="callout warm">Every member can host <b>1 event a month free</b> on the ground floor.</div>
-</section>
-
-<section id="hire">
-<h2>Space hire</h2>
+</div><div>
+<h3>Space hire</h3>
 <div class="wrap"><table>
 <tr><th>Space</th><th class="n">Full day</th><th class="n">Member rate</th><th>By the hour</th></tr>
 <tr><td>Ground floor, full · 120 m²</td><td class="n">€450</td><td class="n"><span class="memrate">€225</span></td><td>€75, minimum 3 hours</td></tr>
@@ -246,7 +253,9 @@ section .ded h4,section .group h4{font:400 19px/1.1 var(--display);margin:0 0 8p
 <tr><td>Meeting room · 16.5 m²</td><td class="n">€250</td><td class="n"><span class="memrate">€125</span></td><td>€35, minimum 4 hours</td></tr>
 </table></div>
 <p class="note">Members hire at half the full rate. Paying hires get priority booking.</p>
+</div></div>
 </section>
+
 
 <section id="join">
 <h2>Join</h2>

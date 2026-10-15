@@ -31,14 +31,13 @@
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
-# The contribution model is a password-locked working draft. Keep it out of search engines.
+# The contribution model, full and abridged, is password-locked. Keep it out of search engines.
 [[headers]]
-  for = "/contribution/*"
+  for = "/contribution-full/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow, noarchive"
 
-# The membership page is password-locked too. Keep it out of search engines.
 [[headers]]
-  for = "/membership/*"
+  for = "/contribution/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow, noarchive"

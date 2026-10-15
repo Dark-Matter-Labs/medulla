@@ -23,11 +23,8 @@
 
   const OPTIONS = Object.freeze({
     membership: [
-      { value: 'flexible', label: 'Flexible desk' },
-      { value: 'dedicated', label: 'Dedicated desk' },
-      { value: 'team', label: 'Team desks' },
-      { value: 'day-pass', label: 'Day pass' },
-      { value: 'virtual', label: 'Virtual' },
+      { value: 'two-days', label: 'Up to 2 days a week' },
+      { value: 'five-days', label: 'Up to 5 days a week' },
       { value: 'not-sure', label: 'Not sure yet' },
     ],
     space: [

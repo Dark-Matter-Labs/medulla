@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const core = require('../scripts/enquiry-core.js');
 
 test('parsePrefill reads an interest and an option', () => {
-  assert.deepEqual(core.parsePrefill('membership:dedicated'), { interest: 'membership', option: 'dedicated' });
+  assert.deepEqual(core.parsePrefill('membership:five-days'), { interest: 'membership', option: 'five-days' });
   assert.deepEqual(core.parsePrefill('hire:meeting-room'), { interest: 'hire', option: 'meeting-room' });
 });
 
@@ -20,7 +20,7 @@ test('parsePrefill returns nulls for empty or unknown tokens', () => {
 
 test('parsePrefill drops options that do not belong to the interest', () => {
   assert.deepEqual(core.parsePrefill('membership:meeting-room'), { interest: 'membership', option: null });
-  assert.deepEqual(core.parsePrefill('visit:dedicated'), { interest: 'visit', option: null });
+  assert.deepEqual(core.parsePrefill('visit:five-days'), { interest: 'visit', option: null });
 });
 
 test('prefillFromSearch reads ?interest= and ?option=', () => {
@@ -52,12 +52,12 @@ test('encodeBody url-encodes form pairs for Netlify', () => {
 
 test('buildMailto builds subject and body from the filled fields only', () => {
   const href = core.buildMailto({
-    interest: 'membership', membership: 'dedicated',
+    interest: 'membership', membership: 'five-days',
     name: 'Ana', email: 'ana@example.org', organisation: '  ', message: 'Hi there',
   });
   assert.ok(href.startsWith('mailto:hello@medulla.city?'));
   const url = new URL(href);
-  assert.equal(url.searchParams.get('subject'), 'Enquiry: Membership · Dedicated desk');
+  assert.equal(url.searchParams.get('subject'), 'Enquiry: Membership · Up to 5 days a week');
   assert.equal(url.searchParams.get('body'), 'Name: Ana\nEmail: ana@example.org\n\nHi there');
 });
 

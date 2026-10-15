@@ -36,3 +36,9 @@
   for = "/contribution/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow, noarchive"
+
+# The membership page is password-locked too. Keep it out of search engines.
+[[headers]]
+  for = "/membership/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

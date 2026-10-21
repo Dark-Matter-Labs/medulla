@@ -93,6 +93,32 @@
                internally and hands control back to the deck at its edges
                (directional handoff in main.js + native overscroll on touch). -->
           <div class="events">
+            <a class="event" href="https://luma.com/fj2uc4kq" target="_blank" rel="noopener"
+               aria-label="Amazon Meets Berlin: Women-Led Solutions for the Cocoa Bioeconomy — more on Luma">
+              <div class="event__content">
+                <div class="event__text">
+                  <p class="event__date">Friday, 16 October, 17:30 – 19:30</p>
+                  <h3 class="event__title">Amazon Meets Berlin</h3>
+                  <p class="event__subtitle">Women-Led Solutions for the Cocoa Bioeconomy — with Ka'a Harmony Foundation</p>
+                  <p class="event__body">Drawing on stories from women-led cocoa cooperatives in the Amazon, an evening on when the cocoa bioeconomy can deliver on its promise of conservation, climate resilience, and equitable local development — and what a well-designed value chain could mean for communities and the forest alike. The first in Ka'a Harmony's series tracing Amazon products back to the communities behind them; free, donations welcome.</p>
+                </div>
+                <div class="event__media"><img src="assets/images/figma/event-amazon-meets-berlin.webp" alt="Amazon Meets Berlin: Women-Led Solutions for the Cocoa Bioeconomy — Ka'a Harmony Foundation" loading="lazy" /></div>
+              </div>
+              <span class="event__overlay" aria-hidden="true"><span class="event__more">more on luma</span></span>
+            </a>
+            <a class="event" href="https://luma.com/difo5kmh" target="_blank" rel="noopener"
+               aria-label="Berlin 2050° — Building a City-Wide Heat Resilience Ecosystem — more on Luma">
+              <div class="event__content">
+                <div class="event__text">
+                  <p class="event__date">Thursday, 8 October, 18:30 – 21:00</p>
+                  <h3 class="event__title">Berlin 2050°</h3>
+                  <p class="event__subtitle">Building a City-Wide Heat Resilience Ecosystem</p>
+                  <p class="event__body">Building on the heat risk clinic at Public Vitality Camp, an evening on what a city-wide heat resilience strategy for Berlin would take — who has standing to act, which existing measures can be used, and how to coordinate across sectors — with insight from Madrid 2050° and Civic Ledger. Seeding Optionality Session #1, part of xCO's pop-up series at Medulla; in English, with some German support.</p>
+                </div>
+                <div class="event__media"><img src="assets/images/figma/event-berlin-2050.webp" alt="Berlin 2050° — Building a City-Wide Heat Resilience Ecosystem" loading="lazy" /></div>
+              </div>
+              <span class="event__overlay" aria-hidden="true"><span class="event__more">more on luma</span></span>
+            </a>
             <a class="event" href="https://luma.com/cdf6cepu" target="_blank" rel="noopener"
                aria-label="Public Vitality Field Assembly — more on Luma">
               <div class="event__content">
@@ -230,9 +256,13 @@
         </div>
       </article>
 
-      <!-- Card 7 — Image: garden / courtyard exterior -->
+      <!-- Card 7 — Image: garden / courtyard exterior (the LCP image → high
+           priority; the other photos only show as edges at load → low).
+           Phones always get the 1200w file: in a tall portrait card the photo
+           is cropped to fill the height, so 800w looks soft and 1600w is
+           bandwidth the backdrop doesn't need. -->
       <article class="card card--image" data-card="7" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-garden.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-garden-1200.webp" /><img class="card__photo" src="assets/images/figma/card-garden-1200.webp" srcset="assets/images/figma/card-garden-800.webp 800w, assets/images/figma/card-garden-1200.webp 1200w, assets/images/figma/card-garden.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="high" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -254,7 +284,7 @@
 
       <!-- Card 5 — Image: conference room -->
       <article class="card card--image" data-card="5" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-conference.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-conference-1200.webp" /><img class="card__photo" src="assets/images/figma/card-conference-1200.webp" srcset="assets/images/figma/card-conference-800.webp 800w, assets/images/figma/card-conference-1200.webp 1200w, assets/images/figma/card-conference.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -284,7 +314,7 @@
 
       <!-- Card 3 — Image: interior spiral stair & banquette -->
       <article class="card card--image" data-card="3" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-stair.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-stair-1200.webp" /><img class="card__photo" src="assets/images/figma/card-stair-1200.webp" srcset="assets/images/figma/card-stair-800.webp 800w, assets/images/figma/card-stair-1200.webp 1200w, assets/images/figma/card-stair.webp 1600w" sizes="82vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -301,7 +331,7 @@
 
       <!-- Card 1 — Image: building facade -->
       <article class="card card--image" data-card="1" aria-hidden="true">
-        <img class="card__photo" src="assets/images/figma/card-facade.webp" alt="" loading="lazy" />
+        <picture><source media="(max-width: 820px)" srcset="assets/images/figma/card-facade-1200.webp" /><img class="card__photo" src="assets/images/figma/card-facade-1200.webp" srcset="assets/images/figma/card-facade-800.webp 800w, assets/images/figma/card-facade-1200.webp 1200w, assets/images/figma/card-facade.webp 1600w" sizes="94vw" alt="" decoding="async" fetchpriority="low" /></picture>
         <span class="card__scrim"></span>
       </article>
 
@@ -317,7 +347,7 @@
             <img class="card__intro-logo" src="assets/logos/medulla-wordmark-wide.svg" alt="Medulla" width="188" height="46" />
           </div>
         </div>
-        <img class="card__anatomy" src="assets/images/figma/medulla-anatomy.png" alt="" aria-hidden="true" loading="eager" />
+        <img class="card__anatomy" src="assets/images/figma/medulla-anatomy.webp" width="600" height="527" decoding="async" alt="" aria-hidden="true" loading="eager" />
       </article>
 
     </div><!-- /cards-stage -->
@@ -440,7 +470,7 @@
     </section>
     <section id="events">
       <h2>Events</h2>
-      <p>Public Vitality Field Assembly — patterns, blind spots and emerging connections, Friday 18 September (<a href="https://luma.com/cdf6cepu">more on Luma</a>). Life Repair Kit: Tools for Tough Times — with Lia Meißner, Friday 18 September (<a href="https://luma.com/ht2qaebo">more on Luma</a>). Planetary Berlin: Governing Hydrological Continuities — with Prateek Shankar, Friday 18 September (<a href="https://luma.com/izwljp4m?tk=Tg9Dsa">more on Luma</a>). Risiken im Zusammenspiel — with Johanna Siebenlist and Caroline Paulick-Thiel, Friday 18 September (<a href="https://luma.com/b1s7ssgs">more on Luma</a>). Investing in civic infrastructure — with Dark Matter Labs and Politics for Tomorrow, Tuesday 4 August (<a href="https://luma.com/ztxd9cgb?tk=msup4Q">more on Luma</a>). One Resilient Earth: Berlin Community Get-Together, Wednesday 15 July (<a href="https://luma.com/znebwd2r">more on Luma</a>). Transforming public sector from within — Book launch with Lindsay Cole, Tuesday 9 June (<a href="https://luma.com/5wh9qaiw">more on Luma</a>). Governance Beyond Alignment — Bioregioning and the work of holding difference, Friday 12 June (<a href="https://luma.com/zm5isk9n">more on Luma</a>). From Lines to Loops: shifting beyond the dominant rhythms of time, Thursday 2 July (<a href="https://luma.com/d7xkoe78?tk=w8oks3">more on Luma</a>). Medulla Show &amp; Tell: Lunch with Edgar Pieterse, Thursday 2 July (<a href="https://luma.com/tt1wjg0r">more on Luma</a>).</p>
+      <p>Amazon Meets Berlin: Women-Led Solutions for the Cocoa Bioeconomy — with Ka'a Harmony Foundation, Friday 16 October (<a href="https://luma.com/fj2uc4kq">more on Luma</a>). Berlin 2050° — Building a City-Wide Heat Resilience Ecosystem, Thursday 8 October (<a href="https://luma.com/difo5kmh">more on Luma</a>). Public Vitality Field Assembly — patterns, blind spots and emerging connections, Friday 18 September (<a href="https://luma.com/cdf6cepu">more on Luma</a>). Life Repair Kit: Tools for Tough Times — with Lia Meißner, Friday 18 September (<a href="https://luma.com/ht2qaebo">more on Luma</a>). Planetary Berlin: Governing Hydrological Continuities — with Prateek Shankar, Friday 18 September (<a href="https://luma.com/izwljp4m?tk=Tg9Dsa">more on Luma</a>). Risiken im Zusammenspiel — with Johanna Siebenlist and Caroline Paulick-Thiel, Friday 18 September (<a href="https://luma.com/b1s7ssgs">more on Luma</a>). Investing in civic infrastructure — with Dark Matter Labs and Politics for Tomorrow, Tuesday 4 August (<a href="https://luma.com/ztxd9cgb?tk=msup4Q">more on Luma</a>). One Resilient Earth: Berlin Community Get-Together, Wednesday 15 July (<a href="https://luma.com/znebwd2r">more on Luma</a>). Transforming public sector from within — Book launch with Lindsay Cole, Tuesday 9 June (<a href="https://luma.com/5wh9qaiw">more on Luma</a>). Governance Beyond Alignment — Bioregioning and the work of holding difference, Friday 12 June (<a href="https://luma.com/zm5isk9n">more on Luma</a>). From Lines to Loops: shifting beyond the dominant rhythms of time, Thursday 2 July (<a href="https://luma.com/d7xkoe78?tk=w8oks3">more on Luma</a>). Medulla Show &amp; Tell: Lunch with Edgar Pieterse, Thursday 2 July (<a href="https://luma.com/tt1wjg0r">more on Luma</a>).</p>
     </section>
   </main>
 

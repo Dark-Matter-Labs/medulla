@@ -272,9 +272,9 @@
           <div class="card__body">
             <p>Medulla is open to people, organizations, and initiatives working toward collective resilience, civic imagination, and new models for shared prosperity. There are three ways to be part of the space:</p>
             <ul class="doors">
-              <li><a class="door" href="/spaces#work"><span class="door__name">Work here</span><span class="door__text">Desks for up to 2 or 5 days a week</span></a></li>
-              <li><a class="door" href="/spaces#hire"><span class="door__name">Hire a space</span><span class="door__text">Ground floor (120 m²), half (46 m²), meeting room (16.5 m²)</span></a></li>
+              <li><a class="door" href="/spaces#work"><span class="door__name">Work here</span><span class="door__text">A desk for up to 2 days, or 3 or more days a week</span></a></li>
               <li><a class="door" href="/spaces#host"><span class="door__name">Host an event</span><span class="door__text">Evenings 18:00–21:30, for work that fits Medulla's purpose</span></a></li>
+              <li><a class="door" href="/spaces?interest=partner#enquire" data-enquire="partner"><span class="door__name">Partner with us</span><span class="door__text">Programmes, research and projects we build together</span></a></li>
             </ul>
             <a class="card__cta" href="/spaces#enquire" data-enquire="">Get in touch</a>
           </div>
@@ -293,20 +293,19 @@
         <div class="card__inner">
           <div class="card__body">
             <p>Medulla is made up of organizations and individuals working toward resilience in their own ways, across different fields, communities, and practices, connected by a shared commitment to the capacities, relationships, and infrastructures needed to navigate crisis and create more liveable futures.</p>
-            <p>We are assembling our first cohort of members and welcome applications from organizations and individuals who want to join on a permanent basis: a community of practice, more than a shared office.</p>
+            <p>We are assembling our next cohort of members and welcome applications from organizations and individuals who want to join on a permanent basis: a community of practice, more than a shared office.</p>
             <div class="roster">
               <p class="roster__title" id="roster-title">In the space</p>
               <ul class="roster__list" aria-labelledby="roster-title">
                 <li><a href="https://www.nextlearning.earth" target="_blank" rel="noopener">nextlearning</a></li>
                 <li><a href="https://darkmatterlabs.org" target="_blank" rel="noopener">Dark Matter Labs</a></li>
                 <li><a href="https://oneresilientearth.org" target="_blank" rel="noopener">One Resilient Earth</a></li>
-                <li><span>VVSSL</span></li>
+                <li><a href="https://vvssl.com/" target="_blank" rel="noopener">VVSSL</a></li>
                 <li><a href="https://wissdem.org" target="_blank" rel="noopener">WissDem</a></li>
-                <li><span>CommunAid</span></li>
               </ul>
               <p class="roster__more">and independent practitioners</p>
             </div>
-            <a class="card__cta" href="/spaces?interest=membership#enquire" data-enquire="membership">Become a member</a>
+            <a class="card__cta" href="/spaces?interest=membership#enquire" data-enquire="membership">Join our project</a>
           </div>
           <div class="card__label-row"><span class="card__label">members</span></div>
         </div>
@@ -373,11 +372,10 @@
 
           <fieldset class="enquiry__group" aria-describedby="enq-interest-error">
             <legend class="enquiry__legend">What are you interested in?</legend>
-            <div class="enquiry__pills">
-              <label class="pill"><input type="radio" name="interest" value="membership" required /><span>Membership</span></label>
-              <label class="pill"><input type="radio" name="interest" value="hire" /><span>Hiring a space</span></label>
-              <label class="pill"><input type="radio" name="interest" value="host" /><span>Hosting an event</span></label>
-              <label class="pill"><input type="radio" name="interest" value="visit" /><span>Visiting / saying hello</span></label>
+            <div class="enquiry__pills enquiry__pills--choices">
+              <label class="pill pill--choice"><input type="radio" name="interest" value="membership" required /><span>Membership<small>A desk and a place in the community, for people and organisations whose work is aligned with Medulla's mission.</small></span></label>
+              <label class="pill pill--choice"><input type="radio" name="interest" value="host" /><span>Hosting an event<small>For events that connect to Medulla's purpose: turning shared urgency into collective resilience.</small></span></label>
+              <label class="pill pill--choice"><input type="radio" name="interest" value="partner" /><span>Partner with us<small>For mission-aligned organisations who want to build programmes, research or projects with us.</small></span></label>
             </div>
             <p class="enquiry__error" id="enq-interest-error" data-message="Choose what you're interested in." hidden></p>
           </fieldset>
@@ -386,20 +384,11 @@
             <legend class="enquiry__legend">Which membership? <span class="enquiry__opt">(optional)</span></legend>
             <div class="enquiry__pills enquiry__pills--small">
               <label class="pill"><input type="radio" name="membership" value="two-days" /><span>Up to 2 days a week</span></label>
-              <label class="pill"><input type="radio" name="membership" value="five-days" /><span>Up to 5 days a week</span></label>
+              <label class="pill"><input type="radio" name="membership" value="three-plus" /><span>3 or more days a week</span></label>
               <label class="pill"><input type="radio" name="membership" value="not-sure" /><span>Not sure yet</span></label>
             </div>
           </fieldset>
 
-          <fieldset class="enquiry__group" data-group="space">
-            <legend class="enquiry__legend">Which space? <span class="enquiry__opt">(optional)</span></legend>
-            <div class="enquiry__pills enquiry__pills--small">
-              <label class="pill"><input type="radio" name="space" value="ground-floor" /><span>Ground floor · 120 m²</span></label>
-              <label class="pill"><input type="radio" name="space" value="ground-floor-half" /><span>Half · 46 m²</span></label>
-              <label class="pill"><input type="radio" name="space" value="meeting-room" /><span>Meeting room · 16.5 m²</span></label>
-              <label class="pill"><input type="radio" name="space" value="not-sure" /><span>Not sure yet</span></label>
-            </div>
-          </fieldset>
 
           <fieldset class="enquiry__row" data-group="extras">
             <legend class="visually-hidden">Timing and group size</legend>
@@ -431,7 +420,7 @@
           </div>
           <div class="enquiry__field">
             <label for="enq-message">Anything we should know? <span class="enquiry__opt">(optional)</span></label>
-            <textarea id="enq-message" name="message" rows="4" placeholder="Say hello, or ask us anything"></textarea>
+            <textarea id="enq-message" name="message" rows="4" placeholder="Tell us what you have in mind"></textarea>
           </div>
 
           <div class="enquiry__send">
@@ -462,11 +451,11 @@
     </section>
     <section id="members">
       <h2>Members</h2>
-      <p>Medulla is made up of organizations and individuals working toward resilience in their own ways. In the space: nextlearning, Dark Matter Labs, One Resilient Earth, VVSSL, WissDem, CommunAid, and independent practitioners. We are assembling our first cohort of members and welcome applications.</p>
+      <p>Medulla is made up of organizations and individuals working toward resilience in their own ways. In the space: nextlearning, Dark Matter Labs, One Resilient Earth, VVSSL, WissDem and independent practitioners. We are assembling our next cohort of members and welcome applications.</p>
     </section>
     <section id="work-with-us">
       <h2>Work with us</h2>
-      <p>Work here with a desk for up to 2 or 5 days a week (members can also host one event a month for free); hire the ground floor (120 m²), half the ground floor (46 m²) or the meeting room (16.5 m²); or host an event on evenings 18:00–21:30. See <a href="/spaces">Spaces</a> for details, or get in touch through the enquiry form at <a href="/spaces#enquire">medulla.city/spaces</a> or at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
+      <p>Work here with a desk for up to 2 days, or 3 or more days a week (members can also host one event a month for free); host an event on evenings 18:00–21:30; or partner with us on programmes, research and projects. See <a href="/spaces">Spaces</a> for details, or get in touch through the enquiry form at <a href="/spaces#enquire">medulla.city/spaces</a> or at <a href="mailto:hello@medulla.city">hello@medulla.city</a>. Dresdener Str. 113B, Berlin.</p>
     </section>
     <section id="events">
       <h2>Events</h2>

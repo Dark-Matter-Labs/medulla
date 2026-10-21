@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const EXPECTED_FIELDS = [
   'bot-field', 'email', 'form-name', 'interest', 'membership', 'message',
-  'name', 'organisation', 'size', 'space', 'when',
+  'name', 'organisation', 'size', 'when',
 ];
 
 function enquiryFieldNames(file) {
@@ -45,4 +45,11 @@ function enquiryFormBlock(file) {
 
 test('index.html and spaces.html enquiry form markup is identical', () => {
   assert.equal(enquiryFormBlock('index.html'), enquiryFormBlock('spaces.html'));
+});
+
+test('no page offers space hire any more', () => {
+  for (const file of ['index.html', 'spaces.html']) {
+    const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
+    assert.doesNotMatch(html, /hire a space|hiring a space|name="space"|#hire/i, file);
+  }
 });

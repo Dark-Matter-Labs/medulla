@@ -8,29 +8,21 @@
   else root.MedullaEnquiry = api;
 })(typeof self !== 'undefined' ? self : this, function () {
   const CONTACT_EMAIL = 'hello@medulla.city';
-  const DEFAULT_PROMPT = 'Say hello, or ask us anything';
+  const DEFAULT_PROMPT = 'Tell us what you have in mind';
 
   const INTERESTS = Object.freeze([
     { value: 'membership', label: 'Membership', optionField: 'membership', extras: false,
       prompt: "What you work on, and when you'd like to start" },
-    { value: 'hire', label: 'Hiring a space', optionField: 'space', extras: true,
-      prompt: "What you're planning: a meeting, workshop, screening…" },
     { value: 'host', label: 'Hosting an event', optionField: null, extras: true,
       prompt: "What the event is, and who it's for" },
-    { value: 'visit', label: 'Visiting / saying hello', optionField: null, extras: false,
-      prompt: DEFAULT_PROMPT },
+    { value: 'partner', label: 'Partner with us', optionField: null, extras: false,
+      prompt: 'What you have in mind, and how we might work on it together' },
   ]);
 
   const OPTIONS = Object.freeze({
     membership: [
       { value: 'two-days', label: 'Up to 2 days a week' },
-      { value: 'five-days', label: 'Up to 5 days a week' },
-      { value: 'not-sure', label: 'Not sure yet' },
-    ],
-    space: [
-      { value: 'ground-floor', label: 'Ground floor · 120 m²' },
-      { value: 'ground-floor-half', label: 'Half · 46 m²' },
-      { value: 'meeting-room', label: 'Meeting room · 16.5 m²' },
+      { value: 'three-plus', label: '3 or more days a week' },
       { value: 'not-sure', label: 'Not sure yet' },
     ],
   });
@@ -62,7 +54,6 @@
     const interest = getInterest(interestValue);
     return {
       membership: Boolean(interest && interest.optionField === 'membership'),
-      space: Boolean(interest && interest.optionField === 'space'),
       extras: Boolean(interest && interest.extras),
     };
   }

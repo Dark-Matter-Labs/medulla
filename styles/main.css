@@ -412,7 +412,10 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-display); font-weight: 400;
   font-size: var(--h1); line-height: 0.8; text-transform: uppercase;
 }
-.spaces__lede { font-size: clamp(19px, 1.6vw, 23px); line-height: 1.45; max-width: 46ch; margin-top: 22px; }
+.spaces__lede { font-size: clamp(19px, 1.6vw, 23px); line-height: 1.45; max-width: 52ch; margin-top: 22px; }
+.spaces__lede + .spaces__lede { margin-top: 12px; }
+.spaces__text { column-count: 2; column-gap: 36px; max-width: 900px; margin-bottom: 18px; font-size: 16px; }
+.spaces__text p + p { margin-top: 0.6em; }
 .spaces__jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .spaces__head {
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
@@ -579,6 +582,7 @@ html:has(dialog[open]) { overflow: hidden; }
   .offer { grid-template-columns: 1fr; }
   .offer .btn-pill { justify-self: start; }
   .host { grid-template-columns: 1fr; }
+  .spaces__text { column-count: 1; }
 
 }
 

@@ -173,16 +173,19 @@ html.lenis, html.lenis body { height: auto; }
 }
 .card__label-row { flex-shrink: 0; }
 /* top padding scales with --vstep (matches Figma 24/72/120/168/216 @ 48px) */
-.card[data-card="0"] { --pt: calc(0.5 * var(--vstep)); }  /* intro */
-.card[data-card="2"] { --pt: calc(1.5 * var(--vstep)); }  /* dresdener */
-.card[data-card="4"] { --pt: calc(2.5 * var(--vstep)); }  /* members */
-.card[data-card="6"] { --pt: calc(3.5 * var(--vstep)); }  /* contacts */
+/* card i clears the i cards parked above it ((i+1) half-steps) */
+.card[data-card="0"] { --pt: calc(0.5 * var(--vstep)); }  /* welcome */
+.card[data-card="1"] { --pt: calc(1 * var(--vstep)); }    /* purpose */
+.card[data-card="3"] { --pt: calc(2 * var(--vstep)); }    /* programme */
+.card[data-card="4"] { --pt: calc(2.5 * var(--vstep)); }  /* community */
+.card[data-card="6"] { --pt: calc(3.5 * var(--vstep)); }  /* approach */
+.card[data-card="7"] { --pt: calc(4 * var(--vstep)); }    /* join us */
 .card[data-card="8"] { --pt: clamp(72px, 5.5 * var(--vstep), 264px); }  /* events — extra step clears the parked stack (4×vstep) with breathing room */
 
 .card__body { max-width: min(506px, 100%); }
 .card__body p { font-size: calc(var(--b1) * var(--fit, 1)); line-height: var(--b1-lh); }
 .card__body p + p { margin-top: 0.65em; }
-.card__body--intro { max-width: min(553px, 100%); }
+.card__body--intro { max-width: min(640px, 100%); }
 /* the brand name keeps its serif italic inside the sans intro text */
 .card__body--intro em { font-family: var(--font-display); font-size: 1.15em; line-height: 1; }
 
@@ -204,15 +207,51 @@ html.lenis, html.lenis body { height: auto; }
 .roster__list li:not(:last-child)::after { content: '·'; margin: 0 0.45em; opacity: 0.5; }
 .roster__list a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(0, 0, 0, 0.35); }
 
-/* Work with us → three doors to /spaces */
-.doors { list-style: none; margin-top: clamp(12px, 2vh, 22px); border-bottom: 1px solid rgba(0, 0, 0, 0.14); }
-.door {
-  display: grid; grid-template-columns: minmax(8.5em, auto) 1fr auto; align-items: baseline;
-  gap: 2px 16px; padding: clamp(8px, 1.2vh, 14px) 0; border-top: 1px solid rgba(0, 0, 0, 0.14);
+/* Section headline + reading columns. The deck cards are wide; two columns
+   keep line length readable and let the longer copy fit a card. */
+.card__body--wide { max-width: min(1040px, 100%); }
+.card__title {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: calc(clamp(26px, 3.9vh, 44px) * var(--fit, 1)); line-height: 1.05;
+  margin-bottom: 0.45em;
 }
-.door::after { content: '→'; }
-.door__name { font-family: var(--font-display); font-size: clamp(22px, 2.8vh, 30px); line-height: 1.05; }
-.door__text { font-size: var(--b2); line-height: 1.4; }
+.card__cols { column-count: 2; column-gap: clamp(24px, 3vw, 48px); }
+.card__body .card__aside, .card__body .card__links, .card__body .tiers__title { font-size: calc(var(--b2) * var(--fit, 1)); margin-top: 0.9em; }
+/* full-width lines under the columns stay readable */
+.card__body--wide > p { max-width: 80ch; }
+.card__aside { opacity: 0.75; }
+.card__links a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Approach → personal / collective / systemic, as widening rings */
+.card__body .tiers__title { text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+.tiers {
+  list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 36px); margin: 0.6em 0 0.9em;
+}
+.tier { position: relative; padding-top: 30px; border-top: 1px solid rgba(0, 0, 0, 0.18); }
+.tier::before {
+  content: ''; position: absolute; left: 0;
+  border: 1px solid var(--ink); border-radius: 50%;
+  top: -7px; width: 14px; height: 14px; background: var(--bg);
+}
+.tier:nth-child(2)::before { top: -10px; width: 20px; height: 20px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--ink); }
+.tier:nth-child(3)::before { top: -13px; width: 26px; height: 26px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--ink), 0 0 0 7px var(--bg), 0 0 0 8px var(--ink); }
+.tier__name, .path__name {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: calc(clamp(20px, 2.6vh, 26px) * var(--fit, 1)); line-height: 1.1; margin-bottom: 0.3em;
+}
+.card__body .tier p, .card__body .path p { font-size: calc(var(--b2) * var(--fit, 1)); line-height: 1.45; }
+
+/* Join us → three ways in, each with its own enquiry button */
+.paths {
+  list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 36px); margin-top: 0.9em;
+}
+.path { display: flex; flex-direction: column; padding-top: 14px; border-top: 1px solid rgba(0, 0, 0, 0.18); }
+.card__body .path p + p { margin-top: 0.5em; }
+.card__body .path .path__note { opacity: 0.75; }
+.path .card__cta { align-self: flex-start; margin-top: auto; padding-top: 0.42em; }
+.path p:last-of-type { margin-bottom: clamp(12px, 1.8vh, 20px); }
 
 /* Section label — bottom-left of each card (also the click target to jump) */
 .card__label-row { display: flex; align-items: center; width: 100%; }
@@ -243,7 +282,6 @@ html.lenis, html.lenis body { height: auto; }
   box-shadow: var(--shadow-img);
 }
 .card--intro .card__inner { z-index: 2; }
-.card__intro-logo { display: block; width: 188px; height: auto; }
 .card__anatomy {
   position: absolute; z-index: 1;
   top: 220px; right: -110px; width: 557px; max-width: none; height: auto;
@@ -522,7 +560,6 @@ html:has(dialog[open]) { overflow: hidden; }
   .card__inner { padding: var(--pt, 36px) 20px calc((var(--vstep) - var(--tab)) / 2); gap: 14px; }
   .card[data-card="0"] { --pt: 20px; }  /* nothing parks above the intro */
   .card__body, .card__body--intro { max-width: none; }
-  .card__intro-logo { width: 132px; }
   /* subtle, low in the card so it reads as texture behind the wordmark */
   .card__anatomy { width: 86%; right: -8%; top: auto; bottom: 2%; opacity: 0.4; }
 
@@ -543,14 +580,12 @@ html:has(dialog[open]) { overflow: hidden; }
   .offer .btn-pill { justify-self: start; }
   .host { grid-template-columns: 1fr; }
 
-  .door { grid-template-columns: 1fr auto; }
-  .door__text { grid-column: 1; }
 }
 
-/* ── Static stacked layout (no deck): reduced motion, or screens too short
-   for the staircase (phones in landscape). Keep in sync with STATIC_QUERY
-   in main.js. ─────────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce), (orientation: landscape) and (max-height: 500px) {
+/* ── Static stacked layout (no deck): reduced motion, phones and small
+   tablets (the copy is too long for a phone-sized card), or screens too
+   short for the staircase. Keep in sync with STATIC_QUERY in main.js. ──── */
+@media (prefers-reduced-motion: reduce), (max-width: 820px), (orientation: landscape) and (max-height: 500px) {
   :root { --h1: 40px; --h2: 40px; --b1: 19px; --b2: 16px; }
   .card { will-change: auto; transform: none !important; }
 
@@ -588,6 +623,9 @@ html:has(dialog[open]) { overflow: hidden; }
   .card__inner { position: relative; inset: auto; padding: 48px var(--module); }
   .card[data-card] { --pt: 48px; }
   .card__body, .card__body--intro { max-width: 640px; }
+  .card__cols { column-count: 1; }
+  .tiers, .paths { grid-template-columns: 1fr; row-gap: 36px; }
+  .tier { padding-top: 26px; }
   .card--image { height: 56vw; min-height: 280px; }
   .card--intro { padding-bottom: 0; }
   .card__anatomy { position: relative; top: auto; right: auto; left: auto; bottom: auto;
@@ -599,4 +637,12 @@ html:has(dialog[open]) { overflow: hidden; }
   .page-spaces .spaces { margin-left: 0; padding-left: var(--module); }
 
   .enquiry-dialog[open] { animation: none; }
+}
+
+/* Phones use the static layout but keep the compact event rows from the
+   mobile block, and drop the tagline (the Welcome headline repeats it). */
+@media (max-width: 820px) {
+  .event__content { flex-direction: row; gap: 14px; }
+  .event__media { width: clamp(60px, 19vw, 86px); height: clamp(60px, 19vw, 86px); }
+  .sidebar__tagline { display: none; }
 }

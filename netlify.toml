@@ -1,24 +1,61 @@
 # Netlify publishes only the website's own files. The repo keeps its flat
 # layout (so `npx serve .` and the tests keep working from the root); the
 # build copies an allowlist into _site/, and only _site/ is deployed. Docs,
-# tests, tooling and this file stay out of the public site.
+# tests, README and tooling stay out of the public site.
 #
-# New public top-level files or folders must be added to the cp line below.
-# Root *.html is copied by glob, so new pages are picked up automatically.
+# A new public top-level folder must be added to the cp line below, or it will
+# 404 after deploy. Root *.html is copied by glob, so new root pages are picked
+# up automatically.
 
 [build]
   publish = "_site"
   command = """
     rm -rf _site && mkdir _site \
-    && cp -R *.html styles scripts assets _site/ \
+    && cp -R *.html styles scripts assets contribution contribution-full _site/ \
     && find _site -name '.DS_Store' -delete \
     && echo '*' > _site/.gitignore
   """
 
-# Fonts are cached for a year. File names are not content-hashed, so never
-# overwrite a font in place: give a changed font a new file name (and update
-# the @font-face / preload references), or returning visitors keep the old one.
+# Browser caching. Netlify's default is `max-age=0, must-revalidate`, which makes
+# every repeat visit re-check every asset. HTML, CSS and site JS keep that
+# default so deploys show up immediately; static assets get cached.
+# File names are not content-hashed: when replacing a font or vendored library,
+# give it a new file name instead of overwriting it.
+
 [[headers]]
   for = "/assets/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/scripts/lib/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Images may be swapped in place (same name), so keep them fresh for a day and
+# revalidate in the background after that.
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/assets/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/assets/logos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# The contribution model, full and abridged, is password-locked. Keep it out of search engines.
+[[headers]]
+  for = "/contribution-full/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/contribution/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

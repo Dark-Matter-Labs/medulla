@@ -1,3 +1,21 @@
+# Netlify publishes only the website's own files. The repo keeps its flat
+# layout (so `npx serve .` and the tests keep working from the root); the
+# build copies an allowlist into _site/, and only _site/ is deployed. Docs,
+# tests, README and tooling stay out of the public site.
+#
+# A new public top-level folder must be added to the cp line below, or it will
+# 404 after deploy. Root *.html is copied by glob, so new root pages are picked
+# up automatically.
+
+[build]
+  publish = "_site"
+  command = """
+    rm -rf _site && mkdir _site \
+    && cp -R *.html styles scripts assets contribution contribution-full _site/ \
+    && find _site -name '.DS_Store' -delete \
+    && echo '*' > _site/.gitignore
+  """
+
 # Browser caching. Netlify's default is `max-age=0, must-revalidate`, which makes
 # every repeat visit re-check every asset. HTML, CSS and site JS keep that
 # default so deploys show up immediately; static assets get cached.

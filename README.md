@@ -32,7 +32,7 @@ scripts/main.js   Scroll-driven card deck, progress bar, copy fitting
 scripts/lib/      Vendored Lenis (smooth scroll)
 assets/           Self-hosted fonts, icons, logos, and images (assets/images/figma)
 docs/             Design notes and implementation plans
-netlify.toml      Cache headers
+netlify.toml      Publish allowlist and cache headers
 ```
 
 CSS owns the card geometry and JS only measures it, so desktop and mobile share one engine. The deck falls back to a static stacked layout under `prefers-reduced-motion` and on very short landscape screens.
@@ -49,6 +49,7 @@ Events live in the `.events` list inside the Events card in [index.html](index.h
 
 - **Typography:** Instrument Serif and Instrument Sans, self-hosted in `assets/fonts` under the SIL OFL (licences included).
 - **Caching:** HTML, CSS and site JS revalidate on every visit so deploys show up immediately. Fonts and vendored libraries are cached long-term, and file names are not content-hashed. To replace a font or library, give the new file a new name instead of overwriting it. See [netlify.toml](netlify.toml).
+- **Publishing:** Netlify deploys only what the build in [netlify.toml](netlify.toml) copies into `_site/`: root `*.html`, `styles/`, `scripts/`, `assets/`, `contribution/` and `contribution-full/`. `docs/`, `tests/`, this README and everything else stay private. **If you add a new top-level folder that should be public, add it to the `cp` line in `netlify.toml`**, or it will 404 after deploy. New root `*.html` pages are picked up automatically. Check the deploy preview before merging.
 - **Membership:** the Join link goes to a Typeform application form, and events are listed on Luma.
 
 ## Contact

@@ -460,6 +460,13 @@ html.lenis, html.lenis body { height: auto; }
 .enquiry { display: flex; flex-direction: column; gap: 18px; max-width: 640px; }
 .enquiry__group, .enquiry__row { border: 0; min-width: 0; }
 .enquiry__group[hidden], .enquiry__row[hidden] { display: none; }
+/* The follow-up groups overlap in one grid cell; unselected ones keep their
+   space but are invisible (and disabled by enquiry.js), so the form height
+   stays the same whichever interest is chosen. */
+.enquiry__more { display: grid; }
+.enquiry__more > * { grid-area: 1 / 1; align-self: start; }
+.enquiry__more > .enquiry__group[hidden] { display: block; visibility: hidden; }
+.enquiry__more > .enquiry__row[hidden] { display: grid; visibility: hidden; }
 .enquiry__legend, .enquiry__field label { display: block; font-size: 15px; font-weight: 500; margin-bottom: 8px; }
 .enquiry__opt { font-weight: 400; opacity: 0.65; }
 .enquiry__pills { display: flex; flex-wrap: wrap; gap: 8px; }

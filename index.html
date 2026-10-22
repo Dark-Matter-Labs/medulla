@@ -439,27 +439,29 @@
             <p class="enquiry__error" id="enq-interest-error" data-message="Choose what you're interested in." hidden></p>
           </fieldset>
 
-          <fieldset class="enquiry__group" data-group="membership">
-            <legend class="enquiry__legend">Which membership? <span class="enquiry__opt">(optional)</span></legend>
-            <div class="enquiry__pills enquiry__pills--small">
-              <label class="pill"><input type="radio" name="membership" value="two-days" /><span>Up to 2 days a week</span></label>
-              <label class="pill"><input type="radio" name="membership" value="three-plus" /><span>3 or more days a week</span></label>
-              <label class="pill"><input type="radio" name="membership" value="not-sure" /><span>Not sure yet</span></label>
-            </div>
-          </fieldset>
+          <!-- follow-up questions share one slot sized to the tallest, so the form doesn't jump -->
+          <div class="enquiry__more">
+            <fieldset class="enquiry__group" data-group="membership">
+              <legend class="enquiry__legend">Which membership? <span class="enquiry__opt">(optional)</span></legend>
+              <div class="enquiry__pills enquiry__pills--small">
+                <label class="pill"><input type="radio" name="membership" value="two-days" /><span>Up to 2 days a week</span></label>
+                <label class="pill"><input type="radio" name="membership" value="three-plus" /><span>3 or more days a week</span></label>
+                <label class="pill"><input type="radio" name="membership" value="not-sure" /><span>Not sure yet</span></label>
+              </div>
+            </fieldset>
 
-
-          <fieldset class="enquiry__row" data-group="extras">
-            <legend class="visually-hidden">Timing and group size</legend>
-            <div class="enquiry__field">
-              <label for="enq-when">Date or timeframe <span class="enquiry__opt">(optional)</span></label>
-              <input id="enq-when" name="when" type="text" placeholder="e.g. a Thursday evening in November" />
-            </div>
-            <div class="enquiry__field">
-              <label for="enq-size">Roughly how many people? <span class="enquiry__opt">(optional)</span></label>
-              <input id="enq-size" name="size" type="text" inputmode="numeric" placeholder="e.g. 40" />
-            </div>
-          </fieldset>
+            <fieldset class="enquiry__row" data-group="extras">
+              <legend class="visually-hidden">Timing and group size</legend>
+              <div class="enquiry__field">
+                <label for="enq-when">Date or timeframe <span class="enquiry__opt">(optional)</span></label>
+                <input id="enq-when" name="when" type="text" placeholder="e.g. a Thursday evening in November" />
+              </div>
+              <div class="enquiry__field">
+                <label for="enq-size">Roughly how many people? <span class="enquiry__opt">(optional)</span></label>
+                <input id="enq-size" name="size" type="text" inputmode="numeric" placeholder="e.g. 40" />
+              </div>
+            </fieldset>
+          </div>
 
           <div class="enquiry__row">
             <div class="enquiry__field">

@@ -43,6 +43,13 @@ test('promptFor gives an interest-specific placeholder with a default', () => {
   assert.equal(core.promptFor(null), 'Tell us what you have in mind');
 });
 
+test('noteFor fills the follow-up slot only when there are no follow-up questions', () => {
+  assert.equal(core.noteFor(null), 'Choose what you’re interested in. We’ll only ask what we need.');
+  assert.equal(core.noteFor('partner'), 'No extra questions: tell us below what you’d like to build together.');
+  assert.equal(core.noteFor('membership'), '');
+  assert.equal(core.noteFor('host'), '');
+});
+
 test('encodeBody url-encodes form pairs for Netlify', () => {
   assert.equal(
     core.encodeBody([['form-name', 'enquiry'], ['name', 'Ana Lima'], ['message', 'a&b=c']]),

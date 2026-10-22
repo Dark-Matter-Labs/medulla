@@ -9,6 +9,7 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   const CONTACT_EMAIL = 'hello@medulla.city';
   const DEFAULT_PROMPT = 'Tell us what you have in mind';
+  const DEFAULT_NOTE = 'Choose what you’re interested in. We’ll only ask what we need.';
 
   const INTERESTS = Object.freeze([
     { value: 'membership', label: 'Membership', optionField: 'membership', extras: false,
@@ -16,7 +17,8 @@
     { value: 'host', label: 'Hosting an event', optionField: null, extras: true,
       prompt: "What the event is, and who it's for" },
     { value: 'partner', label: 'Partner with us', optionField: null, extras: false,
-      prompt: 'What you have in mind, and how we might work on it together' },
+      prompt: 'What you have in mind, and how we might work on it together',
+      note: 'No extra questions: tell us below what you’d like to build together.' },
   ]);
 
   const OPTIONS = Object.freeze({
@@ -58,6 +60,12 @@
     };
   }
 
+  // Shown in the follow-up slot when an interest has no follow-up questions.
+  function noteFor(interestValue) {
+    const interest = getInterest(interestValue);
+    return interest ? interest.note || '' : DEFAULT_NOTE;
+  }
+
   function promptFor(interestValue) {
     const interest = getInterest(interestValue);
     return interest ? interest.prompt : DEFAULT_PROMPT;
@@ -92,6 +100,6 @@
 
   return Object.freeze({
     CONTACT_EMAIL, INTERESTS, OPTIONS,
-    getInterest, parsePrefill, prefillFromSearch, visibleFieldsFor, promptFor, encodeBody, buildMailto,
+    getInterest, parsePrefill, prefillFromSearch, visibleFieldsFor, noteFor, promptFor, encodeBody, buildMailto,
   });
 });

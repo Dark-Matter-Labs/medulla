@@ -220,7 +220,7 @@ html.lenis, html.lenis body { height: auto; }
 /* full-width lines under the columns stay readable */
 .card__body--wide > p { max-width: 80ch; }
 .card__aside { opacity: 0.75; }
-.card__links a { text-decoration: underline; text-underline-offset: 3px; }
+.card__links a, .card__cols a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Approach → personal / collective / systemic, as widening rings */
 .card__body .tiers__title { text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
@@ -458,6 +458,8 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ── Enquiry form (Spaces page + home-page dialog) ─────────────────────── */
 .enquiry { display: flex; flex-direction: column; gap: 18px; max-width: 640px; }
+/* the class sets display, so the hidden attribute needs restating (success state hides the form) */
+.enquiry[hidden] { display: none; }
 .enquiry__group, .enquiry__row { border: 0; min-width: 0; }
 .enquiry__group[hidden], .enquiry__row[hidden] { display: none; }
 /* The follow-up groups overlap in one grid cell; unselected ones keep their

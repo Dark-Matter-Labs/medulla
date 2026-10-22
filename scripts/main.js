@@ -3,8 +3,9 @@
 // a thin cascading stack (it stays visible). Card 0 (intro) parks first; card 8
 // (events) is the base and stays. Works at every width — CSS owns the geometry
 // (card heights / steps), JS just measures it, so desktop and mobile share one
-// engine. A static stacked layout is used under prefers-reduced-motion and on
-// screens too short for the staircase (phones in landscape).
+// engine. A static stacked layout is used under prefers-reduced-motion, on
+// phones (the copy is too long for a phone-sized card), and on screens too
+// short for the staircase.
 
 const cards  = Array.from(document.querySelectorAll('.card'));
 const driver = document.querySelector('.scroll-driver');
@@ -20,7 +21,7 @@ const FIT_STEP = 0.025;
 const fitCards = cards.filter((c) => c.classList.contains('card--content') && !c.classList.contains('card--events'));
 
 // Keep in sync with the static-layout @media rule in main.css.
-const STATIC_QUERY = '(prefers-reduced-motion: reduce), (orientation: landscape) and (max-height: 500px)';
+const STATIC_QUERY = '(prefers-reduced-motion: reduce), (max-width: 820px), (orientation: landscape) and (max-height: 500px)';
 const staticMQ     = window.matchMedia(STATIC_QUERY);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function deckActive() { return !staticMQ.matches; }
@@ -169,6 +170,10 @@ driver.addEventListener('click', (e) => {
   const card = e.target.closest('.card');
   if (card) scrollToCard(parseInt(card.dataset.card, 10));
 });
+
+// ── Enquiry dialog: freeze the deck behind it (see enquiry.js) ──────────────
+document.addEventListener('enquiry:open', () => { if (lenis) lenis.stop(); });
+document.addEventListener('enquiry:close', () => { if (lenis) lenis.start(); });
 
 // ── Events list: scroll internally, hand back to the deck at the edges ──────
 // When the events list overflows it scrolls on its own; the moment it reaches

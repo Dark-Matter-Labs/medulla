@@ -577,8 +577,8 @@ html:has(dialog[open]) { overflow: hidden; }
   .event__more { font-size: clamp(26px, 8vw, 40px); }
   .card__label-row--events { padding: calc((var(--vstep) - var(--tab)) / 2) 20px; }
 
-  /* Spaces page: full width, clear the fixed bottom brand bar */
-  .page-spaces .spaces { margin-left: 0; padding: 16px 16px calc(var(--bar-h) + 32px); }
+  /* Spaces page: full width (the sidebar is a static top bar on phones) */
+  .page-spaces .spaces { margin-left: 0; padding: 16px 16px 32px; }
   .offer { grid-template-columns: 1fr; }
   .offer .btn-pill { justify-self: start; }
   .host { grid-template-columns: 1fr; }

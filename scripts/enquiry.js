@@ -22,6 +22,11 @@
       group.hidden = !show;
       group.disabled = !show; // disabled fields are left out of the submission
     });
+    const note = form.querySelector('.enquiry__note');
+    if (note) {
+      note.textContent = core.noteFor(interest);
+      note.hidden = !note.textContent;
+    }
     const message = form.querySelector('[name="message"]');
     if (message) message.placeholder = core.promptFor(interest);
   }

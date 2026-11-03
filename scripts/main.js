@@ -171,6 +171,12 @@ driver.addEventListener('click', (e) => {
   if (card) scrollToCard(parseInt(card.dataset.card, 10));
 });
 
+// Keyboard users: Tab into a card that's buried in the stack → bring it forward.
+driver.addEventListener('focusin', (e) => {
+  const card = e.target.closest('.card');
+  if (card) scrollToCard(parseInt(card.dataset.card, 10));
+});
+
 // ── Enquiry dialog: freeze the deck behind it (see enquiry.js) ──────────────
 document.addEventListener('enquiry:open', () => { if (lenis) lenis.stop(); });
 document.addEventListener('enquiry:close', () => { if (lenis) lenis.start(); });

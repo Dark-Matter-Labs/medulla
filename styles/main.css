@@ -128,6 +128,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 .sidebar__links a { width: max-content; }
 .sidebar__addr { opacity: 0.85; }
+.sidebar__icon { display: none; }
 .sidebar__legal { margin-top: 10px; opacity: 0.6; }
 .sidebar__links [aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
 
@@ -568,6 +569,10 @@ html:has(dialog[open]) { overflow: hidden; }
     font-size: 12px; line-height: 1.25; max-width: 62vw; }
   /* WCAG 2.2 target size: at least 24px tall to tap */
   .sidebar__links a { padding-block: 5px; }
+  /* LinkedIn / Instagram as icons so the links fit one line; labels stay for screen readers */
+  .sidebar__social { display: inline-flex; padding-inline: 4px; }
+  .sidebar__icon { display: block; width: 18px; height: 18px; }
+  .sidebar__social-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .sidebar__addr { display: none; }
   .sidebar__email { display: none; }
 
@@ -664,6 +669,9 @@ html:has(dialog[open]) { overflow: hidden; }
   .sidebar__tagline { display: none; }
   .sidebar__addr { display: none; }
   .sidebar__legal { display: none; }
+  /* keep Take part · Events · Get in touch · icons on one line */
+  .sidebar__links { column-gap: clamp(8px, 3.2vw, 16px); font-size: clamp(14px, 4.3vw, 16px); }
+  .sidebar__social + .sidebar__social { margin-left: -6px; }
   .site-footer {
     display: block; padding: 28px var(--module) 40px;
     font-size: var(--b2); line-height: var(--b2-lh); opacity: 0.6;

@@ -373,10 +373,23 @@
   const msg = $('#send-msg');
   function say(text, tone) { msg.textContent = text; if (tone) msg.dataset.tone = tone; else delete msg.dataset.tone; }
 
-  function summary(p) {
-    const lines = [p.title, ...p.rows.map(([k, v]) => `${k}: ${v}`)];
-    if (p.price) lines.push(`${p.price.label}: ${p.price.amount}${p.price.detail ? ` (${p.price.detail})` : ''}`);
-    return lines.concat(p.notes).join('\n');
+  // The copy we receive by email: one field per detail, so it reads top to bottom.
+  function copyFields(a, p) {
+    const who = a.organisation || a.name;
+    const amount = p.price ? p.price.amount.replace(/ /g, ' ') : '';
+    const rows = p.rows.map(([k, v]) => `${k}: ${v}`.replace(/ /g, ' '));
+    if (a.path === 'join') {
+      if (a.guest) rows.push('Intern or guest: yes');
+      if (a.hostEvents) rows.push('Would like to host events: yes');
+    }
+    const notes = [...p.notes];
+    if (p.list.length) notes.unshift(`Included: ${p.list.join('; ')}.`);
+    return {
+      subject: `Proposal from ${who} · ${p.title}${amount ? ` · ${amount}` : ''}`,
+      Name: a.name, Email: a.email, Organisation: a.organisation || '—', Path: p.title,
+      Contribution: p.price ? `${amount}${p.price.detail ? ` (${p.price.detail})` : ''}` : 'No fixed price: we talk it through',
+      Answers: rows.join('\n') || '—', Notes: notes.join('\n\n') || '—', 'Prices dated': pricing.updated,
+    };
   }
 
   form.addEventListener('submit', async (e) => {
@@ -388,10 +401,7 @@
     const p = build(a);
     const button = $('#send');
     button.disabled = true; form.setAttribute('aria-busy', 'true'); say('');
-    const body = new URLSearchParams({
-      'form-name': 'proposal', name: a.name, email: a.email, organisation: a.organisation,
-      path: a.path, total: p.price ? p.price.amount : '', summary: summary(p),
-    });
+    const body = new URLSearchParams({ 'form-name': 'proposal', ...copyFields(a, p) });
     const sending = fetch('/', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     // The file name of the saved PDF comes from the page title.
     const title = document.title;

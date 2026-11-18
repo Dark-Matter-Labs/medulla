@@ -73,14 +73,98 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 @media (hover: hover) and (pointer: fine) { .choice:hover { border-color: #000; } }
 .check { display: flex; gap: 12px; align-items: center; min-height: 44px; font: 400 16px/1.4 var(--text); margin-bottom: 4px; cursor: pointer; }
 .check + label:not(.check) { margin-top: 16px; }
-.send { border-top: 1px solid var(--line); padding-top: 24px; }
+#app { transition: opacity 280ms var(--ease), transform 280ms var(--ease); }
+@starting-style { #app { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) { @starting-style { #app { transform: translateY(8px); } } }
 
-/* new questions fade in where supported; hiding stays instant */
-[data-path], [data-when], #app { transition: opacity 220ms var(--ease), transform 220ms var(--ease); }
-@starting-style { [data-path], [data-when], #app { opacity: 0; } }
+/* ── the journey: a trail of answered forks, the current question at its tip ── */
+.journey { --trunk: 15px; } /* x of the line, shared by trail and card */
+.trail { list-style: none; margin: 8px 0 0; padding: 0; }
+.trail__item { position: relative; padding: 0 0 6px 44px; }
+/* the line: runs through every node and on into the question card */
+.trail__item::before { content: ""; position: absolute; left: var(--trunk); top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #000; transform-origin: top; }
+.trail__item::after { content: ""; position: absolute; left: var(--trunk); top: 16px; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--ya); border: 2px solid #000; }
+.trail__node { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 6px 10px; margin-left: -10px; border-radius: 4px; cursor: pointer; }
+.trail__node:focus-visible { outline: 2px solid #000; outline-offset: 0; }
+@media (hover: hover) and (pointer: fine) { .trail__node:hover { background: rgba(255, 255, 255, .55); } .trail__node:hover .trail__label { text-decoration: underline; text-underline-offset: 3px; } }
+.trail__name { display: block; font: 500 11px/1.3 var(--text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.trail__label { display: block; font: 400 22px/1.15 var(--display); overflow-wrap: anywhere; }
+/* branches not taken: short faint twigs off the node, angled up and away */
+.trail__stubs i { position: absolute; left: var(--trunk); top: 16px; width: 18px; height: 1.5px; background: rgba(0, 0, 0, .28); transform-origin: left center; border-radius: 1px; }
+.trail__stubs i:nth-child(1) { transform: rotate(-150deg); }
+.trail__stubs i:nth-child(2) { transform: rotate(-125deg); width: 13px; }
+.trail__stubs i:nth-child(3) { transform: rotate(-170deg); width: 10px; }
 @media (prefers-reduced-motion: no-preference) {
-  @starting-style { [data-path], [data-when] { transform: translateY(-4px); } #app { transform: translateY(8px); } }
+  .trail__item.is-new::before { animation: grow 420ms var(--ease) both; }
+  .trail__item.is-new::after { animation: bud 420ms var(--ease) 180ms both; }
+  .trail__item.is-new .trail__node, .trail__item.is-new .trail__stubs { animation: fade-in 360ms var(--ease) 220ms both; }
 }
+@keyframes grow { from { transform: scaleY(0); } }
+@keyframes bud { from { transform: scale(0); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+/* the current question: a card at the tip of the line, with a bud where it joins */
+.q { position: relative; padding-top: 18px; }
+.q::before { content: ""; position: absolute; left: var(--trunk); top: 0; height: 18px; width: 2px; margin-left: -1px; background: #000; }
+.trail:empty + .q { padding-top: 0; }
+.trail:empty + .q::before { display: none; }
+.step { position: relative; background: var(--paper); border-radius: 6px; box-shadow: var(--shadow); padding: 26px 22px 20px; margin: 0; }
+.step::before { content: ""; position: absolute; left: var(--trunk); top: 0; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #000; box-shadow: 0 0 0 4px var(--bg); }
+.step:focus { outline: none; }
+.step:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
+.step[aria-invalid] { box-shadow: var(--shadow), inset 3px 0 0 var(--warn); }
+.step__q { font: 400 clamp(28px, 4vw, 36px)/1.08 var(--display); margin: 0 0 18px; padding: 0; text-wrap: balance; float: left; width: 100%; } /* float: legend sits inside the card's flow */
+.step__q + * { clear: both; }
+.step > p { margin: 0 0 16px; }
+.step__err { color: var(--warn); font-size: 14px; margin: 12px 0 0; }
+.step__err:empty { margin: 0; }
+.step__nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; }
+.step__nav .step__next { margin-left: auto; }
+.step__back { font-size: 15px; color: var(--muted); }
+.step--end .step__back { display: inline-block; margin-bottom: 16px; }
+/* Moving between forks. With View Transitions: the old card lifts away fast, the new one
+   rises in, and the chosen answer flies into its trail node. Direction flips when going back. */
+.step { view-transition-name: step; } /* only one step is ever rendered, so the name stays unique */
+::view-transition-group(root) { animation-duration: 260ms; }
+::view-transition-old(step) { animation: 150ms cubic-bezier(.4, 0, 1, 1) both vt-out; }
+::view-transition-new(step) { animation: 440ms var(--ease) 60ms both vt-in; }
+html[data-dir=back]::view-transition-old(step) { animation-name: vt-out-back; }
+html[data-dir=back]::view-transition-new(step) { animation-name: vt-in-back; }
+::view-transition-group(answer) { animation-duration: 520ms; animation-timing-function: var(--ease); z-index: 2; }
+::view-transition-old(answer), ::view-transition-new(answer) { height: 100%; object-fit: none; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px) scale(.98); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(22px) scale(.985); } }
+@keyframes vt-out-back { to { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes vt-in-back { from { opacity: 0; transform: translateY(-22px) scale(.985); } }
+/* Without View Transitions, the card's own keyframe does the entrance */
+@supports not (view-transition-name: none) {
+  @media (prefers-reduced-motion: no-preference) { .step:not([hidden]) { animation: step-in 420ms var(--ease) both; } }
+}
+@media (prefers-reduced-motion: reduce) { .step:not([hidden]) { animation: fade-in 200ms ease both; } }
+@keyframes step-in { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+
+/* icons and photos on the answers */
+.ico { width: 26px; height: 26px; flex: none; margin-left: auto; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(0, 0, 0, .45); transition: color 150ms ease, transform 300ms var(--ease); }
+.choice:has(input:checked) .ico { color: #000; transform: rotate(-8deg) scale(1.08); }
+.choice { transition: background-color 150ms ease, box-shadow 150ms ease, transform 160ms var(--ease); }
+.choice:active { transform: scale(.985); }
+.choice--photo { display: grid; grid-template-columns: 112px auto 1fr; grid-template-areas: "img dot text"; align-items: center; gap: 0 12px; padding: 8px 14px 8px 8px; }
+.choice--photo img { grid-area: img; width: 112px; height: 76px; object-fit: cover; border-radius: 3px; filter: saturate(.85); transition: filter 200ms ease; }
+.choice--photo input { grid-area: dot; margin-top: 0; }
+.choice--photo > span { grid-area: text; }
+.choice--photo:has(input:checked) img { filter: none; }
+@media (max-width: 420px) { .choice--photo { grid-template-columns: 84px auto 1fr; } .choice--photo img { width: 84px; height: 64px; } }
+.ico--fruit { display: block; width: 40px; height: 40px; margin: -4px 0 12px; color: #000; float: none; clear: both; }
+
+/* the end of the path: a few leaves drift up once */
+.step--end { overflow: hidden; }
+.leaf { position: absolute; bottom: 12px; left: var(--x); width: 18px; height: 18px; fill: var(--yb); stroke: #000; stroke-width: 1.2; pointer-events: none; opacity: 0; animation: drift 1600ms var(--ease) both; }
+@keyframes drift { 0% { opacity: 0; transform: translateY(0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--drift), -150px) rotate(var(--spin)); } }
+.choices--tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.choices--tags .choice { padding: 10px 14px; }
+.stepper { display: flex; align-items: center; gap: 10px; }
+.stepper input { margin: 0; text-align: center; max-width: 5.5rem; font: 400 28px/1 var(--display); padding: 8px; }
+.stepper__btn { width: 48px; padding: 0; font: 400 24px/1 var(--text); background: #fff; color: #000; border: 1px solid var(--control); }
 
 /* layout: questions left, live proposal right */
 .layout { display: grid; gap: 32px; }
@@ -112,6 +196,14 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 .p-foot { margin: 24px 0 4px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .p-address { margin: 0; font-size: 12px; color: var(--muted); }
 
+.p-reset { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 8px 14px; background: transparent; color: var(--muted); border: 1px solid var(--line); font: 500 13px/1 var(--text); flex-basis: 100%; justify-content: center; }
+.p-reset .ico { width: 16px; height: 16px; margin: 0; color: currentColor; }
+.p-reset.is-armed { color: #fff; background: var(--warn); border-color: var(--warn); }
+@media (hover: hover) and (pointer: fine) { .p-reset:hover:not(.is-armed) { color: #000; border-color: #000; opacity: 1; } .p-reset:hover .ico { transform: rotate(-90deg); } }
+@media (min-width: 520px) { .p-reset { flex-basis: auto; margin-left: auto; } .p-head .p-meta { order: 3; flex-basis: 100%; text-align: right; } }
+.legal { max-width: 1180px; margin: 0 auto; padding: 0 16px 32px; font-size: 13px; color: var(--muted); }
+.step .fine { margin: 14px 0 0; }
+
 /* phones: a price bar while the proposal is off screen */
 .peek { display: none; }
 @media (max-width: 899px) {
@@ -127,7 +219,7 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 @media print {
   @page { size: A4; margin: 16mm; }
   html, body { background: #fff; }
-  .top, .skip, .gate, .q, .peek, form[name=proposal] { display: none !important; }
+  .top, .skip, .gate, .journey, .peek, .legal, .p-reset, form[name=proposal] { display: none !important; }
   main { padding: 0; max-width: none; }
   .layout { display: block; }
   .proposal { position: static; max-height: none; overflow: visible; box-shadow: none; border-radius: 0; padding: 18px 0 0; background: #fff; border-top: 4px solid var(--ya); }

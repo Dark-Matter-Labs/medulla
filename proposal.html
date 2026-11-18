@@ -21,7 +21,7 @@
     <form class="gate" id="gate" autocomplete="off">
       <p class="kicker">Private</p>
       <h1>Your proposal</h1>
-      <p>Answer a few questions and get a proposal you can save as a PDF. Enter the access code we sent you.</p>
+      <p>A few forks in the road, and at the end a proposal you can save as a PDF. Enter the access code we sent you.</p>
       <label for="code">Access code</label>
       <input id="code" name="code" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="gate-msg" required />
       <button type="submit" id="open">Open</button>
@@ -29,143 +29,153 @@
       <p class="fine">No code yet? Write to <a href="mailto:hello@medulla.city">hello@medulla.city</a> or use the form on <a href="/">medulla.city</a>.</p>
     </form>
 
-    <!-- 2. Questionnaire and live proposal -->
+    <!-- 2. The journey: one fork at a time, the path so far above it -->
     <div class="layout" id="app" hidden>
-      <form class="q" id="q" novalidate>
+      <div class="journey">
         <p class="kicker">Private</p>
         <h1>Your proposal</h1>
-        <p class="lede">A few questions, then a proposal to discuss with us. Nothing is booked until we talk.</p>
+        <p class="lede">One question at a time. Every answer opens the next fork, and you can step back to any of them.</p>
 
-        <fieldset>
-          <legend>About you</legend>
-          <label for="f-name">Your name</label>
-          <input id="f-name" name="name" autocomplete="name" enterkeyhint="next" required />
-          <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" enterkeyhint="next" required />
-          <label for="f-org">Organisation <span class="opt">optional</span></label>
-          <input id="f-org" name="organisation" autocomplete="organization" enterkeyhint="next" />
-        </fieldset>
+        <ol class="trail" id="trail" aria-label="Your path so far"></ol>
 
-        <fieldset>
-          <legend>How would you like to be part of Medulla?</legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="path" value="join" required /><span>Join the community<small>Work here up to 2 days a week, or 3 or more.</small></span></label>
-            <label class="choice"><input type="radio" name="path" value="host" /><span>Host a gathering<small>A talk, workshop or session for people to learn together.</small></span></label>
-            <label class="choice"><input type="radio" name="path" value="partner" /><span>Partner with us<small>A project, programme, residency or funding.</small></span></label>
-          </div>
-        </fieldset>
+        <form class="q" id="q" novalidate>
+          <fieldset class="step" data-step="about" tabindex="-1" hidden>
+            <legend class="step__q">First, who are we talking to?</legend>
+            <label for="f-name">Your name</label>
+            <input id="f-name" name="name" autocomplete="name" enterkeyhint="next" />
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" enterkeyhint="next" />
+            <label for="f-org">Organisation <span class="opt">optional</span></label>
+            <input id="f-org" name="organisation" autocomplete="organization" enterkeyhint="next" />
+          </fieldset>
 
-        <div data-path="join" hidden>
-          <fieldset>
-            <legend>Who is contributing?</legend>
+          <fieldset class="step" data-step="path" tabindex="-1" hidden>
+            <legend class="step__q">Which way would you like to grow with Medulla?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="path" value="join" /><span>Join the community<small>Work here up to 2 days a week, or 3 or more.</small></span></label>
+              <label class="choice"><input type="radio" name="path" value="host" /><span>Host a gathering<small>A talk, workshop or session for people to learn together.</small></span></label>
+              <label class="choice"><input type="radio" name="path" value="partner" /><span>Partner with us<small>A project, programme, residency or funding.</small></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="payer" tabindex="-1" hidden>
+            <legend class="step__q">Who is contributing?</legend>
             <div class="choices">
               <label class="choice"><input type="radio" name="payer" value="individual" /><span>Me, from my own pocket</span></label>
               <label class="choice"><input type="radio" name="payer" value="nonprofit" /><span>A non-profit organisation</span></label>
               <label class="choice"><input type="radio" name="payer" value="forprofit" /><span>A for-profit organisation</span></label>
             </div>
           </fieldset>
-          <fieldset data-when="org" hidden>
-            <legend id="lg-people">How many people would work here?</legend>
-            <input class="short" id="f-people" name="people" type="number" min="1" max="30" value="1" inputmode="numeric" aria-labelledby="lg-people" />
-          </fieldset>
-          <fieldset>
-            <legend>How many days a week?</legend>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="days" value="upTo2" /><span>Up to 2 days<small>Shared tables, and the ground floor when upstairs is full.</small></span></label>
-              <label class="choice"><input type="radio" name="days" value="threePlus" /><span>3 or more days<small>A fixed place upstairs, and one event a month.</small></span></label>
+
+          <fieldset class="step" data-step="people" tabindex="-1" hidden>
+            <legend class="step__q" id="lg-people">How many of you would work here?</legend>
+            <div class="stepper">
+              <button type="button" class="stepper__btn" data-nudge="-1" aria-label="One fewer">−</button>
+              <input class="short" id="f-people" name="people" type="number" min="1" max="30" value="1" inputmode="numeric" aria-labelledby="lg-people" />
+              <button type="button" class="stepper__btn" data-nudge="1" aria-label="One more">+</button>
             </div>
           </fieldset>
-          <fieldset>
-            <legend>Anything else?</legend>
-            <label class="check"><input type="checkbox" name="guest" /> An intern or an occasional guest may come in with us</label>
+
+          <fieldset class="step" data-step="days" tabindex="-1" hidden>
+            <legend class="step__q">How often will you be here?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="days" value="upTo2" /><span>Up to 2 days a week<small>Shared tables, and the ground floor when upstairs is full.</small></span></label>
+              <label class="choice"><input type="radio" name="days" value="threePlus" /><span>3 or more days a week<small>A fixed place upstairs, and one event a month.</small></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="extras" tabindex="-1" hidden>
+            <legend class="step__q">Anything else coming along?</legend>
+            <label class="check"><input type="checkbox" name="guest" /> An intern or an occasional guest</label>
             <label class="check"><input type="checkbox" name="hostEvents" /> We’d like to host events too</label>
             <label for="f-start">When would you like to start? <span class="opt">optional</span></label>
             <input class="short short--date" id="f-start" name="start" type="month" />
           </fieldset>
-        </div>
 
-        <div data-path="host" hidden>
-          <fieldset>
-            <legend>Are you a Medulla member?</legend>
+          <fieldset class="step" data-step="member" tabindex="-1" hidden>
+            <legend class="step__q">Are you already part of Medulla?</legend>
             <div class="choices">
               <label class="choice"><input type="radio" name="member" value="no" /><span>Not yet</span></label>
               <label class="choice"><input type="radio" name="member" value="upTo2" /><span>Yes, up to 2 days a week</span></label>
               <label class="choice"><input type="radio" name="member" value="threePlus" /><span>Yes, 3 or more days a week</span></label>
             </div>
           </fieldset>
-          <fieldset aria-describedby="hint-edu">
-            <legend>Is it a learning event, open to people beyond your own team?</legend>
-            <p class="hint" id="hint-edu">Medulla is a space with an educational purpose, so we host talks, workshops and sessions where people learn together.</p>
-            <div class="choices choices--row">
-              <label class="choice"><input type="radio" name="educational" value="yes" /><span>Yes</span></label>
+
+          <fieldset class="step" data-step="educational" tabindex="-1" hidden aria-describedby="hint-edu">
+            <legend class="step__q">Will people learn something together?</legend>
+            <p class="hint" id="hint-edu">Medulla is a space with an educational purpose: we host talks, workshops and sessions open to people beyond your own team.</p>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="educational" value="yes" /><span>Yes, that’s the point</span></label>
               <label class="choice"><input type="radio" name="educational" value="no" /><span>Not really</span></label>
             </div>
           </fieldset>
-          <fieldset data-when="notEdu" hidden>
-            <legend id="lg-host-idea">Tell us about your idea</legend>
-            <textarea name="idea" rows="4" aria-labelledby="lg-host-idea"></textarea>
-          </fieldset>
-          <div data-when="educational" hidden>
-            <fieldset>
-              <legend id="lg-format">What kind of event?</legend>
-              <select name="format" aria-labelledby="lg-format">
-                <option value="">Choose one</option>
-                <option>Talk or lecture</option>
-                <option>Workshop</option>
-                <option>Gathering or salon</option>
-                <option>Screening or performance</option>
-                <option>Something else</option>
-              </select>
-            </fieldset>
-            <fieldset>
-              <legend>How would you like to run it?</legend>
-              <div class="choices">
-                <label class="choice"><input type="radio" name="slot" value="programme" /><span>In Medulla’s public programme<small>Evenings from 18:00 to 21:30, together with us.</small></span></label>
-                <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire part or all of the space.</small></span></label>
-              </div>
-            </fieldset>
-            <div data-when="hire" hidden>
-              <fieldset>
-                <legend>Which space?</legend>
-                <div class="choices" id="rooms"></div>
-              </fieldset>
-              <fieldset>
-                <legend>For how long?</legend>
-                <div class="choices choices--row">
-                  <label class="choice"><input type="radio" name="length" value="hours" /><span>Some hours</span></label>
-                  <label class="choice"><input type="radio" name="length" value="day" /><span>A full day</span></label>
-                </div>
-                <div class="after" data-when="hours" hidden>
-                  <label for="f-hours">Hours</label>
-                  <input class="short" id="f-hours" name="hours" type="text" inputmode="decimal" value="4" enterkeyhint="done" />
-                </div>
-              </fieldset>
-            </div>
-            <fieldset>
-              <legend>The details</legend>
-              <label for="f-guests">About how many people? <span class="opt">optional</span></label>
-              <input class="short" id="f-guests" name="guests" type="number" min="1" max="200" inputmode="numeric" enterkeyhint="next" />
-              <label for="f-date">Preferred date <span class="opt">optional</span></label>
-              <input class="short short--date" id="f-date" name="date" type="date" />
-            </fieldset>
-          </div>
-        </div>
 
-        <div data-path="partner" hidden>
-          <fieldset>
-            <legend id="lg-idea">What do you have in mind?</legend>
+          <fieldset class="step" data-step="hostIdea" tabindex="-1" hidden>
+            <legend class="step__q" id="lg-host-idea">Tell us about it</legend>
+            <p class="hint">What you have in mind and who it’s for. We’ll see together whether there’s a fit.</p>
+            <textarea name="hostIdea" rows="4" aria-labelledby="lg-host-idea"></textarea>
+          </fieldset>
+
+          <fieldset class="step" data-step="format" tabindex="-1" hidden>
+            <legend class="step__q">What shape will it take?</legend>
+            <div class="choices choices--tags">
+              <label class="choice"><input type="radio" name="format" value="Talk or lecture" /><span>Talk or lecture</span></label>
+              <label class="choice"><input type="radio" name="format" value="Workshop" /><span>Workshop</span></label>
+              <label class="choice"><input type="radio" name="format" value="Gathering or salon" /><span>Gathering or salon</span></label>
+              <label class="choice"><input type="radio" name="format" value="Screening or performance" /><span>Screening or performance</span></label>
+              <label class="choice"><input type="radio" name="format" value="Something else" /><span>Something else</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="slot" tabindex="-1" hidden>
+            <legend class="step__q">With us, or on your own?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="slot" value="programme" /><span>In Medulla’s public programme<small>Evenings from 18:00 to 21:30, together with us.</small></span></label>
+              <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire part or all of the space.</small></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="room" tabindex="-1" hidden>
+            <legend class="step__q">Which space fits?</legend>
+            <div class="choices" id="rooms"></div>
+          </fieldset>
+
+          <fieldset class="step" data-step="length" tabindex="-1" hidden>
+            <legend class="step__q">For how long?</legend>
+            <div class="choices choices--row">
+              <label class="choice"><input type="radio" name="length" value="hours" data-then="#f-hours" /><span>Some hours</span></label>
+              <label class="choice"><input type="radio" name="length" value="day" /><span>A full day</span></label>
+            </div>
+            <div class="after" data-hours hidden>
+              <label for="f-hours">How many hours?</label>
+              <input class="short" id="f-hours" name="hours" type="text" inputmode="decimal" value="4" enterkeyhint="next" />
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="details" tabindex="-1" hidden>
+            <legend class="step__q">A few details, if you know them</legend>
+            <label for="f-guests">About how many people? <span class="opt">optional</span></label>
+            <input class="short" id="f-guests" name="guests" type="number" min="1" max="200" inputmode="numeric" enterkeyhint="next" />
+            <label for="f-date">Preferred date <span class="opt">optional</span></label>
+            <input class="short short--date" id="f-date" name="date" type="date" />
+          </fieldset>
+
+          <fieldset class="step" data-step="idea" tabindex="-1" hidden>
+            <legend class="step__q" id="lg-idea">What would you like to build together?</legend>
             <textarea name="idea" rows="5" aria-labelledby="lg-idea"></textarea>
           </fieldset>
-        </div>
 
-        <div class="send">
-          <button type="submit" id="send">Send to Medulla and save as PDF</button>
-          <p class="msg" id="send-msg" role="status"></p>
-          <p class="fine">We get a copy of your answers so we can follow up. Choose “Save as PDF” in the print window. Didn’t open? <button type="button" class="link" id="print-again">Open it again</button></p>
-        </div>
-      </form>
+          <fieldset class="step step--end" data-step="send" tabindex="-1" hidden>
+            <legend class="step__q">That’s your branch.</legend>
+            <p>Your proposal is ready. Send it to us, and save your own copy as a PDF.</p>
+            <button type="submit" id="send">Send to Medulla and save as PDF</button>
+            <p class="msg" id="send-msg" role="status"></p>
+            <p class="fine">We get a copy of your answers so we can follow up. Choose “Save as PDF” in the print window. Didn’t open? <button type="button" class="link" id="print-again">Open it again</button></p>
+          </fieldset>
+        </form>
+      </div>
 
-      <!-- The proposal: shown beside the form, and the only thing printed -->
+      <!-- The proposal: shown beside the journey, and the only thing printed -->
       <article class="proposal" id="proposal" tabindex="0" aria-label="Your proposal"></article>
       <p class="sr-only" id="price-live" aria-live="polite"></p>
       <a class="peek" id="peek" href="#proposal" hidden><span>Your proposal</span><strong id="peek-amount"></strong></a>

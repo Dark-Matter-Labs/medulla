@@ -1,19 +1,26 @@
 // ── Proposal questionnaire — DOM wiring ─────────────────────────────────────
-// Unlocks the prices with the access code, shows the questions for the chosen
-// path, keeps a live proposal beside the form (plus a price bar on phones),
-// and on send opens the print dialog to save a PDF while a copy is posted to
-// Netlify Forms ("proposal"). Everything a visitor typed is written with
-// textContent, never as HTML.
+// Unlocks the prices with the access code, then walks the visitor through one
+// fork at a time. Each answer becomes a node on the trail above the current
+// question (with faint stubs for the branches not taken), and any node can be
+// tapped to go back to that fork. A live proposal sits beside the journey
+// (a price bar on phones). On send, the print dialog opens to save a PDF while
+// a copy is posted to Netlify Forms ("proposal"). Everything a visitor typed is
+// written with textContent, never as HTML.
 (function () {
   const core = window.MedullaProposal;
   const payload = window.MEDULLA_PROPOSAL_DATA;
   const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const gate = $('#gate');
   const form = $('#q');
   const out = $('#proposal');
   const ADDRESS = 'Medulla · Dresdener Str. 113B, 10179 Berlin · medulla.city · hello@medulla.city';
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const ADVANCE_MS = 380; // a beat to see the choice land before the next fork
   let pricing = null;
   let lastAmount = null;
+  let current = 'about';
+  let grown = null; // id of the step whose node was just added, for the grow animation
 
   // ── 1. access code ──
   const gateMsg = $('#gate-msg');
@@ -33,7 +40,8 @@
       gate.hidden = true;
       $('#app').hidden = false;
       renderRooms();
-      refresh();
+      addNav();
+      goTo('about', { focus: false });
       watchPeek();
       $('#f-name').focus();
     } catch (error) {
@@ -52,7 +60,7 @@
   const fromHash = new URLSearchParams(location.hash.slice(1)).get('code');
   if (fromHash) { $('#code').value = fromHash; history.replaceState(null, '', location.pathname); unlock(fromHash); }
 
-  // ── 2. answers and visibility ──
+  // ── 2. answers ──
   function renderRooms() {
     $('#rooms').replaceChildren(...pricing.events.rooms.map((r) => {
       const label = el('label', 'choice');
@@ -71,61 +79,182 @@
     const d = new FormData(form);
     const v = (k) => (d.get(k) || '').toString().trim();
     const hours = num(v('hours'));
+    const path = v('path');
     return {
-      name: v('name'), email: v('email'), organisation: v('organisation'), path: v('path'),
+      name: v('name'), email: v('email'), organisation: v('organisation'), path,
       payer: v('payer'), people: clamp(Math.round(num(v('people'))) || 1, 1, 30), days: v('days'),
       guest: d.has('guest'), hostEvents: d.has('hostEvents'), start: v('start'),
       member: v('member'), educational: v('educational'), format: v('format'), slot: v('slot'),
       room: v('room'), length: v('length'), hours: hours > 0 ? clamp(hours, 0.5, 12) : 0,
-      guests: v('guests'), date: v('date'), idea: v('idea'),
+      guests: v('guests'), date: v('date'), idea: path === 'partner' ? v('idea') : v('hostIdea'),
     };
   }
 
-  function show(selector, on) {
-    document.querySelectorAll(selector).forEach((node) => {
-      node.hidden = !on;
-      node.querySelectorAll('input, select, textarea').forEach((f) => { f.disabled = !on; });
-    });
-  }
-
-  function refresh() {
-    // Re-enabling a block brings back its answers, which can open the next block: one pass per nesting level.
-    for (let level = 0; level < 4; level += 1) applyVisibility();
-    render(build(answers()));
-  }
-
-  function applyVisibility() {
-    const a = answers();
-    ['join', 'host', 'partner'].forEach((p) => show(`[data-path="${p}"]`, a.path === p));
-    // Nested blocks after their parents: a hidden block's fields are disabled, so they drop out of the answers.
-    show('[data-when="org"]', a.path === 'join' && Boolean(a.payer) && a.payer !== 'individual');
-    const host = a.path === 'host';
-    const edu = host && a.educational === 'yes';
-    show('[data-when="notEdu"]', host && a.educational === 'no');
-    show('[data-when="educational"]', edu);
-    show('[data-when="hire"]', edu && a.slot === 'hire');
-    show('[data-when="hours"]', edu && a.slot === 'hire' && a.length === 'hours');
-  }
-
-  form.addEventListener('input', (e) => { clearError(e.target); refresh(); });
-  form.addEventListener('change', (e) => { clearError(e.target); refresh(); });
-  // Enter in a single-line field must not send the whole questionnaire.
-  form.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && e.target.matches('input:not([type=radio]):not([type=checkbox])')) e.preventDefault();
-  });
-
-  // ── 3. the proposal, as plain data ──
+  // ── 3. the forks: which steps apply, what each needs, how it reads on the trail ──
   const monthName = (ym) => (/^\d{4}-\d{2}$/.test(ym) ? new Date(`${ym}-01T12:00:00`).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }) : ym);
   const dayName = (ymd) => (/^\d{4}-\d{2}-\d{2}$/.test(ymd) ? new Date(`${ymd}T12:00:00`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : ymd);
+  const shortDay = (ymd) => (/^\d{4}-\d{2}-\d{2}$/.test(ymd) ? new Date(`${ymd}T12:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : ymd);
+  const join = (a) => a.path === 'join';
+  const host = (a) => a.path === 'host';
+  const learning = (a) => host(a) && a.educational === 'yes';
+  const hire = (a) => learning(a) && a.slot === 'hire';
+  const need = (key, message) => (a) => (a[key] ? null : message);
 
-  // `focus` names the first unanswered question, so a send can take the person there.
+  const STEPS = [
+    { id: 'about', when: () => true, name: 'You', label: (a) => a.organisation || a.name,
+      check: (a) => (!a.name ? 'Please add your name.' : !EMAIL.test(a.email) ? 'Please add a valid email address.' : null) },
+    { id: 'path', when: () => true, name: 'Path', check: need('path', 'Choose a path to continue.'),
+      label: (a) => ({ join: 'Join the community', host: 'Host a gathering', partner: 'Partner with us' })[a.path] },
+    { id: 'payer', when: join, name: 'Contributing', check: need('payer', 'Choose who is contributing.'),
+      label: (a) => ({ individual: 'From my own pocket', nonprofit: 'A non-profit', forprofit: 'A for-profit' })[a.payer] },
+    { id: 'people', when: (a) => join(a) && Boolean(a.payer) && a.payer !== 'individual', name: 'People',
+      label: (a) => `${a.people} ${a.people === 1 ? 'person' : 'people'}` },
+    { id: 'days', when: join, name: 'Days', check: need('days', 'Choose how often you’ll be here.'),
+      label: (a) => core.DAYS[a.days] },
+    { id: 'extras', when: join, name: 'Extras',
+      label: (a) => [a.guest && 'A guest', a.hostEvents && 'Events', a.start && monthName(a.start)].filter(Boolean).join(' · ') || 'Nothing else' },
+    { id: 'member', when: host, name: 'Member', check: need('member', 'Tell us whether you are a member.'),
+      label: (a) => core.MEMBER[a.member] },
+    { id: 'educational', when: host, name: 'Learning', check: need('educational', 'Choose one to continue.'),
+      label: (a) => (a.educational === 'yes' ? 'A learning event' : 'Not quite a learning event') },
+    { id: 'hostIdea', when: (a) => host(a) && a.educational === 'no', name: 'Idea', label: (a) => (a.idea ? 'Your idea' : 'We’ll talk') },
+    { id: 'format', when: learning, name: 'Shape', label: (a) => a.format || 'Open shape' },
+    { id: 'slot', when: learning, name: 'How', check: need('slot', 'Choose one to continue.'),
+      label: (a) => (a.slot === 'hire' ? 'My own event' : 'Medulla’s public programme') },
+    { id: 'room', when: hire, name: 'Space', check: need('room', 'Choose a space.'),
+      label: (a) => (pricing.events.rooms.find((r) => r.id === a.room) || {}).name },
+    { id: 'length', when: hire, name: 'Time',
+      check: (a) => (!a.length ? 'Choose how long you need it.' : a.length === 'hours' && !a.hours ? 'Add how many hours.' : null),
+      label: (a) => (a.length === 'day' ? 'A full day' : `${a.hours} hours`) },
+    { id: 'details', when: learning, name: 'Details',
+      label: (a) => [a.guests && `${a.guests} people`, a.date && shortDay(a.date)].filter(Boolean).join(' · ') || 'Details later' },
+    { id: 'idea', when: (a) => a.path === 'partner', name: 'Idea', label: (a) => (a.idea ? 'Your idea' : 'We’ll talk') },
+    { id: 'send', when: () => true, name: 'Proposal', label: () => '' },
+  ];
+  const byId = (id) => STEPS.find((s) => s.id === id);
+  const route = (a) => STEPS.filter((s) => s.when(a));
+  const stepEl = (id) => form.querySelector(`[data-step="${id}"]`);
+
+  function addNav() {
+    STEPS.forEach((s, i) => {
+      if (s.id === 'send') return;
+      const nav = el('div', 'step__nav');
+      const err = el('p', 'step__err'); err.id = `err-${s.id}`; err.setAttribute('role', 'alert');
+      if (i > 0) { const back = el('button', 'link step__back', '← Back'); back.type = 'button'; back.dataset.back = ''; nav.append(back); }
+      const next = el('button', 'step__next', 'Next'); next.type = 'button'; next.dataset.next = '';
+      nav.append(next);
+      stepEl(s.id).append(err, nav);
+    });
+    const back = el('button', 'link step__back', '← Back'); back.type = 'button'; back.dataset.back = '';
+    stepEl('send').prepend(back);
+  }
+
+  function goTo(id, { focus = true } = {}) {
+    current = id;
+    STEPS.forEach((s) => { stepEl(s.id).hidden = s.id !== id; });
+    refresh();
+    if (focus) {
+      const target = stepEl(id);
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+  }
+
+  function showError(id, message) {
+    const err = $(`#err-${id}`);
+    if (err) err.textContent = message || '';
+    stepEl(id).toggleAttribute('aria-invalid', Boolean(message));
+  }
+
+  function next() {
+    const a = answers();
+    const r = route(a);
+    const step = byId(current);
+    const problem = step.check ? step.check(a) : null;
+    showError(current, problem);
+    if (problem) return;
+    const i = r.findIndex((s) => s.id === current);
+    grown = current;
+    goTo(r[Math.min(i + 1, r.length - 1)].id);
+  }
+
+  function back() {
+    const r = route(answers());
+    const i = r.findIndex((s) => s.id === current);
+    if (i > 0) goTo(r[i - 1].id);
+  }
+
+  form.addEventListener('click', (e) => {
+    if (e.target.closest('[data-next]')) next();
+    else if (e.target.closest('[data-back]')) back();
+    else if (e.target.closest('[data-nudge]')) {
+      const field = $('#f-people');
+      field.value = clamp((Number(field.value) || 1) + Number(e.target.closest('[data-nudge]').dataset.nudge), 1, 30);
+      refresh();
+    } else if (e.target.matches('.choice input[type=radio]') && e.detail > 0) {
+      // A tap or click on an answer moves on by itself; keyboard users press Next (arrow keys also "click").
+      // An answer that opens a follow-up field (e.g. "Some hours") stays and focuses it instead.
+      const then = e.target.dataset.then;
+      if (then) { refresh(); $(then).focus(); $(then).select(); return; }
+      const from = current;
+      setTimeout(() => { if (current === from) next(); }, ADVANCE_MS);
+    }
+  });
+
+  // Enter in a single-line field moves to the next fork instead of sending anything.
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.matches('input:not([type=radio]):not([type=checkbox])')) { e.preventDefault(); next(); }
+  });
+  form.addEventListener('input', () => { showError(current, ''); refresh(); });
+  form.addEventListener('change', () => { showError(current, ''); refresh(); });
+
+  // ── 4. the trail: answered forks above the current one ──
+  function renderTrail(a) {
+    const r = route(a);
+    const upTo = r.findIndex((s) => s.id === current);
+    const items = r.slice(0, Math.max(upTo, 0)).map((s) => {
+      const li = el('li', `trail__item${s.id === grown ? ' is-new' : ''}`);
+      const options = $$('input[type=radio]', stepEl(s.id));
+      const chosen = options.find((o) => o.checked);
+      const others = options.filter((o) => o !== chosen).slice(0, 3);
+      if (others.length) {
+        const stubs = el('span', 'trail__stubs'); stubs.setAttribute('aria-hidden', 'true');
+        others.forEach(() => stubs.append(el('i')));
+        li.append(stubs);
+      }
+      const button = el('button', 'trail__node'); button.type = 'button'; button.dataset.go = s.id;
+      button.setAttribute('aria-label', `${s.name}: ${s.label(a) || '—'}. Change`);
+      if (others.length) button.title = `Other branches: ${others.map((o) => o.closest('label').querySelector('span').firstChild.textContent.trim()).join(', ')}`;
+      button.append(el('span', 'trail__name', s.name), el('span', 'trail__label', s.label(a) || '—'));
+      li.append(button);
+      return li;
+    });
+    $('#trail').replaceChildren(...items);
+    grown = null;
+  }
+  $('#trail').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) goTo(b.dataset.go); });
+
+  function refresh() {
+    const a = answers();
+    $('[data-hours]').hidden = a.length !== 'hours';
+    stepEl(current).querySelector('[data-next]')?.replaceChildren(document.createTextNode(nextLabel(a)));
+    renderTrail(a);
+    render(build(a));
+  }
+
+  function nextLabel(a) {
+    const r = route(a);
+    const i = r.findIndex((s) => s.id === current);
+    return r[i + 1] && r[i + 1].id === 'send' ? 'See my proposal' : 'Next';
+  }
+
+  // ── 5. the proposal, as plain data ──
   function build(a) {
-    const p = { a, rows: [], price: null, list: [], notes: [], title: '', missing: null, focus: null };
-    const need = (message, focus) => { p.missing = message; p.focus = focus; return p; };
+    const p = { a, rows: [], price: null, list: [], notes: [], title: '', missing: null };
+    const missing = (message) => { p.missing = message; return p; };
     if (a.path === 'join') {
       p.title = 'Joining the community';
-      if (!a.payer) return need('Choose who is contributing.', '[name=payer]');
-      if (!a.days) return need('Choose how many days a week.', '[name=days]');
+      if (!a.payer || !a.days) return missing('Your proposal grows as you answer.');
       const q = core.membershipQuote({ payer: a.payer, people: a.people, days: a.days }, pricing);
       p.rows.push(['Who contributes', core.PAYERS[q.payer]], ['Days', core.DAYS[q.days]]);
       if (q.payer !== 'individual') p.rows.push(['People', String(q.people)]);
@@ -144,8 +273,7 @@
       p.notes.push('We confirm invoicing and the start date when we talk.');
     } else if (a.path === 'host') {
       p.title = 'Hosting a gathering';
-      if (!a.member) return need('Tell us whether you are a member.', '[name=member]');
-      if (!a.educational) return need('Tell us whether it is a learning event.', '[name=educational]');
+      if (!a.member || !a.educational) return missing('Your proposal grows as you answer.');
       if (a.educational === 'no') {
         if (a.idea) p.rows.push(['Your idea', a.idea]);
         p.notes.push('Medulla hosts learning events: talks, workshops and sessions open beyond your own team. Tell us more about your idea and we’ll see together whether there is a fit.');
@@ -155,17 +283,15 @@
       p.rows.push(['Member', core.MEMBER[a.member]]);
       if (a.guests) p.rows.push(['People', a.guests]);
       if (a.date) p.rows.push(['Preferred date', dayName(a.date)]);
-      if (!a.slot) return need('Choose whether it is part of Medulla’s programme or your own event.', '[name=slot]');
+      if (!a.slot) return missing('Your proposal grows as you answer.');
       if (a.slot === 'programme') {
         p.rows.push(['Format', 'Medulla’s public programme, 18:00 to 21:30']);
         p.notes.push('We plan the public programme together with you, and agree the details when we talk.');
         return p;
       }
-      if (!a.room) return need('Choose a space.', '[name=room]');
-      if (!a.length) return need('Choose how long you need it.', '[name=length]');
-      const duration = a.length === 'day' ? { kind: 'day' } : { kind: 'hours', hours: a.hours };
-      const q = core.eventQuote({ room: a.room, member: a.member, duration }, pricing);
-      if (!q) return need('Add how many hours you need.', '#f-hours');
+      const duration = a.length === 'day' ? { kind: 'day' } : a.length === 'hours' ? { kind: 'hours', hours: a.hours } : null;
+      const q = a.room && duration ? core.eventQuote({ room: a.room, member: a.member, duration }, pricing) : null;
+      if (!q) return missing('Choose a space and a length to see the contribution.');
       p.rows.push(['Space', `${q.room.name}, ${q.room.area} m²`],
         ['Time', q.dayRate ? 'Full day' : `${q.billedHours} hours${q.billedHours > a.hours ? ` (${q.room.minHours}-hour minimum)` : ''}`]);
       p.price = {
@@ -179,12 +305,12 @@
       p.notes.push('Partnerships don’t have a fixed price. We’ll set up a conversation about what we could build together.');
       if (a.idea) p.rows.push(['Your idea', a.idea]);
     } else {
-      return need('Choose how you would like to be part of Medulla.', '[name=path]');
+      return missing('Your proposal grows as you answer.');
     }
     return p;
   }
 
-  // ── 4. render ──
+  // ── 6. render the sheet ──
   function el(tag, cls, text) {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
@@ -243,31 +369,9 @@
     new IntersectionObserver(([entry]) => $('#peek').toggleAttribute('data-off', entry.isIntersecting), { threshold: 0.1 }).observe(out);
   }
 
-  // ── 5. send: print first (inside the click), then confirm our copy ──
+  // ── 7. send: print first (inside the click), then confirm our copy ──
   const msg = $('#send-msg');
   function say(text, tone) { msg.textContent = text; if (tone) msg.dataset.tone = tone; else delete msg.dataset.tone; }
-
-  function clearError(target) {
-    const holder = target.closest('[aria-invalid]');
-    if (holder) holder.removeAttribute('aria-invalid');
-  }
-
-  function flag(selector) {
-    const first = form.querySelector(`${selector}:not(:disabled)`) || form.querySelector(selector);
-    if (!first) return;
-    const holder = first.type === 'radio' ? first.closest('fieldset') : first;
-    holder.setAttribute('aria-invalid', 'true');
-    holder.setAttribute('aria-describedby', 'send-msg');
-    first.scrollIntoView({ block: 'center' });
-    first.focus({ preventScroll: true });
-  }
-
-  function problem(a) {
-    if (!a.name) return ['#f-name', 'Please add your name.'];
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) return ['#f-email', 'Please add a valid email address.'];
-    const p = build(a);
-    return p.missing ? [p.focus, p.missing] : null;
-  }
 
   function summary(p) {
     const lines = [p.title, ...p.rows.map(([k, v]) => `${k}: ${v}`)];
@@ -278,12 +382,9 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const a = answers();
-    const issue = problem(a);
-    if (issue) {
-      say(`Error: ${issue[1]}`, 'error');
-      if (issue[0]) flag(issue[0]);
-      return;
-    }
+    // Every fork on the route must be answered; take the person back to the first that isn't.
+    const gap = route(a).find((s) => s.check && s.check(a));
+    if (gap) { goTo(gap.id); showError(gap.id, gap.check(a)); return; }
     const p = build(a);
     const button = $('#send');
     button.disabled = true; form.setAttribute('aria-busy', 'true'); say('');

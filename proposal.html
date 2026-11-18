@@ -23,26 +23,27 @@
       <h1>Your proposal</h1>
       <p>Answer a few questions and get a proposal you can save as a PDF. Enter the access code we sent you.</p>
       <label for="code">Access code</label>
-      <input id="code" name="code" type="text" autocapitalize="off" spellcheck="false" required />
+      <input id="code" name="code" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="gate-msg" required />
       <button type="submit" id="open">Open</button>
-      <p class="msg" id="gate-msg" role="alert" aria-live="assertive"></p>
+      <p class="msg" id="gate-msg" role="alert"></p>
       <p class="fine">No code yet? Write to <a href="mailto:hello@medulla.city">hello@medulla.city</a> or use the form on <a href="/">medulla.city</a>.</p>
     </form>
 
     <!-- 2. Questionnaire and live proposal -->
     <div class="layout" id="app" hidden>
       <form class="q" id="q" novalidate>
+        <p class="kicker">Private</p>
         <h1>Your proposal</h1>
         <p class="lede">A few questions, then a proposal to discuss with us. Nothing is booked until we talk.</p>
 
         <fieldset>
           <legend>About you</legend>
           <label for="f-name">Your name</label>
-          <input id="f-name" name="name" autocomplete="name" required />
+          <input id="f-name" name="name" autocomplete="name" enterkeyhint="next" required />
           <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required />
+          <input id="f-email" name="email" type="email" autocomplete="email" enterkeyhint="next" required />
           <label for="f-org">Organisation <span class="opt">optional</span></label>
-          <input id="f-org" name="organisation" autocomplete="organization" />
+          <input id="f-org" name="organisation" autocomplete="organization" enterkeyhint="next" />
         </fieldset>
 
         <fieldset>
@@ -64,8 +65,8 @@
             </div>
           </fieldset>
           <fieldset data-when="org" hidden>
-            <legend>How many people would work here?</legend>
-            <input id="f-people" name="people" type="number" min="1" max="30" value="1" inputmode="numeric" aria-label="Number of people" />
+            <legend id="lg-people">How many people would work here?</legend>
+            <input class="short" id="f-people" name="people" type="number" min="1" max="30" value="1" inputmode="numeric" aria-labelledby="lg-people" />
           </fieldset>
           <fieldset>
             <legend>How many days a week?</legend>
@@ -77,9 +78,9 @@
           <fieldset>
             <legend>Anything else?</legend>
             <label class="check"><input type="checkbox" name="guest" /> An intern or an occasional guest may come in with us</label>
-            <label class="check"><input type="checkbox" name="hostEvents" /> We'd like to host events too</label>
-            <label for="f-start">When would you like to start?</label>
-            <input id="f-start" name="start" type="month" />
+            <label class="check"><input type="checkbox" name="hostEvents" /> We’d like to host events too</label>
+            <label for="f-start">When would you like to start? <span class="opt">optional</span></label>
+            <input class="short short--date" id="f-start" name="start" type="month" />
           </fieldset>
         </div>
 
@@ -92,18 +93,22 @@
               <label class="choice"><input type="radio" name="member" value="threePlus" /><span>Yes, 3 or more days a week</span></label>
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset aria-describedby="hint-edu">
             <legend>Is it a learning event, open to people beyond your own team?</legend>
-            <p class="hint">Medulla is a space with an educational purpose, so we host talks, workshops and sessions where people learn together.</p>
+            <p class="hint" id="hint-edu">Medulla is a space with an educational purpose, so we host talks, workshops and sessions where people learn together.</p>
             <div class="choices choices--row">
               <label class="choice"><input type="radio" name="educational" value="yes" /><span>Yes</span></label>
               <label class="choice"><input type="radio" name="educational" value="no" /><span>Not really</span></label>
             </div>
           </fieldset>
+          <fieldset data-when="notEdu" hidden>
+            <legend id="lg-host-idea">Tell us about your idea</legend>
+            <textarea name="idea" rows="4" aria-labelledby="lg-host-idea"></textarea>
+          </fieldset>
           <div data-when="educational" hidden>
             <fieldset>
-              <legend>What kind of event?</legend>
-              <select name="format" aria-label="Kind of event">
+              <legend id="lg-format">What kind of event?</legend>
+              <select name="format" aria-labelledby="lg-format">
                 <option value="">Choose one</option>
                 <option>Talk or lecture</option>
                 <option>Workshop</option>
@@ -115,7 +120,7 @@
             <fieldset>
               <legend>How would you like to run it?</legend>
               <div class="choices">
-                <label class="choice"><input type="radio" name="slot" value="programme" /><span>In Medulla's public programme<small>Evenings from 18:00 to 21:30, together with us.</small></span></label>
+                <label class="choice"><input type="radio" name="slot" value="programme" /><span>In Medulla’s public programme<small>Evenings from 18:00 to 21:30, together with us.</small></span></label>
                 <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire part or all of the space.</small></span></label>
               </div>
             </fieldset>
@@ -130,38 +135,40 @@
                   <label class="choice"><input type="radio" name="length" value="hours" /><span>Some hours</span></label>
                   <label class="choice"><input type="radio" name="length" value="day" /><span>A full day</span></label>
                 </div>
-                <div data-when="hours" hidden>
+                <div class="after" data-when="hours" hidden>
                   <label for="f-hours">Hours</label>
-                  <input id="f-hours" name="hours" type="number" min="1" max="12" step="0.5" value="3" inputmode="decimal" />
+                  <input class="short" id="f-hours" name="hours" type="text" inputmode="decimal" value="4" enterkeyhint="done" />
                 </div>
               </fieldset>
             </div>
             <fieldset>
               <legend>The details</legend>
-              <label for="f-guests">About how many people?</label>
-              <input id="f-guests" name="guests" type="number" min="1" max="200" inputmode="numeric" />
+              <label for="f-guests">About how many people? <span class="opt">optional</span></label>
+              <input class="short" id="f-guests" name="guests" type="number" min="1" max="200" inputmode="numeric" enterkeyhint="next" />
               <label for="f-date">Preferred date <span class="opt">optional</span></label>
-              <input id="f-date" name="date" type="date" />
+              <input class="short short--date" id="f-date" name="date" type="date" />
             </fieldset>
           </div>
         </div>
 
         <div data-path="partner" hidden>
           <fieldset>
-            <legend>What do you have in mind?</legend>
-            <textarea name="idea" rows="5" aria-label="What you have in mind"></textarea>
+            <legend id="lg-idea">What do you have in mind?</legend>
+            <textarea name="idea" rows="5" aria-labelledby="lg-idea"></textarea>
           </fieldset>
         </div>
 
         <div class="send">
           <button type="submit" id="send">Send to Medulla and save as PDF</button>
-          <p class="msg" id="send-msg" role="status" aria-live="polite"></p>
-          <p class="fine">We get a copy of your answers so we can follow up. Choose “Save as PDF” in the print window.</p>
+          <p class="msg" id="send-msg" role="status"></p>
+          <p class="fine">We get a copy of your answers so we can follow up. Choose “Save as PDF” in the print window. Didn’t open? <button type="button" class="link" id="print-again">Open it again</button></p>
         </div>
       </form>
 
       <!-- The proposal: shown beside the form, and the only thing printed -->
-      <article class="proposal" id="proposal" aria-live="polite" aria-label="Your proposal"></article>
+      <article class="proposal" id="proposal" tabindex="0" aria-label="Your proposal"></article>
+      <p class="sr-only" id="price-live" aria-live="polite"></p>
+      <a class="peek" id="peek" href="#proposal" hidden><span>Your proposal</span><strong id="peek-amount"></strong></a>
     </div>
   </main>
 

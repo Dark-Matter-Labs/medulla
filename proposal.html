@@ -47,6 +47,7 @@
             <input id="f-email" name="email" type="email" autocomplete="email" enterkeyhint="next" />
             <label for="f-org">Organisation <span class="opt">optional</span></label>
             <input id="f-org" name="organisation" autocomplete="organization" enterkeyhint="next" />
+            <p class="fine">Nothing is sent while you answer: your proposal is worked out in your browser. We only receive your details if you choose to send them at the end, and use them only to discuss this proposal. <a href="/datenschutz">Privacy notice</a></p>
           </fieldset>
 
           <fieldset class="step" data-step="path" tabindex="-1" hidden>
@@ -170,7 +171,8 @@
             <p>Your proposal is ready. Send it to us, and save your own copy as a PDF.</p>
             <button type="submit" id="send">Send to Medulla and save as PDF</button>
             <p class="msg" id="send-msg" role="status"></p>
-            <p class="fine">We get a copy of your answers so we can follow up. Choose “Save as PDF” in the print window. Didn’t open? <button type="button" class="link" id="print-again">Open it again</button></p>
+            <p class="fine">Sending gives us a copy of your details and answers, so we can follow up; we delete it within twelve months if nothing comes of it. Your PDF stays on your device. See our <a href="/datenschutz">privacy notice</a>.</p>
+            <p class="fine">Choose “Save as PDF” in the print window. Didn’t open? <button type="button" class="link" id="print-again">Open it again</button></p>
           </fieldset>
         </form>
       </div>
@@ -181,6 +183,7 @@
       <a class="peek" id="peek" href="#proposal" hidden><span>Your proposal</span><strong id="peek-amount"></strong></a>
     </div>
   </main>
+  <footer class="legal" aria-label="Legal"><a href="/impressum.html">Impressum</a> · <a href="/datenschutz">Datenschutz</a></footer>
 
   <!-- Copy of each proposal to the back office (Netlify Forms). Netlify's notification
        email uses "subject" as its subject line and lists the other fields in this order;

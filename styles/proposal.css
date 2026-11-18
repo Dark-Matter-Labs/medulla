@@ -122,9 +122,44 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 .step__nav .step__next { margin-left: auto; }
 .step__back { font-size: 15px; color: var(--muted); }
 .step--end .step__back { display: inline-block; margin-bottom: 16px; }
-@media (prefers-reduced-motion: no-preference) { .step:not([hidden]) { animation: step-in 420ms var(--ease) both; } }
+/* Moving between forks. With View Transitions: the old card lifts away fast, the new one
+   rises in, and the chosen answer flies into its trail node. Direction flips when going back. */
+.step { view-transition-name: step; } /* only one step is ever rendered, so the name stays unique */
+::view-transition-group(root) { animation-duration: 260ms; }
+::view-transition-old(step) { animation: 150ms cubic-bezier(.4, 0, 1, 1) both vt-out; }
+::view-transition-new(step) { animation: 440ms var(--ease) 60ms both vt-in; }
+html[data-dir=back]::view-transition-old(step) { animation-name: vt-out-back; }
+html[data-dir=back]::view-transition-new(step) { animation-name: vt-in-back; }
+::view-transition-group(answer) { animation-duration: 520ms; animation-timing-function: var(--ease); z-index: 2; }
+::view-transition-old(answer), ::view-transition-new(answer) { height: 100%; object-fit: none; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px) scale(.98); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(22px) scale(.985); } }
+@keyframes vt-out-back { to { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes vt-in-back { from { opacity: 0; transform: translateY(-22px) scale(.985); } }
+/* Without View Transitions, the card's own keyframe does the entrance */
+@supports not (view-transition-name: none) {
+  @media (prefers-reduced-motion: no-preference) { .step:not([hidden]) { animation: step-in 420ms var(--ease) both; } }
+}
 @media (prefers-reduced-motion: reduce) { .step:not([hidden]) { animation: fade-in 200ms ease both; } }
 @keyframes step-in { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+
+/* icons and photos on the answers */
+.ico { width: 26px; height: 26px; flex: none; margin-left: auto; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(0, 0, 0, .45); transition: color 150ms ease, transform 300ms var(--ease); }
+.choice:has(input:checked) .ico { color: #000; transform: rotate(-8deg) scale(1.08); }
+.choice { transition: background-color 150ms ease, box-shadow 150ms ease, transform 160ms var(--ease); }
+.choice:active { transform: scale(.985); }
+.choice--photo { display: grid; grid-template-columns: 112px auto 1fr; grid-template-areas: "img dot text"; align-items: center; gap: 0 12px; padding: 8px 14px 8px 8px; }
+.choice--photo img { grid-area: img; width: 112px; height: 76px; object-fit: cover; border-radius: 3px; filter: saturate(.85); transition: filter 200ms ease; }
+.choice--photo input { grid-area: dot; margin-top: 0; }
+.choice--photo > span { grid-area: text; }
+.choice--photo:has(input:checked) img { filter: none; }
+@media (max-width: 420px) { .choice--photo { grid-template-columns: 84px auto 1fr; } .choice--photo img { width: 84px; height: 64px; } }
+.ico--fruit { display: block; width: 40px; height: 40px; margin: -4px 0 12px; color: #000; float: none; clear: both; }
+
+/* the end of the path: a few leaves drift up once */
+.step--end { overflow: hidden; }
+.leaf { position: absolute; bottom: 12px; left: var(--x); width: 18px; height: 18px; fill: var(--yb); stroke: #000; stroke-width: 1.2; pointer-events: none; opacity: 0; animation: drift 1600ms var(--ease) both; }
+@keyframes drift { 0% { opacity: 0; transform: translateY(0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--drift), -150px) rotate(var(--spin)); } }
 .choices--tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .choices--tags .choice { padding: 10px 14px; }
 .stepper { display: flex; align-items: center; gap: 10px; }
@@ -161,6 +196,11 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 .p-foot { margin: 24px 0 4px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .p-address { margin: 0; font-size: 12px; color: var(--muted); }
 
+.p-reset { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 8px 14px; background: transparent; color: var(--muted); border: 1px solid var(--line); font: 500 13px/1 var(--text); flex-basis: 100%; justify-content: center; }
+.p-reset .ico { width: 16px; height: 16px; margin: 0; color: currentColor; }
+.p-reset.is-armed { color: #fff; background: var(--warn); border-color: var(--warn); }
+@media (hover: hover) and (pointer: fine) { .p-reset:hover:not(.is-armed) { color: #000; border-color: #000; opacity: 1; } .p-reset:hover .ico { transform: rotate(-90deg); } }
+@media (min-width: 520px) { .p-reset { flex-basis: auto; margin-left: auto; } .p-head .p-meta { order: 3; flex-basis: 100%; text-align: right; } }
 .legal { max-width: 1180px; margin: 0 auto; padding: 0 16px 32px; font-size: 13px; color: var(--muted); }
 .step .fine { margin: 14px 0 0; }
 
@@ -179,7 +219,7 @@ fieldset { border: 0; padding: 0; margin: 0 0 32px; min-width: 0; }
 @media print {
   @page { size: A4; margin: 16mm; }
   html, body { background: #fff; }
-  .top, .skip, .gate, .journey, .peek, .legal, form[name=proposal] { display: none !important; }
+  .top, .skip, .gate, .journey, .peek, .legal, .p-reset, form[name=proposal] { display: none !important; }
   main { padding: 0; max-width: none; }
   .layout { display: block; }
   .proposal { position: static; max-height: none; overflow: visible; box-shadow: none; border-radius: 0; padding: 18px 0 0; background: #fff; border-top: 4px solid var(--ya); }

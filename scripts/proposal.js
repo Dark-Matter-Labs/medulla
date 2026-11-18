@@ -61,9 +61,16 @@
   if (fromHash) { $('#code').value = fromHash; history.replaceState(null, '', location.pathname); unlock(fromHash); }
 
   // ── 2. answers ──
+  // shortcut: homepage photos stand in for each space; swap in real room photos when there are some.
+  const ROOM_PHOTOS = { full: 'card-stair', part: 'card-garden', meeting: 'card-conference' };
+
   function renderRooms() {
     $('#rooms').replaceChildren(...pricing.events.rooms.map((r) => {
-      const label = el('label', 'choice');
+      const label = el('label', ROOM_PHOTOS[r.id] ? 'choice choice--photo' : 'choice');
+      if (ROOM_PHOTOS[r.id]) {
+        const img = el('img'); img.src = `/assets/images/figma/${ROOM_PHOTOS[r.id]}-800.webp`; img.alt = ''; img.loading = 'lazy'; img.width = 800; img.height = 533;
+        label.append(img);
+      }
       const input = el('input'); input.type = 'radio'; input.name = 'room'; input.value = r.id;
       const span = el('span', null, r.name);
       span.append(el('small', null, `${r.area} m² · from ${r.minHours} hours`));
@@ -149,14 +156,52 @@
     stepEl('send').prepend(back);
   }
 
-  function goTo(id, { focus = true } = {}) {
-    current = id;
-    STEPS.forEach((s) => { stepEl(s.id).hidden = s.id !== id; });
-    refresh();
-    if (focus) {
+  const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // `flyFrom`: the chosen answer's card, which morphs into its new node on the trail.
+  // View Transitions do the motion where supported; elsewhere the card's own keyframe runs.
+  function goTo(id, { focus = true, dir = 'forward', flyFrom = null } = {}) {
+    current = id; // set now, not in the transition callback, so a quick tap during the animation lands on the right step
+    const swap = () => {
+      STEPS.forEach((s) => { stepEl(s.id).hidden = s.id !== id; });
+      refresh();
+      if (flyFrom) {
+        flyFrom.style.viewTransitionName = '';
+        const node = $('#trail .is-new .trail__node');
+        if (node) node.style.viewTransitionName = 'answer';
+      }
+      if (id === 'send') bloom();
+    };
+    const land = () => {
+      if (!focus) return;
       const target = stepEl(id);
       target.focus({ preventScroll: true });
-      target.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      target.scrollIntoView({ block: 'nearest', behavior: calm() ? 'auto' : 'smooth' });
+    };
+    if (!document.startViewTransition || calm() || !focus) { swap(); land(); return; }
+    document.documentElement.dataset.dir = dir;
+    if (flyFrom) flyFrom.style.viewTransitionName = 'answer';
+    const transition = document.startViewTransition(swap);
+    transition.updateCallbackDone.then(land, land);
+    transition.finished.finally(() => {
+      $$('[style*="view-transition-name"]').forEach((n) => { n.style.viewTransitionName = ''; });
+    });
+  }
+
+  // Arriving at the end: a few leaves drift up from the card, once.
+  function bloom() {
+    if (calm()) return;
+    const card = stepEl('send');
+    $$('.leaf', card).forEach((n) => n.remove());
+    for (let i = 0; i < 7; i += 1) {
+      const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      leaf.setAttribute('class', 'leaf'); leaf.setAttribute('aria-hidden', 'true');
+      leaf.innerHTML = '<use href="#i-leaf"/>';
+      leaf.style.setProperty('--x', `${8 + i * 13}%`);
+      leaf.style.setProperty('--drift', `${(i % 2 ? 1 : -1) * (10 + i * 4)}px`);
+      leaf.style.setProperty('--spin', `${(i % 2 ? 1 : -1) * (40 + i * 15)}deg`);
+      leaf.style.animationDelay = `${120 + i * 70}ms`;
+      card.append(leaf);
     }
   }
 
@@ -175,13 +220,15 @@
     if (problem) return;
     const i = r.findIndex((s) => s.id === current);
     grown = current;
-    goTo(r[Math.min(i + 1, r.length - 1)].id);
+    const checked = stepEl(current).querySelector('.choice input:checked');
+    const chosen = checked ? checked.closest('.choice') : null;
+    goTo(r[Math.min(i + 1, r.length - 1)].id, { flyFrom: chosen });
   }
 
   function back() {
     const r = route(answers());
     const i = r.findIndex((s) => s.id === current);
-    if (i > 0) goTo(r[i - 1].id);
+    if (i > 0) goTo(r[i - 1].id, { dir: 'back' });
   }
 
   form.addEventListener('click', (e) => {
@@ -232,7 +279,7 @@
     $('#trail').replaceChildren(...items);
     grown = null;
   }
-  $('#trail').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) goTo(b.dataset.go); });
+  $('#trail').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) goTo(b.dataset.go, { dir: 'back' }); });
 
   function refresh() {
     const a = answers();
@@ -324,6 +371,7 @@
     const logo = el('img'); logo.src = '/assets/logos/medulla-wordmark-wide.svg'; logo.alt = 'Medulla'; logo.width = 150; logo.height = 37;
     head.append(logo, el('p', 'p-meta', `Proposal · ${today}`));
     const who = [p.a.name, p.a.organisation].filter(Boolean).join(', ') || 'you';
+    if (p.a.name || p.a.path) head.append(resetButton());
     const nodes = [head, el('h2', 'p-for', `For ${who}`),
       el('p', 'p-intro', 'A collaborative space and learning community in Berlin, in a quiet courtyard between Mitte and Kreuzberg.')];
 
@@ -362,6 +410,31 @@
     if (amount !== lastAmount) $('#price-live').textContent = amount ? `${p.price.label}: ${amount}` : '';
     lastAmount = amount;
   }
+
+  // "Start again" on the sheet: first press asks, second press clears. It disarms after a few seconds.
+  let resetArmed = false;
+  let resetTimer = null;
+  function resetButton() {
+    const button = el('button', `p-reset${resetArmed ? ' is-armed' : ''}`); button.type = 'button';
+    button.innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-restart"/></svg>'; // fixed markup, no user text
+    button.append(el('span', null, resetArmed ? 'Clear all answers?' : 'Start again'));
+    return button;
+  }
+  out.addEventListener('click', (e) => {
+    if (!e.target.closest('.p-reset')) return;
+    clearTimeout(resetTimer);
+    if (!resetArmed) {
+      resetArmed = true; refresh(); $('.p-reset').focus();
+      resetTimer = setTimeout(() => { resetArmed = false; refresh(); }, 4000);
+      return;
+    }
+    resetArmed = false;
+    form.reset();
+    lastAmount = null;
+    say('');
+    goTo('about', { dir: 'back' });
+    $('#f-name').focus();
+  });
 
   // On phones the price bar shows only while the proposal itself is off screen.
   function watchPeek() {

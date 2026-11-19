@@ -1,16 +1,46 @@
 {
   "updated": "Month YYYY",
   "membership": {
-    "individual": { "upTo2": 0, "threePlus": 0 },
-    "nonprofit": { "upTo2": 0, "threePlus": 0 },
-    "forprofit": { "upTo2": 0, "threePlus": 0 }
+    "individual": {
+      "upTo2": 0,
+      "threePlus": 0
+    },
+    "nonprofit": {
+      "upTo2": 0,
+      "threePlus": 0
+    },
+    "forprofit": {
+      "upTo2": 0,
+      "threePlus": 0
+    }
   },
   "events": {
     "memberShare": 0.5,
     "rooms": [
-      { "id": "full", "name": "Full ground floor", "area": 120, "hourly": 0, "minHours": 3, "day": 0 },
-      { "id": "part", "name": "Part of the ground floor", "area": 46, "hourly": 0, "minHours": 4, "day": 0 },
-      { "id": "meeting", "name": "Upstairs meeting room", "area": 16.5, "hourly": 0, "minHours": 4, "day": 0 }
+      {
+        "id": "full",
+        "name": "Whole event space",
+        "area": 120,
+        "hourly": 0,
+        "minHours": 3,
+        "day": 0
+      },
+      {
+        "id": "part",
+        "name": "Part of the event space",
+        "area": 46,
+        "hourly": 0,
+        "minHours": 4,
+        "day": 0
+      },
+      {
+        "id": "meeting",
+        "name": "Meeting room",
+        "area": 16.5,
+        "hourly": 0,
+        "minHours": 4,
+        "day": 0
+      }
     ]
   }
 }

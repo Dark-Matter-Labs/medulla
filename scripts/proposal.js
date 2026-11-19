@@ -297,7 +297,7 @@
 
   // ── 5. the proposal, as plain data ──
   function build(a) {
-    const p = { a, rows: [], price: null, list: [], notes: [], title: '', missing: null };
+    const p = { a, rows: [], price: null, list: [], shared: [], notes: [], title: '', missing: null };
     const missing = (message) => { p.missing = message; return p; };
     if (a.path === 'join') {
       p.title = 'Joining the community';
@@ -311,6 +311,8 @@
         detail: q.people > 1 ? `${core.euro(q.perPerson)} a person a month, for ${q.people} people` : '',
       };
       p.list = q.includes;
+      p.shared = q.shared;
+      p.notes.push(`Membership runs for at least ${q.minMonths} months.`);
       if (a.guest) p.notes.push('We’ll agree together how your intern or guest joins.');
       if (a.hostEvents) {
         p.notes.push(q.days === 'threePlus'
@@ -395,6 +397,12 @@
       p.list.forEach((item) => ul.append(el('li', null, item)));
       nodes.push(ul);
     }
+    if (p.shared.length) {
+      nodes.push(el('p', 'p-sub', 'Shared with every member'));
+      const ul = el('ul', 'p-list p-list--shared');
+      p.shared.forEach((item) => ul.append(el('li', null, item)));
+      nodes.push(ul);
+    }
     p.notes.forEach((n) => nodes.push(el('p', 'p-note', n)));
     if (!p.missing) {
       nodes.push(el('h3', 'p-title', 'Next step'),
@@ -456,6 +464,7 @@
       if (a.hostEvents) rows.push('Would like to host events: yes');
     }
     const notes = [...p.notes];
+    if (p.shared.length) notes.unshift(`Shared with every member: ${p.shared.join('; ')}.`);
     if (p.list.length) notes.unshift(`Included: ${p.list.join('; ')}.`);
     return {
       subject: `Proposal from ${who} · ${p.title}${amount ? ` · ${amount}` : ''}`,
@@ -475,23 +484,25 @@
     const button = $('#send');
     button.disabled = true; form.setAttribute('aria-busy', 'true'); say('');
     const body = new URLSearchParams({ 'form-name': 'proposal', ...copyFields(a, p) });
-    const sending = fetch('/', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
-    // The file name of the saved PDF comes from the page title.
-    const title = document.title;
-    document.title = `Medulla proposal – ${a.organisation || a.name}`;
-    window.addEventListener('afterprint', () => { document.title = title; }, { once: true });
-    window.print(); // still inside the click, so Safari allows it
     try {
-      const response = await sending;
+      const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
       if (!response.ok) throw new Error(`Netlify Forms responded ${response.status}`);
       say('Sent. We have a copy of your proposal and will be in touch.', 'ok');
     } catch (error) {
       console.error('Proposal copy failed:', error);
-      say('We couldn’t send our copy. Your PDF still works: please email it to hello@medulla.city.', 'error');
+      say('We couldn’t send our copy. Please email your PDF to hello@medulla.city instead.', 'error');
     } finally {
       button.disabled = false; form.removeAttribute('aria-busy');
     }
   });
 
-  $('#print-again').addEventListener('click', () => window.print());
+  // Step 1 of the last card: the person looks at and saves their PDF before sending anything.
+  // Printing is its own button (not after a send), so every browser opens the dialog from the click.
+  $('#save-pdf').addEventListener('click', () => {
+    const a = answers();
+    const title = document.title; // the saved PDF takes its file name from the page title
+    document.title = `Medulla proposal – ${a.organisation || a.name || 'Medulla'}`;
+    window.addEventListener('afterprint', () => { document.title = title; }, { once: true });
+    window.print();
+  });
 })();

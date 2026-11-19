@@ -201,6 +201,15 @@ html[data-dir=back]::view-transition-new(step) { animation-name: vt-in-back; }
 .p-reset.is-armed { color: #fff; background: var(--warn); border-color: var(--warn); }
 @media (hover: hover) and (pointer: fine) { .p-reset:hover:not(.is-armed) { color: #000; border-color: #000; opacity: 1; } .p-reset:hover .ico { transform: rotate(-90deg); } }
 @media (min-width: 520px) { .p-reset { flex-basis: auto; margin-left: auto; } .p-head .p-meta { order: 3; flex-basis: 100%; text-align: right; } }
+/* the last card: two numbered steps, save the PDF first, then send */
+.end-step { border-top: 1px solid var(--line); padding: 16px 0 4px; margin-top: 4px; }
+.end-step__n { font: 500 12px/1.3 var(--text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.btn-pdf { background: var(--ya); color: #000; }
+.end-step__how { margin: 12px 0 0; padding: 10px 12px; background: #fff; border-left: 3px solid var(--ya); border-radius: 0 4px 4px 0; font-size: 14px; }
+kbd { font: 500 12px/1 var(--text); padding: 2px 6px; border: 1px solid var(--control); border-bottom-width: 2px; border-radius: 4px; background: var(--paper); }
+.p-sub { margin: 14px 0 6px; font: 500 12px/1.3 var(--text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.p-list--shared { columns: 2; column-gap: 24px; }
+@media (max-width: 420px) { .p-list--shared { columns: 1; } }
 .legal { max-width: 1180px; margin: 0 auto; padding: 0 16px 32px; font-size: 13px; color: var(--muted); }
 .step .fine { margin: 14px 0 0; }
 

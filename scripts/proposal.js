@@ -343,11 +343,12 @@
       if (!q) return missing('Choose a space and a length to see the contribution.');
       p.rows.push(['Space', `${q.room.name}, ${q.room.area} m²`],
         ['Time', q.dayRate ? 'Full day' : `${q.billedHours} hours${q.billedHours > a.hours ? ` (${q.room.minHours}-hour minimum)` : ''}`]);
-      p.price = {
-        label: 'Contribution for the space', amount: core.euro(q.total),
-        detail: q.memberDiscount ? `Members pay half of ${core.euro(q.base)}` : (q.dayRate && a.length === 'hours' ? 'Capped at the full-day rate' : ''),
-      };
-      if (q.includedEvent) p.notes.push('Your membership includes one event a month, so this may already be covered.');
+      // Members on 3+ days have one event a month included, so lead with that, and give the half price for any further event.
+      p.price = q.includedEvent
+        ? { label: 'Contribution for the space', amount: 'Included in your membership',
+            detail: `One event a month is part of your membership. Any further event: ${core.euro(q.total)} (members pay half of ${core.euro(q.base)}).` }
+        : { label: 'Contribution for the space', amount: core.euro(q.total),
+            detail: q.memberDiscount ? `Members pay half of ${core.euro(q.base)}` : (q.dayRate && a.length === 'hours' ? 'Capped at the full-day rate' : '') };
       p.list = ['Learning events only, open beyond your own team', 'No sale of alcohol', 'Leave the space as you found it', 'VAT is confirmed on booking'];
     } else if (a.path === 'partner') {
       p.title = 'Partnering with us';
@@ -408,7 +409,11 @@
       nodes.push(el('h3', 'p-title', 'Next step'),
         el('p', null, 'Reply to the person you have been talking to, or write to hello@medulla.city with this proposal. Nothing is booked until we confirm it together.'));
     }
-    nodes.push(el('p', 'p-foot', `Prepared for ${who}. Suggested contributions from Medulla’s contribution model, ${pricing.updated}: a contribution to a space with an educational purpose, not rent. Share it within your organisation, but please don’t publish it.`),
+    const prepared = `Prepared for ${who.replace(/\.+$/, '')}.`; // "Example e.V." must not end in ".."
+    const basis = p.price
+      ? ` Suggested contributions from Medulla’s contribution model, ${pricing.updated}: a contribution to a space with an educational purpose, not rent.`
+      : '';
+    nodes.push(el('p', 'p-foot', `${prepared}${basis} Share it within your organisation, but please don’t publish it.`),
       el('p', 'p-address', ADDRESS));
     out.replaceChildren(...nodes);
 

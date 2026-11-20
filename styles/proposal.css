@@ -236,4 +236,17 @@ kbd { font: 500 12px/1 var(--text); padding: 2px 6px; border: 1px solid var(--co
   .p-price { background: #FFE9BF; animation: none; }
   .p-price, .p-rows, .p-list { break-inside: avoid; }
   .p-title { break-after: avoid; }
+  /* tighter on paper so even the longest membership proposal fits one A4 page */
+  .proposal { font-size: 14px; line-height: 1.45; }
+  .p-head { margin-bottom: 16px; }
+  .p-for { font-size: 34px; margin-bottom: 6px; }
+  .p-intro { margin-bottom: 12px; }
+  .p-title { font-size: 22px; margin: 14px 0 8px; }
+  .p-rows { gap: 4px 18px; margin-bottom: 10px; }
+  .p-price { padding: 10px 14px; margin: 4px 0 10px; }
+  .p-price__amount { font-size: 32px; }
+  .p-list { margin-bottom: 8px; }
+  .p-sub { margin: 10px 0 4px; }
+  .p-note { margin-bottom: 6px; }
+  .p-foot { margin-top: 14px; padding-top: 8px; }
 }

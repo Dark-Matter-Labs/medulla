@@ -48,7 +48,7 @@
     const count = payer === 'individual' ? 1 : Math.max(1, Math.floor(Number(people) || 1));
     const perPerson = row[days];
     const includes = days === 'threePlus'
-      ? ['Your own fixed desk in the focus area', 'The right to host one event a month', 'Half price on further event hire']
+      ? ['A guaranteed space in the focus area', 'The right to host one event a month', 'Half price on further event hire']
       : ['A flexible place in the focus area, or in the community space when it’s busy', 'Half price on event hire'];
     return { payer, days, people: count, perPerson, monthly: perPerson * count, includes, shared: SHARED, minMonths: MIN_MONTHS };
   }

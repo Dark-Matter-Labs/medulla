@@ -49,7 +49,9 @@
     const perPerson = row[days];
     const includes = days === 'threePlus'
       ? ['A guaranteed space in the focus area', 'The right to host one event a month', 'Half price on further event hire']
-      : ['A flexible place in the focus area, or in the community space when it’s busy', 'Half price on event hire'];
+      : ['A flexible place in the focus area, or in the community space when it’s busy',
+         'Ability to host one event per quarter (subject to availability, with preference given to full-time members)',
+         'Half price hire on additional events'];
     return { payer, days, people: count, perPerson, monthly: perPerson * count, includes, shared: SHARED, minMonths: MIN_MONTHS };
   }
 
@@ -71,7 +73,9 @@
     const share = member === 'no' ? 1 : pricing.events.memberShare;
     return {
       room: r, member, billedHours, dayRate, base, total: round2(base * share),
-      memberDiscount: share < 1, includedEvent: member === 'threePlus',
+      memberDiscount: share < 1, includedEvent: member !== 'no',
+      // Members get one event included: a month on 3+ days, a quarter on up to 2 days.
+      includedPer: member === 'threePlus' ? 'month' : member === 'upTo2' ? 'quarter' : null,
     };
   }
 

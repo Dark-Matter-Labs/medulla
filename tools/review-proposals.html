@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Medulla proposal combinations</title>
+<!-- Team review: renders every proposal combination from the real /proposal page, one per printed page.
+     Local only (tools/ is never deployed). Run: node tools/print-review.mjs  (see README). -->
+<link rel="stylesheet" href="/styles/proposal.css">
+<style>
+  body{background:#fff} iframe{position:absolute;left:-9999px;width:1280px;height:900px}
+  .sheet{break-after:page;padding-top:2mm} .sheet:last-child{break-after:auto}
+  .tag{font:500 10px/1.3 "Instrument Sans",system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#B3261E;margin:0 0 8px}
+  .cover h1{font:400 40px/1.05 "Instrument Serif",Georgia,serif;margin:0 0 10px}
+  .cover ol{font:400 14px/1.7 "Instrument Sans",system-ui,sans-serif;padding-left:20px}
+  .cover p{font:400 13px/1.5 "Instrument Sans",system-ui,sans-serif;color:#4a4a4a}
+</style></head><body>
+<div id="book"></div>
+<iframe id="f" src="/proposal"></iframe>
+<script>
+const SCENARIOS = [
+  ['Join · personal · up to 2 days', {path:'join', payer:'individual', days:'upTo2'}],
+  ['Join · personal · 3+ days', {path:'join', payer:'individual', days:'threePlus', start:'2027-01'}],
+  ['Join · non-profit · 3 people · up to 2 days · guest · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'upTo2', guest:true, hostEvents:true}],
+  ['Join · non-profit · 3 people · 3+ days · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'threePlus', hostEvents:true, start:'2027-01'}],
+  ['Join · for-profit · 2 people · 3+ days', {path:'join', payer:'forprofit', people:'2', days:'threePlus'}],
+  ['Host · not a member · whole event space · full day', {path:'host', member:'no', educational:'yes', format:'Workshop', slot:'hire', room:'full', length:'day', guests:'60'}],
+  ['Host · not a member · part of the event space · 2 hours (4-hour minimum)', {path:'host', member:'no', educational:'yes', format:'Talk or lecture', slot:'hire', room:'part', length:'hours', hours:'2', guests:'25'}],
+  ['Host · member (up to 2 days) · meeting room · 4 hours', {path:'host', member:'upTo2', educational:'yes', format:'Workshop', slot:'hire', room:'meeting', length:'hours', hours:'4', guests:'8'}],
+  ['Host · member (3+ days) · whole event space · 5 hours', {path:'host', member:'threePlus', educational:'yes', format:'Gathering or salon', slot:'hire', room:'full', length:'hours', hours:'5', guests:'40'}],
+  ['Host · in Medulla’s public programme', {path:'host', member:'no', educational:'yes', format:'Talk or lecture', slot:'programme', guests:'30', date:'2027-02-12'}],
+  ['Host · not a learning event', {path:'host', member:'no', educational:'no', hostIdea:'A team offsite for our staff, with dinner.'}],
+  ['Partner with us', {path:'partner', idea:'A joint research residency on urban heat, spring 2027.'}],
+];
+const code = new URLSearchParams(location.hash.slice(1)).get('code');
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+async function until(fn, ms = 20000) { const t = Date.now(); while (!fn()) { if (Date.now() - t > ms) throw new Error('timeout'); await wait(50); } }
+(async () => {
+  const f = document.getElementById('f');
+  await until(() => f.contentDocument && f.contentDocument.getElementById('gate'));
+  const d = f.contentDocument;
+  d.getElementById('code').value = code;
+  d.getElementById('gate').requestSubmit();
+  await until(() => !d.getElementById('app').hidden);
+  const form = d.getElementById('q');
+  const book = document.getElementById('book');
+  const cover = document.createElement('section'); cover.className = 'sheet cover';
+  cover.innerHTML = '<p class="tag">For team review · not for sending</p><h1>Medulla proposal combinations</h1><p>Each page is the PDF a person gets from medulla.city/proposal for the answers named at the top. Names are placeholders. Prices as currently encrypted on the site.</p>';
+  const list = document.createElement('ol'); SCENARIOS.forEach(([t]) => { const li = document.createElement('li'); li.textContent = t; list.append(li); }); cover.append(list);
+  book.append(cover);
+  for (const [i, [title, a]] of SCENARIOS.entries()) {
+    form.reset();
+    const v = { name: 'Alex Example', email: 'alex@example.org', organisation: a.payer === 'individual' ? '' : 'Example e.V.', people: '1', hours: '4', ...a };
+    for (const [k, val] of Object.entries(v)) {
+      d.querySelectorAll(`[name="${k}"]`).forEach((el) => {
+        if (el.type === 'radio') el.checked = el.value === val;
+        else if (el.type === 'checkbox') el.checked = Boolean(val);
+        else el.value = val;
+      });
+    }
+    form.dispatchEvent(new Event('change', { bubbles: true }));
+    await wait(120);
+    const sheet = document.createElement('section'); sheet.className = 'sheet';
+    const tag = document.createElement('p'); tag.className = 'tag'; tag.textContent = `${i + 1} / ${SCENARIOS.length} · ${title}`;
+    const art = document.createElement('article'); art.className = 'proposal'; art.innerHTML = d.getElementById('proposal').innerHTML;
+    art.querySelectorAll('.p-reset').forEach((n) => n.remove());
+    sheet.append(tag, art); book.append(sheet);
+  }
+  f.remove();
+  window.__done = true;
+})().catch((e) => { document.body.textContent = 'Review failed: ' + e.message; window.__done = true; });
+</script></body></html>

@@ -317,7 +317,7 @@
       if (a.hostEvents) {
         p.notes.push(q.days === 'threePlus'
           ? 'You’d like to host events: one a month is part of your contribution, and further hires are half price. We’ll plan them together.'
-          : 'You’d like to host events: as members you pay half for event hire. We’ll plan them together.');
+          : 'You’d like to host events: one event per quarter is part of your contribution (subject to availability, with preference given to full-time members), and further hires are half price. We’ll plan them together.');
       }
       p.notes.push('We confirm invoicing and the start date when we talk.');
     } else if (a.path === 'host') {
@@ -343,10 +343,10 @@
       if (!q) return missing('Choose a space and a length to see the contribution.');
       p.rows.push(['Space', `${q.room.name}, ${q.room.area} m²`],
         ['Time', q.dayRate ? 'Full day' : `${q.billedHours} hours${q.billedHours > a.hours ? ` (${q.room.minHours}-hour minimum)` : ''}`]);
-      // Members on 3+ days have one event a month included, so lead with that, and give the half price for any further event.
+      // Members have one event included (a month on 3+ days, a quarter on up to 2 days): lead with that, then the half price for any further event.
       p.price = q.includedEvent
         ? { label: 'Contribution for the space', amount: 'Included in your membership',
-            detail: `One event a month is part of your membership. Any further event: ${core.euro(q.total)} (members pay half of ${core.euro(q.base)}).` }
+            detail: `One event a ${q.includedPer} is part of your membership${q.includedPer === 'quarter' ? ', subject to availability, with preference given to full-time members' : ''}. Any further event: ${core.euro(q.total)} (members pay half of ${core.euro(q.base)}).` }
         : { label: 'Contribution for the space', amount: core.euro(q.total),
             detail: q.memberDiscount ? `Members pay half of ${core.euro(q.base)}` : (q.dayRate && a.length === 'hours' ? 'Capped at the full-day rate' : '') };
       p.list = ['Learning events only, open beyond your own team', 'No sale of alcohol', 'Leave the space as you found it', 'VAT is confirmed on booking'];

@@ -52,6 +52,16 @@ test('event: members pay their share, 3-day members get the included event flag'
   assert.equal(core.eventQuote({ room: 'big', member: 'no', duration: { kind: 'hours', hours: 0 } }, pricing()), null);
 });
 
+test('event: members on up to 2 days get one event a quarter, non-members none', () => {
+  const two = core.eventQuote({ room: 'big', member: 'upTo2', duration: { kind: 'day' } }, pricing());
+  assert.equal(two.includedEvent, true);
+  assert.equal(two.includedPer, 'quarter');
+  assert.equal(two.total, 50);
+  const guest = core.eventQuote({ room: 'big', member: 'no', duration: { kind: 'day' } }, pricing());
+  assert.equal(guest.includedEvent, false);
+  assert.equal(guest.includedPer, null);
+});
+
 test('euro shows cents only when needed', () => {
   assert.equal(core.euro(490), '€490');
   assert.equal(core.euro(1200), '€1,200');

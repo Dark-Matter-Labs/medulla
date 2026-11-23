@@ -159,9 +159,10 @@
 
           <fieldset class="step" data-step="slot" tabindex="-1" hidden>
             <legend class="step__q">With us, or on your own?</legend>
+            <p class="hint">Medulla runs its own public programme of talks, workshops and gatherings. Your event can become one of them, or you can hire the space and run it yourself.</p>
             <div class="choices">
-              <label class="choice"><input type="radio" name="slot" value="programme" /><span>In Medulla’s public programme<small>Evenings from 18:00 to 21:30, together with us.</small></span><svg class="ico" aria-hidden="true"><use href="#i-together"/></svg></label>
-              <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire part or all of the space.</small></span><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg></label>
+              <label class="choice"><input type="radio" name="slot" value="programme" /><span>As part of Medulla’s public programme<small>We co-host it with you: we shape it together, list it on Medulla’s Luma page, and host the evening with you (18:00–21:30).</small></span><svg class="ico" aria-hidden="true"><use href="#i-together"/></svg></label>
+              <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire the whole event space and run the event yourself.</small></span><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg></label>
             </div>
           </fieldset>
 
@@ -184,6 +185,8 @@
 
           <fieldset class="step" data-step="details" tabindex="-1" hidden>
             <legend class="step__q">A few details, if you know them</legend>
+            <label for="f-about">What is it about, and who is it for? <span class="opt">optional</span></label>
+            <textarea id="f-about" name="about" rows="3"></textarea>
             <label for="f-guests">About how many people? <span class="opt">optional</span></label>
             <input class="short" id="f-guests" name="guests" type="number" min="1" max="200" inputmode="numeric" enterkeyhint="next" />
             <label for="f-date">Preferred date <span class="opt">optional</span></label>

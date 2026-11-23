@@ -100,7 +100,7 @@
       member: v('member'), educational: v('educational'), format: v('format'), slot: v('slot'),
       room: v('room') || (pricing && pricing.events.rooms.length === 1 ? pricing.events.rooms[0].id : ''), length: v('length'), hours: hours > 0 ? clamp(hours, 0.5, 12) : 0,
       guests: v('guests'), date: v('date'), idea: path === 'partner' ? v('idea') : v('hostIdea'),
-      contact: v('contact'), contactName: v('contactName'),
+      contact: v('contact'), contactName: v('contactName'), about: v('about'),
     };
   }
 
@@ -145,7 +145,7 @@
       check: (a) => (!a.length ? 'Choose how long you need it.' : a.length === 'hours' && !a.hours ? 'Add how many hours.' : null),
       label: (a) => (a.length === 'day' ? 'A full day' : `${a.hours} hours`) },
     { id: 'details', when: learning, name: 'Details',
-      label: (a) => [a.guests && `${a.guests} people`, a.date && shortDay(a.date)].filter(Boolean).join(' · ') || 'Details later' },
+      label: (a) => [a.about && 'About it', a.guests && `${a.guests} people`, a.date && shortDay(a.date)].filter(Boolean).join(' · ') || 'Details later' },
     { id: 'idea', when: (a) => a.path === 'partner', name: 'Idea', label: (a) => (a.idea ? 'Your idea' : 'We’ll talk') },
     { id: 'send', when: () => true, name: 'Proposal', label: () => '' },
   ];
@@ -341,13 +341,14 @@
         return p;
       }
       if (a.format) p.rows.push(['Kind of event', a.format]);
+      if (a.about) p.rows.push(['About the event', a.about]);
       p.rows.push(['Member', core.MEMBER[a.member]]);
       if (a.guests) p.rows.push(['People', a.guests]);
       if (a.date) p.rows.push(['Preferred date', dayName(a.date)]);
       if (!a.slot) return missing('Your proposal grows as you answer.');
       if (a.slot === 'programme') {
-        p.rows.push(['Format', 'Medulla’s public programme, 18:00 to 21:30']);
-        p.notes.push('We plan the public programme together with you, and agree the details when we talk.');
+        p.rows.push(['Format', 'Part of Medulla’s public programme, 18:00 to 21:30']);
+        p.notes.push('Your event becomes one of Medulla’s own evenings: we shape it together, list it on Medulla’s Luma page, and host it with you on the night. We agree the details when we talk.');
         return p;
       }
       const duration = a.length === 'day' ? { kind: 'day' } : a.length === 'hours' ? { kind: 'hours', hours: a.hours } : null;

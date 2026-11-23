@@ -173,12 +173,12 @@
           <fieldset class="step" data-step="length" tabindex="-1" hidden>
             <legend class="step__q">For how long?</legend>
             <div class="choices choices--row">
-              <label class="choice"><input type="radio" name="length" value="hours" data-then="#f-hours" /><span>Some hours</span><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></label>
+              <label class="choice"><input type="radio" name="length" value="hours" data-then="#f-hours" /><span>Some hours<small id="hours-min"></small></span><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></label>
               <label class="choice"><input type="radio" name="length" value="day" /><span>A full day</span><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg></label>
             </div>
             <div class="after" data-hours hidden>
               <label for="f-hours">How many hours?</label>
-              <input class="short" id="f-hours" name="hours" type="text" inputmode="decimal" value="4" enterkeyhint="next" />
+              <input class="short" id="f-hours" name="hours" type="text" inputmode="decimal" value="6" enterkeyhint="next" />
             </div>
           </fieldset>
 

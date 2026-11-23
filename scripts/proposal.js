@@ -77,6 +77,12 @@
       label.append(input, span);
       return label;
     }));
+    // With a single space there is nothing to choose: the space step is skipped and its minimum shows on 'Some hours'.
+    if (pricing.events.rooms.length === 1) {
+      const only = pricing.events.rooms[0];
+      $('#hours-min').textContent = `The whole event space, ${only.area}\u00a0m², from ${only.minHours}\u00a0hours`;
+      $('#f-hours').value = String(only.minHours);
+    }
   }
 
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
@@ -92,7 +98,7 @@
       payer: v('payer'), people: clamp(Math.round(num(v('people'))) || 1, 1, 30), days: v('days'),
       guest: d.has('guest'), hostEvents: d.has('hostEvents'), start: v('start'),
       member: v('member'), educational: v('educational'), format: v('format'), slot: v('slot'),
-      room: v('room'), length: v('length'), hours: hours > 0 ? clamp(hours, 0.5, 12) : 0,
+      room: v('room') || (pricing && pricing.events.rooms.length === 1 ? pricing.events.rooms[0].id : ''), length: v('length'), hours: hours > 0 ? clamp(hours, 0.5, 12) : 0,
       guests: v('guests'), date: v('date'), idea: path === 'partner' ? v('idea') : v('hostIdea'),
       contact: v('contact'), contactName: v('contactName'),
     };
@@ -133,7 +139,7 @@
     { id: 'format', when: learning, name: 'Shape', label: (a) => a.format || 'Open shape' },
     { id: 'slot', when: learning, name: 'How', check: need('slot', 'Choose one to continue.'),
       label: (a) => (a.slot === 'hire' ? 'My own event' : 'Medulla’s public programme') },
-    { id: 'room', when: hire, name: 'Space', check: need('room', 'Choose a space.'),
+    { id: 'room', when: (a) => hire(a) && pricing.events.rooms.length > 1, name: 'Space', check: need('room', 'Choose a space.'),
       label: (a) => (pricing.events.rooms.find((r) => r.id === a.room) || {}).name },
     { id: 'length', when: hire, name: 'Time',
       check: (a) => (!a.length ? 'Choose how long you need it.' : a.length === 'hours' && !a.hours ? 'Add how many hours.' : null),
@@ -352,7 +358,7 @@
       // Members have one event included (a month on 3+ days, a quarter on up to 2 days): lead with that, then the half price for any further event.
       p.price = q.includedEvent
         ? { label: 'Contribution for the space', amount: 'Included in your membership',
-            detail: `One event a ${q.includedPer} is part of your membership${q.includedPer === 'quarter' ? ', subject to availability, with preference given to full-time members' : ''}. Any further event: ${core.euro(q.total)} (members pay half of ${core.euro(q.base)}).` }
+            detail: `One event a ${q.includedPer} is part of your membership${q.includedPer === 'quarter' ? ', subject to availability, with preference given to full-time members' : ''}. Once you’ve used it, members pay half: ${core.euro(q.total)} instead of ${core.euro(q.base)}.` }
         : { label: 'Contribution for the space', amount: core.euro(q.total),
             detail: q.memberDiscount ? `Members pay half of ${core.euro(q.base)}` : (q.dayRate && a.length === 'hours' ? 'Capped at the full-day rate' : '') };
       p.list = ['Learning events only, open beyond your own team', 'No sale of alcohol', 'Leave the space as you found it', 'VAT is confirmed on booking'];

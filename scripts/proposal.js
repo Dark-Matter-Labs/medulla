@@ -94,6 +94,7 @@
       member: v('member'), educational: v('educational'), format: v('format'), slot: v('slot'),
       room: v('room'), length: v('length'), hours: hours > 0 ? clamp(hours, 0.5, 12) : 0,
       guests: v('guests'), date: v('date'), idea: path === 'partner' ? v('idea') : v('hostIdea'),
+      contact: v('contact'), contactName: v('contactName'),
     };
   }
 
@@ -112,6 +113,10 @@
       check: (a) => (!a.name ? 'Please add your name.' : !EMAIL.test(a.email) ? 'Please add a valid email address.' : null) },
     { id: 'path', when: () => true, name: 'Path', check: need('path', 'Choose a path to continue.'),
       label: (a) => ({ join: 'Join the community', host: 'Host a gathering', partner: 'Partner with us' })[a.path] },
+    // Who at Medulla takes this on: a name gives the team a lead straight away; 'not yet' asks the team to assign one.
+    { id: 'contact', when: () => true, name: 'Contact',
+      check: (a) => (!a.contact ? 'Choose one to continue.' : a.contact === 'yes' && !a.contactName ? 'Add who you’re in touch with.' : null),
+      label: (a) => (a.contact === 'yes' ? a.contactName || 'Someone at Medulla' : 'Please connect me') },
     { id: 'payer', when: join, name: 'Contributing', check: need('payer', 'Choose who is contributing.'),
       label: (a) => ({ individual: 'From my own pocket', nonprofit: 'A non-profit', forprofit: 'A for-profit' })[a.payer] },
     { id: 'people', when: (a) => join(a) && Boolean(a.payer) && a.payer !== 'individual', name: 'People',
@@ -284,6 +289,7 @@
   function refresh() {
     const a = answers();
     $('[data-hours]').hidden = a.length !== 'hours';
+    $('[data-contact]').hidden = a.contact !== 'yes';
     stepEl(current).querySelector('[data-next]')?.replaceChildren(document.createTextNode(nextLabel(a)));
     renderTrail(a);
     render(build(a));
@@ -368,6 +374,13 @@
     return node;
   }
 
+  function nextStep(a) {
+    const tail = ' Nothing is booked until we confirm it together.';
+    if (a.contact === 'yes' && a.contactName) return `Reply to ${a.contactName}, or write to hello@medulla.city with this proposal.${tail}`;
+    if (a.contact === 'no') return `Someone from the Medulla team will get in touch to take this further. You can also write to hello@medulla.city with this proposal.${tail}`;
+    return `Reply to the person you have been talking to, or write to hello@medulla.city with this proposal.${tail}`;
+  }
+
   function render(p) {
     const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     const head = el('header', 'p-head');
@@ -407,7 +420,7 @@
     p.notes.forEach((n) => nodes.push(el('p', 'p-note', n)));
     if (!p.missing) {
       nodes.push(el('h3', 'p-title', 'Next step'),
-        el('p', null, 'Reply to the person you have been talking to, or write to hello@medulla.city with this proposal. Nothing is booked until we confirm it together.'));
+        el('p', null, nextStep(p.a)));
     }
     const prepared = `Prepared for ${who.replace(/\.+$/, '')}.`; // "Example e.V." must not end in ".."
     const basis = p.price
@@ -472,10 +485,11 @@
     if (p.shared.length) notes.unshift(`Shared with every member: ${p.shared.join('; ')}.`);
     if (p.list.length) notes.unshift(`Included: ${p.list.join('; ')}.`);
     return {
-      subject: `Proposal from ${who} · ${p.title}${amount ? ` · ${amount}` : ''}`,
+      subject: `Proposal from ${who} · ${p.title}${amount ? ` · ${amount}` : ''}${a.contact === 'yes' ? ` · with ${a.contactName}` : ' · needs a contact'}`,
       Name: a.name, Email: a.email, Organisation: a.organisation || '—', Path: p.title,
       Contribution: p.price ? `${amount}${p.price.detail ? ` (${p.price.detail})` : ''}` : 'No fixed price: we talk it through',
       Answers: rows.join('\n') || '—', Notes: notes.join('\n\n') || '—', 'Prices dated': pricing.updated,
+      'Medulla contact': a.contact === 'yes' ? a.contactName : 'Not in touch yet: please assign someone',
     };
   }
 

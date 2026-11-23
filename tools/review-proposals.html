@@ -14,7 +14,7 @@
 <iframe id="f" src="/proposal"></iframe>
 <script>
 const SCENARIOS = [
-  ['Join · personal · up to 2 days', {path:'join', payer:'individual', days:'upTo2'}],
+  ['Join · personal · up to 2 days · already in touch with someone', {path:'join', payer:'individual', days:'upTo2', contact:'yes', contactName:'Sam'}],
   ['Join · personal · 3+ days', {path:'join', payer:'individual', days:'threePlus', start:'2027-01'}],
   ['Join · non-profit · 3 people · up to 2 days · guest · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'upTo2', guest:true, hostEvents:true}],
   ['Join · non-profit · 3 people · 3+ days · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'threePlus', hostEvents:true, start:'2027-01'}],
@@ -45,7 +45,7 @@ async function until(fn, ms = 20000) { const t = Date.now(); while (!fn()) { if 
   book.append(cover);
   for (const [i, [title, a]] of SCENARIOS.entries()) {
     form.reset();
-    const v = { name: 'Alex Example', email: 'alex@example.org', organisation: a.payer === 'individual' ? '' : 'Example e.V.', people: '1', hours: '4', ...a };
+    const v = { name: 'Alex Example', email: 'alex@example.org', organisation: a.payer === 'individual' ? '' : 'Example e.V.', people: '1', hours: '4', contact: 'no', ...a };
     for (const [k, val] of Object.entries(v)) {
       d.querySelectorAll(`[name="${k}"]`).forEach((el) => {
         if (el.type === 'radio') el.checked = el.value === val;

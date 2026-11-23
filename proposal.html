@@ -76,6 +76,18 @@
             </div>
           </fieldset>
 
+          <fieldset class="step" data-step="contact" tabindex="-1" hidden>
+            <legend class="step__q">Are you already in touch with someone at Medulla?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="contact" value="yes" data-then="#f-contact" /><span>Yes<small>Tell us who, and they’ll take it from here with you.</small></span></label>
+              <label class="choice"><input type="radio" name="contact" value="no" /><span>Not yet<small>Please connect me with someone from the Medulla team.</small></span></label>
+            </div>
+            <div class="after" data-contact hidden>
+              <label for="f-contact">Who is it?</label>
+              <input id="f-contact" name="contactName" autocomplete="off" enterkeyhint="next" />
+            </div>
+          </fieldset>
+
           <fieldset class="step" data-step="payer" tabindex="-1" hidden>
             <legend class="step__q">Who is contributing?</legend>
             <div class="choices">
@@ -218,7 +230,7 @@
     <input name="Name" /><input name="Email" /><input name="Organisation" />
     <input name="Path" /><input name="Contribution" />
     <textarea name="Answers"></textarea><textarea name="Notes"></textarea>
-    <input name="Prices dated" />
+    <input name="Prices dated" /><input name="Medulla contact" />
   </form>
 
   <script src="/scripts/proposal-data.js"></script>

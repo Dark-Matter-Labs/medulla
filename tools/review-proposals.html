@@ -14,7 +14,7 @@
 <iframe id="f" src="/proposal"></iframe>
 <script>
 const SCENARIOS = [
-  ['Join · personal · up to 2 days · already in touch with someone', {path:'join', payer:'individual', days:'upTo2', contact:'yes', contactName:'Sam'}],
+  ['Join · personal · up to 2 days', {path:'join', payer:'individual', days:'upTo2'}],
   ['Join · personal · 3+ days', {path:'join', payer:'individual', days:'threePlus', start:'2027-01'}],
   ['Join · non-profit · 3 people · up to 2 days · guest · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'upTo2', guest:true, hostEvents:true}],
   ['Join · non-profit · 3 people · 3+ days · wants to host events', {path:'join', payer:'nonprofit', people:'3', days:'threePlus', hostEvents:true, start:'2027-01'}],
@@ -40,7 +40,7 @@ async function until(fn, ms = 20000) { const t = Date.now(); while (!fn()) { if 
   const form = d.getElementById('q');
   const book = document.getElementById('book');
   const cover = document.createElement('section'); cover.className = 'sheet cover';
-  cover.innerHTML = '<p class="tag">For team review · not for sending</p><h1>Medulla proposal combinations</h1><p>Each page is the PDF a person gets from medulla.city/proposal for the answers named at the top. Names are placeholders. Prices as currently encrypted on the site.</p>';
+  cover.innerHTML = '<p class="tag">For team review · not for sending</p><h1>Medulla proposal combinations</h1><p>Each page is the PDF a person gets from medulla.city/proposal for the answers named at the top. Names are placeholders. Prices as currently encrypted on the site. Whether someone is already in touch with a Medulla person only changes the email we receive (its subject and the Medulla contact field), not the proposal, so it isn’t shown here.</p>';
   const list = document.createElement('ol'); SCENARIOS.forEach(([t]) => { const li = document.createElement('li'); li.textContent = t; list.append(li); }); cover.append(list);
   book.append(cover);
   for (const [i, [title, a]] of SCENARIOS.entries()) {

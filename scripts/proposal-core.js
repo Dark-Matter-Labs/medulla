@@ -18,7 +18,7 @@
   const MEMBER = Object.freeze({ no: 'Not a member', upTo2: 'Member, up to 2 days a week', threePlus: 'Member, 3 or more days a week' });
   const ROUNDS = 600000;
   // What every member shares, whatever their days; and the shortest membership we offer.
-  const SHARED = Object.freeze(['Meeting rooms', 'A phone booth', 'The kitchen', 'The terrace', 'A great community and its shared programme of events']);
+  const SHARED = Object.freeze(['Meeting rooms', 'Three phone booths', 'The kitchen', 'The community and its programme of events']);
   const MIN_MONTHS = 3;
 
   const isAmount = (n) => typeof n === 'number' && Number.isFinite(n) && n >= 0;
@@ -48,10 +48,10 @@
     const count = payer === 'individual' ? 1 : Math.max(1, Math.floor(Number(people) || 1));
     const perPerson = row[days];
     const includes = days === 'threePlus'
-      ? ['A guaranteed space in the focus area', 'The right to host one event a month', 'Half price on further event hire']
+      ? ['A guaranteed space in the focus area', 'One event a month', 'Half price for further events']
       : ['A flexible place in the focus area, or in the community space when it’s busy',
-         'Ability to host one event per quarter (subject to availability, with preference given to full-time members)',
-         'Half price hire on additional events'];
+         'One event a quarter, when the space is free (full-time members have priority)',
+         'Half price for further events'];
     return { payer, days, people: count, perPerson, monthly: perPerson * count, includes, shared: SHARED, minMonths: MIN_MONTHS };
   }
 

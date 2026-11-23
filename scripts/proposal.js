@@ -313,7 +313,7 @@
     const missing = (message) => { p.missing = message; return p; };
     if (a.path === 'join') {
       p.title = 'Joining the community';
-      if (!a.payer || !a.days) return missing('Your proposal grows as you answer.');
+      if (!a.payer || !a.days) return missing('Your proposal appears here as you answer.');
       const q = core.membershipQuote({ payer: a.payer, people: a.people, days: a.days }, pricing);
       p.rows.push(['Who contributes', core.PAYERS[q.payer]], ['Days', core.DAYS[q.days]]);
       if (q.payer !== 'individual') p.rows.push(['People', String(q.people)]);
@@ -325,19 +325,19 @@
       p.list = q.includes;
       p.shared = q.shared;
       p.notes.push(`Membership runs for at least ${q.minMonths} months.`);
-      if (a.guest) p.notes.push('We’ll agree together how your intern or guest joins.');
+      if (a.guest) p.notes.push('We’ll agree how your intern or guest can join.');
       if (a.hostEvents) {
         p.notes.push(q.days === 'threePlus'
-          ? 'You’d like to host events: one a month is part of your contribution, and further hires are half price. We’ll plan them together.'
-          : 'You’d like to host events: one event per quarter is part of your contribution (subject to availability, with preference given to full-time members), and further hires are half price. We’ll plan them together.');
+          ? 'You’d like to host events: one a month is included, and further events are half price. We’ll plan them with you.'
+          : 'You’d like to host events: one a quarter is included, when the space is free (full-time members have priority), and further events are half price. We’ll plan them with you.');
       }
       p.notes.push('We confirm invoicing and the start date when we talk.');
     } else if (a.path === 'host') {
       p.title = 'Hosting a gathering';
-      if (!a.member || !a.educational) return missing('Your proposal grows as you answer.');
+      if (!a.member || !a.educational) return missing('Your proposal appears here as you answer.');
       if (a.educational === 'no') {
         if (a.idea) p.rows.push(['Your idea', a.idea]);
-        p.notes.push('Medulla hosts learning events: talks, workshops and sessions open beyond your own team. Tell us more about your idea and we’ll see together whether there is a fit.');
+        p.notes.push('Medulla hosts learning events: talks, workshops and sessions open to people beyond your own team. Tell us more and we’ll see if there’s a fit.');
         return p;
       }
       if (a.format) p.rows.push(['Kind of event', a.format]);
@@ -345,30 +345,30 @@
       p.rows.push(['Member', core.MEMBER[a.member]]);
       if (a.guests) p.rows.push(['People', a.guests]);
       if (a.date) p.rows.push(['Preferred date', dayName(a.date)]);
-      if (!a.slot) return missing('Your proposal grows as you answer.');
+      if (!a.slot) return missing('Your proposal appears here as you answer.');
       if (a.slot === 'programme') {
         p.rows.push(['Format', 'Part of Medulla’s public programme, 18:00 to 21:30']);
-        p.notes.push('Your event becomes one of Medulla’s own evenings: we shape it together, list it on Medulla’s Luma page, and host it with you on the night. We agree the details when we talk.');
+        p.notes.push('Your event becomes part of Medulla’s public programme: we plan it with you, list it on our Luma page and co-host the evening. We’ll agree the details when we talk.');
         return p;
       }
       const duration = a.length === 'day' ? { kind: 'day' } : a.length === 'hours' ? { kind: 'hours', hours: a.hours } : null;
       const q = a.room && duration ? core.eventQuote({ room: a.room, member: a.member, duration }, pricing) : null;
-      if (!q) return missing('Choose a space and a length to see the contribution.');
+      if (!q) return missing('Choose how long you need the space to see the contribution.');
       p.rows.push(['Space', `${q.room.name}, ${q.room.area} m²`],
         ['Time', q.dayRate ? 'Full day' : `${q.billedHours} hours${q.billedHours > a.hours ? ` (${q.room.minHours}-hour minimum)` : ''}`]);
       // Members have one event included (a month on 3+ days, a quarter on up to 2 days): lead with that, then the half price for any further event.
       p.price = q.includedEvent
         ? { label: 'Contribution for the space', amount: 'Included in your membership',
-            detail: `One event a ${q.includedPer} is part of your membership${q.includedPer === 'quarter' ? ', subject to availability, with preference given to full-time members' : ''}. Once you’ve used it, members pay half: ${core.euro(q.total)} instead of ${core.euro(q.base)}.` }
+            detail: `One event a ${q.includedPer} is part of your membership${q.includedPer === 'quarter' ? ', when the space is free (full-time members have priority)' : ''}. Once you’ve used it, members pay half: ${core.euro(q.total)} instead of ${core.euro(q.base)}.` }
         : { label: 'Contribution for the space', amount: core.euro(q.total),
             detail: q.memberDiscount ? `Members pay half of ${core.euro(q.base)}` : (q.dayRate && a.length === 'hours' ? 'Capped at the full-day rate' : '') };
       p.list = ['Learning events only, open beyond your own team', 'No sale of alcohol', 'Leave the space as you found it', 'VAT is confirmed on booking'];
     } else if (a.path === 'partner') {
       p.title = 'Partnering with us';
-      p.notes.push('Partnerships don’t have a fixed price. We’ll set up a conversation about what we could build together.');
+      p.notes.push('Partnerships don’t have a fixed price. We’ll find a time to talk it through.');
       if (a.idea) p.rows.push(['Your idea', a.idea]);
     } else {
-      return missing('Your proposal grows as you answer.');
+      return missing('Your proposal appears here as you answer.');
     }
     return p;
   }
@@ -381,11 +381,9 @@
     return node;
   }
 
-  function nextStep(a) {
-    const tail = ' Nothing is booked until we confirm it together.';
-    if (a.contact === 'yes' && a.contactName) return `Reply to ${a.contactName}, or write to hello@medulla.city with this proposal.${tail}`;
-    if (a.contact === 'no') return `Someone from the Medulla team will get in touch to take this further. You can also write to hello@medulla.city with this proposal.${tail}`;
-    return `Reply to the person you have been talking to, or write to hello@medulla.city with this proposal.${tail}`;
+  // The same next step for everyone; who at Medulla follows up is decided from the copy we receive.
+  function nextStep() {
+    return 'Someone from the Medulla team will get in touch to take this further. You can also write to hello@medulla.city with this proposal. Nothing is booked until we confirm it together.';
   }
 
   function render(p) {
@@ -427,7 +425,7 @@
     p.notes.forEach((n) => nodes.push(el('p', 'p-note', n)));
     if (!p.missing) {
       nodes.push(el('h3', 'p-title', 'Next step'),
-        el('p', null, nextStep(p.a)));
+        el('p', null, nextStep()));
     }
     const prepared = `Prepared for ${who.replace(/\.+$/, '')}.`; // "Example e.V." must not end in ".."
     const basis = p.price

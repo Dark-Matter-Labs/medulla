@@ -38,7 +38,7 @@
     <form class="gate" id="gate" autocomplete="off">
       <p class="kicker">Private</p>
       <h1>Your proposal</h1>
-      <p>A few forks in the road, and at the end a proposal you can save as a PDF. Enter the access code we sent you.</p>
+      <p>Answer a few questions and get a proposal you can save as a PDF. Enter the access code we sent you.</p>
       <label for="code">Access code</label>
       <input id="code" name="code" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="gate-msg" required />
       <button type="submit" id="open">Open</button>
@@ -51,7 +51,7 @@
       <div class="journey">
         <p class="kicker">Private</p>
         <h1>Your proposal</h1>
-        <p class="lede">One question at a time. Every answer opens the next fork, and you can step back to any of them.</p>
+        <p class="lede">One question at a time. You can go back and change any answer.</p>
 
         <ol class="trail" id="trail" aria-label="Your path so far"></ol>
 
@@ -64,11 +64,11 @@
             <input id="f-email" name="email" type="email" autocomplete="email" enterkeyhint="next" />
             <label for="f-org">Organisation <span class="opt">optional</span></label>
             <input id="f-org" name="organisation" autocomplete="organization" enterkeyhint="next" />
-            <p class="fine">Nothing is sent while you answer: your proposal is worked out in your browser. We only receive your details if you choose to send them at the end, and use them only to discuss this proposal. <a href="/datenschutz">Privacy notice</a></p>
+            <p class="fine">Nothing is sent while you answer. We only see your details if you send them at the end, and we use them only to talk about this proposal. <a href="/datenschutz">Privacy notice</a></p>
           </fieldset>
 
           <fieldset class="step" data-step="path" tabindex="-1" hidden>
-            <legend class="step__q">Which way would you like to grow with Medulla?</legend>
+            <legend class="step__q">How would you like to be part of Medulla?</legend>
             <div class="choices">
               <label class="choice"><input type="radio" name="path" value="join" /><span>Join the community<small>Work here up to 2 days a week, or 3 or more.</small></span><svg class="ico" aria-hidden="true"><use href="#i-sprout"/></svg></label>
               <label class="choice"><input type="radio" name="path" value="host" /><span>Host a gathering<small>A talk, workshop or session for people to learn together.</small></span><svg class="ico" aria-hidden="true"><use href="#i-gather"/></svg></label>
@@ -79,7 +79,7 @@
           <fieldset class="step" data-step="contact" tabindex="-1" hidden>
             <legend class="step__q">Are you already in touch with someone at Medulla?</legend>
             <div class="choices">
-              <label class="choice"><input type="radio" name="contact" value="yes" data-then="#f-contact" /><span>Yes<small>Tell us who, and they’ll take it from here with you.</small></span></label>
+              <label class="choice"><input type="radio" name="contact" value="yes" data-then="#f-contact" /><span>Yes<small>Tell us who, and they’ll follow up with you.</small></span></label>
               <label class="choice"><input type="radio" name="contact" value="no" /><span>Not yet<small>Please connect me with someone from the Medulla team.</small></span></label>
             </div>
             <div class="after" data-contact hidden>
@@ -109,13 +109,13 @@
           <fieldset class="step" data-step="days" tabindex="-1" hidden>
             <legend class="step__q">How often will you be here?</legend>
             <div class="choices">
-              <label class="choice choice--photo"><img src="/assets/images/figma/card-garden-800.webp" alt="" loading="lazy" width="800" height="533" /><input type="radio" name="days" value="upTo2" /><span>Up to 2 days a week<small>A flexible place in the focus area, or in the community space when it’s busy, and one event a quarter.</small></span></label>
-              <label class="choice choice--photo"><img src="/assets/images/figma/card-facade-800.webp" alt="" loading="lazy" width="800" height="533" /><input type="radio" name="days" value="threePlus" /><span>3 or more days a week<small>A guaranteed space in the focus area, and one event a month.</small></span></label>
+              <label class="choice choice--photo"><img src="/assets/images/figma/card-garden-800.webp" alt="" loading="lazy" width="800" height="533" /><input type="radio" name="days" value="upTo2" /><span>Up to 2 days a week<small>A flexible place in the focus area, or in the community space when it’s busy. One event a quarter.</small></span></label>
+              <label class="choice choice--photo"><img src="/assets/images/figma/card-facade-800.webp" alt="" loading="lazy" width="800" height="533" /><input type="radio" name="days" value="threePlus" /><span>3 or more days a week<small>A guaranteed space in the focus area. One event a month.</small></span></label>
             </div>
           </fieldset>
 
           <fieldset class="step" data-step="extras" tabindex="-1" hidden>
-            <legend class="step__q">Anything else coming along?</legend>
+            <legend class="step__q">Anything else?</legend>
             <label class="check"><input type="checkbox" name="guest" /> An intern or an occasional guest</label>
             <label class="check"><input type="checkbox" name="hostEvents" /> We’d like to host events too</label>
             <label for="f-start">When would you like to start? <span class="opt">optional</span></label>
@@ -132,22 +132,22 @@
           </fieldset>
 
           <fieldset class="step" data-step="educational" tabindex="-1" hidden aria-describedby="hint-edu">
-            <legend class="step__q">Will people learn something together?</legend>
+            <legend class="step__q">Is it a learning event?</legend>
             <p class="hint" id="hint-edu">Medulla is a space with an educational purpose: we host talks, workshops and sessions open to people beyond your own team.</p>
             <div class="choices">
-              <label class="choice"><input type="radio" name="educational" value="yes" /><span>Yes, that’s the point</span></label>
+              <label class="choice"><input type="radio" name="educational" value="yes" /><span>Yes</span></label>
               <label class="choice"><input type="radio" name="educational" value="no" /><span>Not really</span></label>
             </div>
           </fieldset>
 
           <fieldset class="step" data-step="hostIdea" tabindex="-1" hidden>
             <legend class="step__q" id="lg-host-idea">Tell us about it</legend>
-            <p class="hint">What you have in mind and who it’s for. We’ll see together whether there’s a fit.</p>
+            <p class="hint">What you have in mind and who it’s for. We’ll see if there’s a fit.</p>
             <textarea name="hostIdea" rows="4" aria-labelledby="lg-host-idea"></textarea>
           </fieldset>
 
           <fieldset class="step" data-step="format" tabindex="-1" hidden>
-            <legend class="step__q">What shape will it take?</legend>
+            <legend class="step__q">What kind of event is it?</legend>
             <div class="choices choices--tags">
               <label class="choice"><input type="radio" name="format" value="Talk or lecture" /><span>Talk or lecture</span></label>
               <label class="choice"><input type="radio" name="format" value="Workshop" /><span>Workshop</span></label>
@@ -161,7 +161,7 @@
             <legend class="step__q">With us, or on your own?</legend>
             <p class="hint">Medulla runs its own public programme of talks, workshops and gatherings. Your event can become one of them, or you can hire the space and run it yourself.</p>
             <div class="choices">
-              <label class="choice"><input type="radio" name="slot" value="programme" /><span>As part of Medulla’s public programme<small>We co-host it with you: we shape it together, list it on Medulla’s Luma page, and host the evening with you (18:00–21:30).</small></span><svg class="ico" aria-hidden="true"><use href="#i-together"/></svg></label>
+              <label class="choice"><input type="radio" name="slot" value="programme" /><span>As part of Medulla’s public programme<small>We plan it with you, list it on Medulla’s Luma page and co-host the evening (18:00–21:30).</small></span><svg class="ico" aria-hidden="true"><use href="#i-together"/></svg></label>
               <label class="choice"><input type="radio" name="slot" value="hire" /><span>As my own event<small>You hire the whole event space and run the event yourself.</small></span><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg></label>
             </div>
           </fieldset>
@@ -199,9 +199,9 @@
           </fieldset>
 
           <fieldset class="step step--end" data-step="send" tabindex="-1" hidden>
-            <legend class="step__q">That’s your branch.</legend>
+            <legend class="step__q">Your proposal is ready</legend>
             <svg class="ico ico--fruit" aria-hidden="true"><use href="#i-fruit"/></svg>
-            <p>Your proposal is ready. Have a look at it as a PDF first, then send it to us.</p>
+            <p>Save it as a PDF first, then send it to us.</p>
             <div class="end-step">
               <p class="end-step__n">1 · Save your PDF</p>
               <button type="button" class="btn-pdf" id="save-pdf">Preview and save as PDF</button>

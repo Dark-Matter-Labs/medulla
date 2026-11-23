@@ -22,23 +22,7 @@
         "name": "Whole event space",
         "area": 120,
         "hourly": 0,
-        "minHours": 3,
-        "day": 0
-      },
-      {
-        "id": "part",
-        "name": "Part of the event space",
-        "area": 46,
-        "hourly": 0,
-        "minHours": 4,
-        "day": 0
-      },
-      {
-        "id": "meeting",
-        "name": "Meeting room",
-        "area": 16.5,
-        "hourly": 0,
-        "minHours": 4,
+        "minHours": 6,
         "day": 0
       }
     ]

@@ -18,7 +18,7 @@
   const MEMBER = Object.freeze({ no: 'Not a member', upTo2: 'Member, up to 2 days a week', threePlus: 'Member, 3 or more days a week' });
   const ROUNDS = 600000;
   // What every member shares, whatever their days; and the shortest membership we offer.
-  const SHARED = Object.freeze(['Meeting rooms', 'Three phone booths', 'The kitchen', 'The terrace', 'The community and its programme of events']);
+  const SHARED = Object.freeze(['Meeting rooms', 'Three phone booths', 'The kitchen', 'The community and its programme of events']);
   const MIN_MONTHS = 3;
 
   const isAmount = (n) => typeof n === 'number' && Number.isFinite(n) && n >= 0;

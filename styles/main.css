@@ -677,3 +677,23 @@ html:has(dialog[open]) { overflow: hidden; }
     font-size: var(--b2); line-height: var(--b2-lh); opacity: 0.6;
   }
 }
+
+/* ── Image cards as slides: photos of people in the space, crossfading slowly ── */
+.slides { position: absolute; inset: 0; }
+.slide { position: absolute; inset: 0; margin: 0; opacity: 0; }
+.slide:first-child { opacity: 1; }
+.slide__cap {
+  position: absolute; left: 20px; bottom: 18px; z-index: 2;
+  padding: 7px 12px 6px; border-radius: 999px;
+  background: rgba(246, 244, 238, 0.92); color: #000;
+  font: 500 13px/1 var(--font-sans, "Instrument Sans", system-ui, sans-serif); letter-spacing: 0.02em;
+}
+.card--image .card__scrim { z-index: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  /* 4 photos × 6 s: each fades in, rests, drifts a touch, fades out */
+  .slide { animation: slide-cycle 24s linear infinite; animation-delay: calc(var(--i) * 6s - 0.01s); }
+  .slide:first-child { opacity: 0; }
+  .slide .card__photo { animation: slide-drift 24s linear infinite; animation-delay: inherit; }
+}
+@keyframes slide-cycle { 0% { opacity: 0; } 5% { opacity: 1; } 25% { opacity: 1; } 30% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes slide-drift { 0% { transform: scale(1.06); } 30% { transform: scale(1); } 100% { transform: scale(1); } }

@@ -193,6 +193,9 @@ html[data-dir=back]::view-transition-new(step) { animation-name: vt-in-back; }
 .p-price__detail { font-size: 14px; }
 .p-list { margin: 0 0 12px; padding-left: 20px; }
 .p-note { margin: 0 0 10px; }
+.p-plan { margin: 6px 0 14px; }
+.p-plan img { display: block; width: 100%; height: auto; }
+.p-plan figcaption { font-size: 0.85em; opacity: 0.75; margin-top: 4px; }
 .p-foot { margin: 24px 0 4px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .p-address { margin: 0; font-size: 12px; color: var(--muted); }
 
@@ -248,5 +251,7 @@ kbd { font: 500 12px/1 var(--text); padding: 2px 6px; border: 1px solid var(--co
   .p-list { margin-bottom: 8px; }
   .p-sub { margin: 10px 0 4px; }
   .p-note { margin-bottom: 6px; }
+  .p-plan { break-inside: avoid; margin: 4px 0 8px; }
+  .p-plan img { max-height: 46mm; width: auto; max-width: 100%; }
   .p-foot { margin-top: 14px; padding-top: 8px; }
 }

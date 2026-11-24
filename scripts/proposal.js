@@ -346,6 +346,7 @@
       if (a.guests) p.rows.push(['People', a.guests]);
       if (a.date) p.rows.push(['Preferred date', dayName(a.date)]);
       if (!a.slot) return missing('Your proposal appears here as you answer.');
+      p.plan = `Ground floor: the shaded area is the event space, ${pricing.events.rooms[0].area}\u00a0m².`;
       if (a.slot === 'programme') {
         p.rows.push(['Format', 'Part of Medulla’s public programme, 18:00 to 21:30']);
         p.notes.push('Your event becomes part of Medulla’s public programme: we plan it with you, list it on our Luma page and co-host the evening. We’ll agree the details when we talk.');
@@ -423,6 +424,14 @@
       nodes.push(ul);
     }
     p.notes.forEach((n) => nodes.push(el('p', 'p-note', n)));
+    if (p.plan) {
+      const fig = el('figure', 'p-plan');
+      const img = el('img'); img.src = '/assets/images/figma/floor-plan-ground-800.webp';
+      img.srcset = '/assets/images/figma/floor-plan-ground-800.webp 800w, /assets/images/figma/floor-plan-ground-1600.webp 1600w';
+      img.sizes = '(max-width: 900px) 90vw, 480px'; img.width = 800; img.height = 559; img.alt = 'Drawing of Medulla’s ground floor with the event space shaded';
+      fig.append(img, el('figcaption', null, p.plan));
+      nodes.push(fig);
+    }
     if (!p.missing) {
       nodes.push(el('h3', 'p-title', 'Next step'),
         el('p', null, nextStep()));

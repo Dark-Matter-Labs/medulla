@@ -86,7 +86,7 @@
     return '€' + n.toLocaleString('en-GB', { minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 });
   }
 
-  // ── crypto: PBKDF2-SHA256 → AES-GCM-256, same scheme as /contribution ──────
+  // ── crypto: PBKDF2-SHA256 → AES-GCM-256 ─────────────────────────────────────
   const b64 = {
     enc: (u8) => (typeof Buffer !== 'undefined' ? Buffer.from(u8).toString('base64') : btoa(String.fromCharCode(...u8))),
     dec: (s) => (typeof Buffer !== 'undefined' ? new Uint8Array(Buffer.from(s, 'base64')) : Uint8Array.from(atob(s), (c) => c.charCodeAt(0))),

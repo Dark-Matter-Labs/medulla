@@ -691,7 +691,7 @@ html:has(dialog[open]) { overflow: hidden; }
 }
 @keyframes slide-cycle { 0% { opacity: 0; } 5% { opacity: 1; } 25% { opacity: 1; } 30% { opacity: 0; } 100% { opacity: 0; } }
 @keyframes slide-drift { 0% { transform: scale(1.06); } 30% { transform: scale(1); } 100% { transform: scale(1); } }
-/* 5 photos × 6 s, for the card that opens on the building before the people */
+/* 5 photos × 6 s, for the cards that open on the building or garden before the people */
 @media (prefers-reduced-motion: no-preference) {
   .slides--5 .slide { animation-name: slide-cycle-5; animation-duration: 30s; }
   .slides--5 .slide .card__photo { animation-name: slide-drift-5; animation-duration: 30s; }

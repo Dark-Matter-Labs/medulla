@@ -22,7 +22,7 @@
         "name": "Whole event space",
         "area": 120,
         "hourly": 0,
-        "minHours": 6,
+        "minHours": 3,
         "day": 0
       }
     ]

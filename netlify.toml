@@ -11,7 +11,7 @@
   publish = "_site"
   command = """
     rm -rf _site && mkdir _site \
-    && cp -R *.html styles scripts assets contribution contribution-full _site/ \
+    && cp -R *.html styles scripts assets _site/ \
     && find _site -name '.DS_Store' -delete \
     && echo '*' > _site/.gitignore
   """
@@ -49,13 +49,23 @@
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
-# The contribution model, full and abridged, is password-locked. Keep it out of search engines.
-[[headers]]
-  for = "/contribution-full/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive"
+# The old contribution-model pages were replaced by /proposal; send old links there.
+[[redirects]]
+  from = "/contribution"
+  to = "/proposal"
+  status = 301
 
-[[headers]]
-  for = "/contribution/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive"
+[[redirects]]
+  from = "/contribution/*"
+  to = "/proposal"
+  status = 301
+
+[[redirects]]
+  from = "/contribution-full"
+  to = "/proposal"
+  status = 301
+
+[[redirects]]
+  from = "/contribution-full/*"
+  to = "/proposal"
+  status = 301
